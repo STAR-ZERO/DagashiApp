@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DagashiApp</string>
+
+    <string name="title">Android Dagashi</string>
+    <string name="text_error">An error has occurred.</string>
+    <string name="button_retry">RETRY</string>
+</resources>
