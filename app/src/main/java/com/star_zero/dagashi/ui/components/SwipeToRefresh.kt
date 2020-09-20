@@ -16,7 +16,7 @@ import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.dp
 
-// Copy from: https://github.com/android/compose-samples/blob/e5e45ee2adfa9b050309aae1d25aad76b5452aca/JetNews/app/src/main/java/com/example/jetnews/ui/SwipeToRefresh.kt
+// Copy from: https://github.com/android/compose-samples/blob/1feea191b51896dcda028dc10436deb25d10c8df/JetNews/app/src/main/java/com/example/jetnews/ui/SwipeToRefresh.kt
 
 private val RefreshDistance = 80.dp
 
@@ -29,41 +29,35 @@ fun SwipeToRefreshLayout(
     content: @Composable () -> Unit
 ) {
     val refreshDistance = with(DensityAmbient.current) { RefreshDistance.toPx() }
-    val state = rememberSwipeableState(refreshingState)
-    // TODO (https://issuetracker.google.com/issues/164113834): This state->event trampoline is a
-    //  workaround for a bug in the SwipableState API. It should be replaced with a correct solution
-    //  when that bug closes.
-    onCommit(refreshingState) {
-        state.animateTo(refreshingState)
-    }
-    // TODO (https://issuetracker.google.com/issues/164113834): Hoist state changes when bug is
-    //  fixed and do this logic in the ViewModel. Currently, state.value is a duplicated source of
-    //  truth of refreshingState
-    onCommit(state.value) {
-        if (state.value) {
-            onRefresh()
-        }
+    val state = rememberSwipeableState(refreshingState) { newValue ->
+        // compare both copies of the swipe state before calling onRefresh(). This is a workaround.
+        if (newValue && !refreshingState) onRefresh()
+        true
     }
 
     Stack(
-        modifier = Modifier
-            .fillMaxWidth() // This line is added by @STAR-ZERO.
-            .swipeable(
+        modifier = Modifier.swipeable(
             state = state,
-            enabled = !state.value,
             anchors = mapOf(
                 -refreshDistance to false,
                 refreshDistance to true
             ),
             thresholds = { _, _ -> FractionalThreshold(0.5f) },
             orientation = Orientation.Vertical
-        )
+        ).fillMaxWidth()  // This line is added by @STAR-ZERO.
     ) {
         content()
-        Box(Modifier.gravity(Alignment.TopCenter).offsetPx(y = state.offset)) {
+        Box(Modifier.align(Alignment.TopCenter).offsetPx(y = state.offset)) {
             if (state.offset.value != -refreshDistance) {
                 refreshIndicator()
             }
+        }
+
+        // TODO (https://issuetracker.google.com/issues/164113834): This state->event trampoline is a
+        //  workaround for a bug in the SwipableState API. Currently, state.value is a duplicated
+        //  source of truth of refreshingState.
+        onCommit(refreshingState) {
+            state.animateTo(refreshingState)
         }
     }
 }
