@@ -14,6 +14,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_milestone_to_setting"
+            app:destination="@id/setting" />
     </fragment>
     <fragment
         android:id="@+id/issue"
@@ -22,4 +25,7 @@
             android:name="milestone"
             app:argType="com.star_zero.dagashi.core.data.model.Milestone" />
     </fragment>
+    <fragment
+        android:id="@+id/setting"
+        android:name="com.star_zero.dagashi.ui.setting.SettingFragment" />
 </navigation>

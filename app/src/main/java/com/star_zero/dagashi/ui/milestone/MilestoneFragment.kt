@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -16,11 +17,14 @@ import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.Card
 import androidx.compose.material.EmphasisAmbient
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideEmphasis
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.launchInComposition
@@ -64,7 +68,11 @@ class MilestoneFragment : Fragment() {
                 DagashiAppTheme {
                     Surface(color = MaterialTheme.colors.background) {
                         Scaffold(
-                            topBar = { AppBar() }
+                            topBar = {
+                                AppBar(
+                                    onClickSetting = ::navigateSetting
+                                )
+                            }
                         ) {
                             MilestoneContent(
                                 viewModel = viewModel,
@@ -81,13 +89,22 @@ class MilestoneFragment : Fragment() {
         val action = MilestoneFragmentDirections.actionMilestoneToIssue(milestone)
         findNavController().navigate(action)
     }
+
+    private fun navigateSetting() {
+        findNavController().navigate(R.id.action_milestone_to_setting)
+    }
 }
 
 @Composable
-private fun AppBar() {
+private fun AppBar(onClickSetting: () -> Unit) {
     TopAppBar(
         title = {
-            Text(text = stringResource(id = R.string.title))
+            Text(text = stringResource(id = R.string.milestone_title))
+        },
+        actions = {
+            IconButton(onClick = onClickSetting) {
+                Icon(Icons.Filled.Settings)
+            }
         }
     )
 }

@@ -2,4 +2,5 @@
 <resources>
     <item name="milestone_fragment" type="id" />
     <item name="issue_fragment" type="id" />
+    <item name="setting_fragment" type="id" />
 </resources>
