@@ -9,7 +9,7 @@ import androidx.compose.foundation.ClickableText
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.InnerPadding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -147,7 +147,7 @@ private fun IssueContent(viewModel: IssueViewModel, milestone: Milestone) {
 private fun IssueList(issues: List<Issue>) {
     LazyColumnFor(
         items = issues,
-        contentPadding = InnerPadding(top = 8.dp, bottom = 8.dp)
+        contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)
     ) { issue ->
         IssueCard(issue)
     }
@@ -192,7 +192,7 @@ private fun IssueCard(issue: Issue) {
             Spacer(modifier = Modifier.preferredHeight(8.dp))
 
             TextButton(
-                modifier = Modifier.gravity(Alignment.End),
+                modifier = Modifier.align(Alignment.End),
                 onClick = {
                     uriHandler.openUri(issue.url)
                 }

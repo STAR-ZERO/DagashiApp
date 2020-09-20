@@ -21,7 +21,7 @@ fun ErrorRetry(onRetry: () -> Unit) {
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
     ) {
         Column(
-            modifier = Modifier.gravity(Alignment.Center),
+            modifier = Modifier.align(Alignment.Center),
         ) {
             Text(
                 text = stringResource(id = R.string.text_error)
@@ -30,7 +30,7 @@ fun ErrorRetry(onRetry: () -> Unit) {
             Spacer(modifier = Modifier.preferredHeight(16.dp))
 
             Button(
-                modifier = Modifier.gravity(Alignment.CenterHorizontally),
+                modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = onRetry
             ) {
                 Text(text = stringResource(id = R.string.button_retry))

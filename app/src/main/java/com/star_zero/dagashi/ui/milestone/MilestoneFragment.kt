@@ -9,7 +9,7 @@ import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.InnerPadding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -146,7 +146,7 @@ private fun MilestoneContent(viewModel: MilestoneViewModel, onItemSelected: (Mil
 private fun MilestoneList(milestones: List<Milestone>, onItemSelected: (Milestone) -> Unit) {
     LazyColumnFor(
         items = milestones,
-        contentPadding = InnerPadding(top = 8.dp, bottom = 8.dp)
+        contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)
     ) { milestone ->
         MilestoneCard(milestone, onItemSelected)
     }
