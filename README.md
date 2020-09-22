@@ -17,6 +17,7 @@ WIP
 - Navigation Component
 - Dagger Hilt
 - Coroutines
+- DataStore
 - LiveData / ViewModel
 - etc...
 
