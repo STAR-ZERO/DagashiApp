@@ -6,4 +6,6 @@
 
     <string name="milestone_title">Android Dagashi</string>
     <string name="setting_title">Setting</string>
+
+    <string name="setting_open_link">Open web links in this App</string>
 </resources>

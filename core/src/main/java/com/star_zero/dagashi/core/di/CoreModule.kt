@@ -1,8 +1,13 @@
 package com.star_zero.dagashi.core.di
 
+import android.app.Application
+import androidx.datastore.createDataStore
 import com.star_zero.dagashi.core.data.api.DagashiService
+import com.star_zero.dagashi.core.data.datastore.SettingsSerializer
 import com.star_zero.dagashi.core.data.repository.DagashiDataRepository
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
+import com.star_zero.dagashi.core.data.repository.SettingDataRepository
+import com.star_zero.dagashi.core.data.repository.SettingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,5 +34,14 @@ object CoreModule {
         val service = retrofit.create(DagashiService::class.java)
 
         return DagashiDataRepository(service)
+    }
+
+    @Provides
+    fun provideSettingRepository(application: Application): SettingRepository {
+        val settingsDataStore = application.createDataStore(
+            fileName = "settings.pb",
+            serializer = SettingsSerializer
+        )
+        return SettingDataRepository(settingsDataStore)
     }
 }
