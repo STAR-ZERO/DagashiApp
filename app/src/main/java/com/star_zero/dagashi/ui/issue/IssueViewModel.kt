@@ -8,10 +8,15 @@ import androidx.lifecycle.ViewModel
 import com.star_zero.dagashi.core.data.model.Issue
 import com.star_zero.dagashi.core.data.model.Milestone
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
+import com.star_zero.dagashi.core.data.repository.SettingRepository
+import kotlinx.coroutines.flow.map
 
 class IssueViewModel @ViewModelInject constructor(
-    private val dagashiDataRepository: DagashiRepository
+    private val dagashiDataRepository: DagashiRepository,
+    private val settingRepository: SettingRepository
 ): ViewModel() {
+
+    val isOpenLinkInApp = settingRepository.settingsFlow.map { it.openLinkInApp }
 
     var issues: List<Issue> by mutableStateOf(listOf())
         private set

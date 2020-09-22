@@ -1,10 +1,12 @@
 package com.star_zero.dagashi.ui.issue
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.ClickableText
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
@@ -25,10 +27,14 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.Recomposer
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.launchInComposition
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.staticAmbientOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.UriHandlerAmbient
@@ -49,6 +55,12 @@ import com.star_zero.dagashi.ui.components.formatLinkedText
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
+fun interface CustomTabHandler {
+    fun open(url: String)
+}
+
+val CustomTabHandlerAmbient = staticAmbientOf<CustomTabHandler>()
 
 @AndroidEntryPoint
 class IssueFragment : Fragment() {
@@ -73,17 +85,23 @@ class IssueFragment : Fragment() {
             val milestone = args.milestone
 
             setContent(Recomposer.current()) {
-                DagashiAppTheme {
-                    Surface(color = MaterialTheme.colors.background) {
-                        Scaffold(
-                            topBar = {
-                                AppBar(
-                                    title = milestone.title,
-                                    onBack = ::onBack
-                                )
+                Providers(
+                    CustomTabHandlerAmbient provides CustomTabHandler {
+                        openBrowser(it)
+                    }
+                ) {
+                    DagashiAppTheme {
+                        Surface(color = MaterialTheme.colors.background) {
+                            Scaffold(
+                                topBar = {
+                                    AppBar(
+                                        title = milestone.title,
+                                        onBack = ::onBack
+                                    )
+                                }
+                            ) {
+                                IssueContent(viewModel, milestone)
                             }
-                        ) {
-                            IssueContent(viewModel, milestone)
                         }
                     }
                 }
@@ -93,6 +111,11 @@ class IssueFragment : Fragment() {
 
     private fun onBack() {
         findNavController().popBackStack()
+    }
+
+    private fun openBrowser(url: String) {
+        val customTabsIntent = CustomTabsIntent.Builder().build()
+        customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
     }
 }
 
@@ -116,6 +139,8 @@ private fun IssueContent(viewModel: IssueViewModel, milestone: Milestone) {
         viewModel.getIssues(milestone)
     }
 
+    val isOpenLinkInApp by viewModel.isOpenLinkInApp.collectAsState(initial = false)
+
     val coroutineScope = rememberCoroutineScope()
 
     if (viewModel.hasError) {
@@ -138,23 +163,35 @@ private fun IssueContent(viewModel: IssueViewModel, milestone: Milestone) {
                 SwipeToRefreshIndicator()
             }
         ) {
-            IssueList(viewModel.issues)
+            IssueList(viewModel.issues, isOpenLinkInApp)
         }
     }
 }
 
 @Composable
-private fun IssueList(issues: List<Issue>) {
+private fun IssueList(issues: List<Issue>, isOpenLinkInApp: Boolean) {
     LazyColumnFor(
         items = issues,
         contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)
     ) { issue ->
-        IssueCard(issue)
+        IssueCard(issue, isOpenLinkInApp)
     }
 }
 
 @Composable
-private fun IssueCard(issue: Issue) {
+private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
+
+    val uriHandler = UriHandlerAmbient.current
+    val customTabHandler = CustomTabHandlerAmbient.current
+
+    val openLink: (String) -> Unit = {
+        if (isOpenLinkInApp) {
+            customTabHandler.open(it)
+        } else {
+            uriHandler.openUri(it)
+        }
+    }
+
     Card(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).fillMaxWidth()
     ) {
@@ -169,7 +206,6 @@ private fun IssueCard(issue: Issue) {
 
             Spacer(modifier = Modifier.preferredHeight(8.dp))
 
-            val uriHandler = UriHandlerAmbient.current
             val linkColor = MaterialTheme.colors.primary
 
             val linkedText = remember(issue.body) { formatLinkedText(issue.body, linkColor) }
@@ -184,7 +220,7 @@ private fun IssueCard(issue: Issue) {
                     ).firstOrNull()
 
                     annotation?.let {
-                        uriHandler.openUri(it.item)
+                        openLink(it.item)
                     }
                 }
             )
@@ -194,7 +230,7 @@ private fun IssueCard(issue: Issue) {
             TextButton(
                 modifier = Modifier.align(Alignment.End),
                 onClick = {
-                    uriHandler.openUri(issue.url)
+                    openLink(issue.url)
                 }
             ) {
                 Text(
@@ -216,7 +252,7 @@ private fun PreviewIssueCard() {
         "https://android-developers.googleblog.com/2020/08/11-weeks-of-android-ui-and-compose.html\n\nSample Sample"
     )
     DagashiAppTheme {
-        IssueCard(issues)
+        IssueCard(issues, true)
     }
 }
 
@@ -229,7 +265,7 @@ private fun PreviewIssueCardDark() {
         "https://android-developers.googleblog.com/2020/08/11-weeks-of-android-ui-and-compose.html\n\nSample Sample"
     )
     DagashiAppTheme(darkTheme = true) {
-        IssueCard(issues)
+        IssueCard(issues, true)
     }
 }
 // endregion
