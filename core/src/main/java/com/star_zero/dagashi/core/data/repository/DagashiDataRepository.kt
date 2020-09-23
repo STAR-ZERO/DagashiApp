@@ -2,6 +2,7 @@ package com.star_zero.dagashi.core.data.repository
 
 import com.star_zero.dagashi.core.data.api.DagashiService
 import com.star_zero.dagashi.core.data.model.Issue
+import com.star_zero.dagashi.core.data.model.Label
 import com.star_zero.dagashi.core.data.model.Milestone
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -24,11 +25,18 @@ class DagashiDataRepository(
 
     override suspend fun issues(path: String): List<Issue> = withContext(Dispatchers.IO) {
         val issueRoot = service.issue(path)
-        issueRoot.issues.nodes.map {
+        issueRoot.issues.nodes.map { issueNode ->
             Issue(
-                it.url,
-                it.title,
-                it.body
+                issueNode.url,
+                issueNode.title,
+                issueNode.body,
+                issueNode.labels.nodes.map { labelNode ->
+                    Label(
+                        labelNode.name,
+                        // Append alpha and convert hex string into long
+                        "FF${labelNode.color}".toLong(radix = 16)
+                    )
+                }
             )
         }
     }

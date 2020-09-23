@@ -7,16 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.Box
 import androidx.compose.foundation.ClickableText
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayout
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -37,6 +41,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticAmbientOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.UriHandlerAmbient
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
@@ -47,6 +52,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.ui.tooling.preview.Preview
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.core.data.model.Issue
+import com.star_zero.dagashi.core.data.model.Label
 import com.star_zero.dagashi.core.data.model.Milestone
 import com.star_zero.dagashi.ui.components.ErrorRetry
 import com.star_zero.dagashi.ui.components.SwipeToRefreshIndicator
@@ -206,6 +212,11 @@ private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
 
             Spacer(modifier = Modifier.preferredHeight(8.dp))
 
+            if (issue.labels.isNotEmpty()) {
+                IssueLabels(issue.labels)
+                Spacer(modifier = Modifier.preferredHeight(8.dp))
+            }
+
             val linkColor = MaterialTheme.colors.primary
 
             val linkedText = remember(issue.body) { formatLinkedText(issue.body, linkColor) }
@@ -242,6 +253,29 @@ private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
     }
 }
 
+@OptIn(ExperimentalLayout::class)
+@Composable
+private fun IssueLabels(labels: List<Label>) {
+    FlowRow(
+        mainAxisSpacing = 4.dp,
+        crossAxisSpacing = 4.dp
+    ) {
+        labels.forEach { label ->
+            Box(
+                backgroundColor = Color(label.color),
+                shape = RoundedCornerShape(percent = 50)
+            ) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    text = label.name,
+                    style = MaterialTheme.typography.overline,
+                    color = Color.White
+                )
+            }
+        }
+    }
+}
+
 // region Compose Preview
 @Preview("Issue card")
 @Composable
@@ -249,7 +283,13 @@ private fun PreviewIssueCard() {
     val issues = Issue(
         "https://github.com/AndroidDagashi/AndroidDagashi/issues/1530",
         "11 Weeks of Android: UI and Compose",
-        "https://android-developers.googleblog.com/2020/08/11-weeks-of-android-ui-and-compose.html\n\nSample Sample"
+        "https://android-developers.googleblog.com/2020/08/11-weeks-of-android-ui-and-compose.html\n\nSample Sample",
+        listOf(
+            Label(
+                "Kotlin",
+                "FFEC953C".toLong(radix = 16)
+            )
+        )
     )
     DagashiAppTheme {
         IssueCard(issues, true)
@@ -262,7 +302,13 @@ private fun PreviewIssueCardDark() {
     val issues = Issue(
         "https://github.com/AndroidDagashi/AndroidDagashi/issues/1530",
         "11 Weeks of Android: UI and Compose",
-        "https://android-developers.googleblog.com/2020/08/11-weeks-of-android-ui-and-compose.html\n\nSample Sample"
+        "https://android-developers.googleblog.com/2020/08/11-weeks-of-android-ui-and-compose.html\n\nSample Sample",
+        listOf(
+            Label(
+                "Kotlin",
+                "FFEC953C".toLong(radix = 16)
+            )
+        )
     )
     DagashiAppTheme(darkTheme = true) {
         IssueCard(issues, true)
