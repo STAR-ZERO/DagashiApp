@@ -26,6 +26,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.launchInComposition
 import androidx.compose.runtime.rememberCoroutineScope
@@ -39,6 +40,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.ui.tooling.preview.Preview
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.core.data.model.Milestone
+import com.star_zero.dagashi.ui.ambients.NavHandlerAmbient
+import com.star_zero.dagashi.ui.ambients.NavigationHandler
 import com.star_zero.dagashi.ui.components.ErrorRetry
 import com.star_zero.dagashi.ui.components.SwipeToRefreshIndicator
 import com.star_zero.dagashi.ui.components.SwipeToRefreshLayout
@@ -65,44 +68,37 @@ class MilestoneFragment : Fragment() {
             )
 
             setContent(Recomposer.current()) {
-                DagashiAppTheme {
-                    Surface(color = MaterialTheme.colors.background) {
-                        Scaffold(
-                            topBar = {
-                                AppBar(
-                                    onClickSetting = ::navigateSetting
+                Providers(NavHandlerAmbient provides NavigationHandler(findNavController())) {
+                    DagashiAppTheme {
+                        Surface(color = MaterialTheme.colors.background) {
+                            Scaffold(
+                                topBar = {
+                                    AppBar()
+                                }
+                            ) {
+                                MilestoneContent(
+                                    viewModel = viewModel
                                 )
                             }
-                        ) {
-                            MilestoneContent(
-                                viewModel = viewModel,
-                                onItemSelected = ::navigateIssue
-                            )
                         }
                     }
                 }
             }
         }
     }
-
-    private fun navigateIssue(milestone: Milestone) {
-        val action = MilestoneFragmentDirections.actionMilestoneToIssue(milestone)
-        findNavController().navigate(action)
-    }
-
-    private fun navigateSetting() {
-        findNavController().navigate(R.id.action_milestone_to_setting)
-    }
 }
 
 @Composable
-private fun AppBar(onClickSetting: () -> Unit) {
+private fun AppBar() {
+    val navHandler = NavHandlerAmbient.current
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.milestone_title))
         },
         actions = {
-            IconButton(onClick = onClickSetting) {
+            IconButton(onClick = {
+                navHandler.navigate(R.id.action_milestone_to_setting)
+            }) {
                 Icon(Icons.Filled.Settings)
             }
         }
@@ -110,7 +106,7 @@ private fun AppBar(onClickSetting: () -> Unit) {
 }
 
 @Composable
-private fun MilestoneContent(viewModel: MilestoneViewModel, onItemSelected: (Milestone) -> Unit) {
+private fun MilestoneContent(viewModel: MilestoneViewModel) {
     launchInComposition {
         viewModel.getMilestones()
     }
@@ -137,28 +133,30 @@ private fun MilestoneContent(viewModel: MilestoneViewModel, onItemSelected: (Mil
                 SwipeToRefreshIndicator()
             }
         ) {
-            MilestoneList(viewModel.milestones, onItemSelected)
+            MilestoneList(viewModel.milestones)
         }
     }
 }
 
 @Composable
-private fun MilestoneList(milestones: List<Milestone>, onItemSelected: (Milestone) -> Unit) {
+private fun MilestoneList(milestones: List<Milestone>) {
     LazyColumnFor(
         items = milestones,
         contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)
     ) { milestone ->
-        MilestoneCard(milestone, onItemSelected)
+        MilestoneCard(milestone)
     }
 }
 
 @Composable
-private fun MilestoneCard(milestone: Milestone, onItemSelected: (Milestone) -> Unit) {
+private fun MilestoneCard(milestone: Milestone) {
+    val navHandler = NavHandlerAmbient.current
     Card(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickable(onClick = {
-                onItemSelected(milestone)
+                val action = MilestoneFragmentDirections.actionMilestoneToIssue(milestone)
+                navHandler.navigate(action)
             })
     ) {
         Column(
@@ -192,7 +190,7 @@ private fun PreviewMilestone() {
         ""
     )
     DagashiAppTheme {
-        MilestoneCard(milestone) { }
+        MilestoneCard(milestone)
     }
 }
 
@@ -206,7 +204,7 @@ private fun PreviewMilestoneDark() {
         ""
     )
     DagashiAppTheme(darkTheme = true) {
-        MilestoneCard(milestone) { }
+        MilestoneCard(milestone)
     }
 }
 // endregion

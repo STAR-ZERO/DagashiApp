@@ -54,6 +54,8 @@ import com.star_zero.dagashi.R
 import com.star_zero.dagashi.core.data.model.Issue
 import com.star_zero.dagashi.core.data.model.Label
 import com.star_zero.dagashi.core.data.model.Milestone
+import com.star_zero.dagashi.ui.ambients.NavHandlerAmbient
+import com.star_zero.dagashi.ui.ambients.NavigationHandler
 import com.star_zero.dagashi.ui.components.ErrorRetry
 import com.star_zero.dagashi.ui.components.SwipeToRefreshIndicator
 import com.star_zero.dagashi.ui.components.SwipeToRefreshLayout
@@ -92,6 +94,7 @@ class IssueFragment : Fragment() {
 
             setContent(Recomposer.current()) {
                 Providers(
+                    NavHandlerAmbient provides NavigationHandler(findNavController()),
                     CustomTabHandlerAmbient provides CustomTabHandler {
                         openBrowser(it)
                     }
@@ -100,10 +103,7 @@ class IssueFragment : Fragment() {
                         Surface(color = MaterialTheme.colors.background) {
                             Scaffold(
                                 topBar = {
-                                    AppBar(
-                                        title = milestone.title,
-                                        onBack = ::onBack
-                                    )
+                                    AppBar(title = milestone.title)
                                 }
                             ) {
                                 IssueContent(viewModel, milestone)
@@ -115,10 +115,6 @@ class IssueFragment : Fragment() {
         }
     }
 
-    private fun onBack() {
-        findNavController().popBackStack()
-    }
-
     private fun openBrowser(url: String) {
         val customTabsIntent = CustomTabsIntent.Builder().build()
         customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
@@ -126,13 +122,16 @@ class IssueFragment : Fragment() {
 }
 
 @Composable
-private fun AppBar(title: String, onBack: () -> Unit) {
+private fun AppBar(title: String) {
+    val navHandler = NavHandlerAmbient.current
     TopAppBar(
         title = {
             Text(text = title)
         },
         navigationIcon = {
-            IconButton(onClick = onBack) {
+            IconButton(onClick = {
+                navHandler.popBackStack()
+            }) {
                 Icon(Icons.Filled.ArrowBack)
             }
         }

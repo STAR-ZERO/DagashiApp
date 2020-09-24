@@ -23,6 +23,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +38,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.ui.tooling.preview.Preview
 import com.star_zero.dagashi.R
+import com.star_zero.dagashi.ui.ambients.NavHandlerAmbient
+import com.star_zero.dagashi.ui.ambients.NavigationHandler
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -60,16 +63,16 @@ class SettingFragment : Fragment() {
             )
 
             setContent(Recomposer.current()) {
-                DagashiAppTheme {
-                    Surface(color = MaterialTheme.colors.background) {
-                        Scaffold(
-                            topBar = {
-                                AppBar(
-                                    onBack = ::onBack
-                                )
+                Providers(NavHandlerAmbient provides NavigationHandler(findNavController())) {
+                    DagashiAppTheme {
+                        Surface(color = MaterialTheme.colors.background) {
+                            Scaffold(
+                                topBar = {
+                                    AppBar()
+                                }
+                            ) {
+                                SettingContent(viewModel)
                             }
-                        ) {
-                            SettingContent(viewModel)
                         }
                     }
                 }
@@ -83,13 +86,16 @@ class SettingFragment : Fragment() {
 }
 
 @Composable
-private fun AppBar(onBack: () -> Unit) {
+private fun AppBar() {
+    val navHandler = NavHandlerAmbient.current
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.setting_title))
         },
         navigationIcon = {
-            IconButton(onClick = onBack) {
+            IconButton(onClick = {
+                navHandler.popBackStack()
+            }) {
                 Icon(Icons.Filled.ArrowBack)
             }
         }
