@@ -54,6 +54,13 @@ class DagashiPlugin : Plugin<Project> {
         // kotlin
         project.tasks.withType(KotlinCompile::class.java).configureEach {
             kotlinOptions.jvmTarget = "1.8"
+
+            val args = listOf(
+                "-Xallow-jvm-ir-dependencies",
+                "-Xskip-prerelease-check",
+                "-Xopt-in=kotlin.RequiresOptIn"
+            )
+            kotlinOptions.freeCompilerArgs = kotlinOptions.freeCompilerArgs + args
         }
 
         // Use only "parcelize" (except "views")
