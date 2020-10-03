@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.compose.foundation.Box
 import androidx.compose.foundation.ClickableText
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayout
 import androidx.compose.foundation.layout.FlowRow
@@ -261,8 +262,10 @@ private fun IssueLabels(labels: List<Label>) {
     ) {
         labels.forEach { label ->
             Box(
-                backgroundColor = Color(label.color),
-                shape = RoundedCornerShape(percent = 50)
+                Modifier.background(
+                    color = Color(label.color),
+                    shape = RoundedCornerShape(percent = 50)
+                )
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),

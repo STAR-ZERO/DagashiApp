@@ -1,9 +1,9 @@
 package com.star_zero.dagashi.ui.components
 
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.Stack
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.preferredHeight
@@ -17,7 +17,7 @@ import com.star_zero.dagashi.R
 
 @Composable
 fun ErrorRetry(onRetry: () -> Unit) {
-    Stack(
+    Box(
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
     ) {
         Column(
