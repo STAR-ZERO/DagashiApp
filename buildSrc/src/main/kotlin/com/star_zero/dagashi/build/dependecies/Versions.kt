@@ -6,5 +6,5 @@ object Versions {
 
     val ANDROID_GRADLE_PLUGIN get() = androidGradlePlugin
     val KOTLIN get() = kotlin
-    const val COMPOSE = "1.0.0-alpha03"
+    const val COMPOSE = "1.0.0-alpha04"
 }
