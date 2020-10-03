@@ -11,6 +11,7 @@ buildscript {
         classpath(Deps.KOTLIN_PLUGIN)
         classpath(Deps.DAGGER_HILT_PLUGIN)
         classpath(Deps.NAVIGATION_SAFE_ARGS_PLUGIN)
+        classpath(Deps.SERIALIZATION_PLUGIN)
     }
 }
 

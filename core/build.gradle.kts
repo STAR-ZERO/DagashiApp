@@ -16,6 +16,8 @@ plugins {
 apply<DagashiPlugin>()
 
 dependencies {
+    implementation(project(":shared"))
+
     api(Deps.KOTLIN_STDLIB)
 
     api(Deps.ANDROIDX_CORE)
@@ -26,12 +28,6 @@ dependencies {
 
     implementation(Deps.DAGGER_HILT_ANDROID)
     kapt(Deps.DAGGER_HILT_COMPILER)
-
-    implementation(Deps.RETROFIT)
-    implementation(Deps.RETROFIT_MOSHI)
-    implementation(Deps.OKHTTP)
-    implementation(Deps.MOSHI)
-    kapt(Deps.MOSHI_CODEGEN)
 
     api(Deps.DATASTORE)
     api(Deps.PROTOBUF_JAVA)

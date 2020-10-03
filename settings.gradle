@@ -1,3 +1,4 @@
 rootProject.name = "DagashiApp"
 include ':app'
 include ':core'
+include ':shared'

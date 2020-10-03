@@ -6,6 +6,7 @@ object Dependencies {
 
     val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN}"
     const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+    const val COROUTINE_CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
 
     const val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.COMPOSE}"
     const val COMPOSE_MATERIAL = "androidx.compose.material:material:${Versions.COMPOSE}"
@@ -45,15 +46,14 @@ object Dependencies {
     const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-android-compiler:$DAGGER_HILT_VERSION"
 
     // API
-    private const val RETROFIT_VERSION = "2.9.0"
-    const val RETROFIT = "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
-    const val RETROFIT_MOSHI = "com.squareup.retrofit2:converter-moshi:$RETROFIT_VERSION"
+    private const val KTOR_VERSION = "1.4.1"
+    const val KTOR_CORE = "io.ktor:ktor-client-core:$KTOR_VERSION"
+    const val KTOR_ANDROID = "io.ktor:ktor-client-android:$KTOR_VERSION"
+    const val KTOR_IOS = "io.ktor:ktor-client-ios:$KTOR_VERSION"
+    const val KTOR_SERIALIZATION = "io.ktor:ktor-client-serialization:$KTOR_VERSION"
 
-    const val OKHTTP = "com.squareup.okhttp3:okhttp:4.8.1"
-
-    private const val MOSHI_VERSION = "1.9.3"
-    const val MOSHI = "com.squareup.moshi:moshi-kotlin:$MOSHI_VERSION"
-    const val MOSHI_CODEGEN = "com.squareup.moshi:moshi-kotlin-codegen:$MOSHI_VERSION"
+    val SERIALIZATION_PLUGIN = "org.jetbrains.kotlin:kotlin-serialization:${Versions.KOTLIN}"
+    const val SERIALIZATION_CORE = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC2"
 
     // etc
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-javalite:3.10.0"
