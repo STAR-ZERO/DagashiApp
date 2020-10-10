@@ -53,7 +53,7 @@ object Dependencies {
     const val KTOR_SERIALIZATION = "io.ktor:ktor-client-serialization:$KTOR_VERSION"
 
     val SERIALIZATION_PLUGIN = "org.jetbrains.kotlin:kotlin-serialization:${Versions.KOTLIN}"
-    const val SERIALIZATION_CORE = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC2"
+    const val SERIALIZATION_JSON = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0"
 
     // etc
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-javalite:3.10.0"

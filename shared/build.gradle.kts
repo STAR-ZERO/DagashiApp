@@ -32,7 +32,7 @@ kotlin {
                 implementation(Deps.COROUTINE_CORE)
                 implementation(Deps.KTOR_CORE)
                 implementation(Deps.KTOR_SERIALIZATION)
-                implementation(Deps.SERIALIZATION_CORE)
+                implementation(Deps.SERIALIZATION_JSON)
             }
         }
         val commonTest by getting {
