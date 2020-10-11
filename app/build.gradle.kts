@@ -56,6 +56,8 @@ dependencies {
 
     implementation(Deps.BROWSER)
 
+    implementation(Deps.ACCOMPANIST_COIL)
+
     testImplementation(Deps.JUNIT)
     androidTestImplementation(Deps.ANDROIDX_JUNIT)
     androidTestImplementation(Deps.ESPRESSO)

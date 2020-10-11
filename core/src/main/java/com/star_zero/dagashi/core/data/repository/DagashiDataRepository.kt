@@ -1,5 +1,7 @@
 package com.star_zero.dagashi.core.data.repository
 
+import com.star_zero.dagashi.core.data.model.Author
+import com.star_zero.dagashi.core.data.model.Comment
 import com.star_zero.dagashi.core.data.model.Issue
 import com.star_zero.dagashi.core.data.model.Label
 import com.star_zero.dagashi.core.data.model.Milestone
@@ -8,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class DagashiDataRepository(
-    private val api: DagashiAPI
+    private val api: DagashiAPI,
 ) : DagashiRepository {
 
     override suspend fun milestones(): List<Milestone> = withContext(Dispatchers.IO) {
@@ -35,6 +37,16 @@ class DagashiDataRepository(
                         labelNode.name,
                         // Append alpha and convert hex string into long
                         "FF${labelNode.color}".toLong(radix = 16)
+                    )
+                },
+                issueNode.comments.nodes.map { commentNode ->
+                    Comment(
+                        commentNode.body,
+                        Author(
+                            commentNode.author.login,
+                            commentNode.author.url,
+                            commentNode.author.avatarUrl
+                        )
                     )
                 }
             )

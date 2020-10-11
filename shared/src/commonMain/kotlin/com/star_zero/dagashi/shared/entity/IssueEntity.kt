@@ -25,6 +25,8 @@ data class IssueNodeEntity(
     val body: String,
     @SerialName("labels")
     val labels: LabelEntity,
+    @SerialName("comments")
+    val comments: CommentEntity,
 )
 
 @Serializable
@@ -39,4 +41,28 @@ data class LabelNodeEntity(
     val name: String,
     @SerialName("color")
     val color: String,
+)
+
+@Serializable
+data class CommentEntity(
+    @SerialName("nodes")
+    val nodes: List<CommentNodeEntity>,
+)
+
+@Serializable
+data class CommentNodeEntity(
+    @SerialName("body")
+    val body: String,
+    @SerialName("author")
+    val author: CommentNodeAuthor
+)
+
+@Serializable
+data class CommentNodeAuthor(
+    @SerialName("login")
+    val login: String,
+    @SerialName("url")
+    val url: String,
+    @SerialName("avatarUrl")
+    val avatarUrl: String,
 )
