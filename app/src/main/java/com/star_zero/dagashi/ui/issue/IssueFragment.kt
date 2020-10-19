@@ -35,6 +35,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedTask
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.collectAsState
@@ -148,7 +149,7 @@ private fun AppBar(title: String) {
 
 @Composable
 private fun IssueContent(viewModel: IssueViewModel, milestone: Milestone) {
-    launchInComposition {
+    LaunchedTask {
         viewModel.getIssues(milestone)
     }
 
@@ -314,7 +315,7 @@ private fun Comment(comment: Comment, modifier: Modifier = Modifier) {
             )
 
             Spacer(modifier = Modifier.preferredSize(8.dp))
-            
+
             Text(
                 text = comment.author.name,
                 style = MaterialTheme.typography.caption,

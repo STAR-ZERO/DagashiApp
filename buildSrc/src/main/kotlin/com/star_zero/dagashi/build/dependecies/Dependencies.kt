@@ -8,6 +8,7 @@ object Dependencies {
     const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
     const val COROUTINE_CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
 
+    // Compose
     const val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.COMPOSE}"
     const val COMPOSE_MATERIAL = "androidx.compose.material:material:${Versions.COMPOSE}"
     const val COMPOSE_UI_TOOLING = "androidx.ui:ui-tooling:${Versions.COMPOSE}"

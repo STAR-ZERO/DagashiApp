@@ -30,7 +30,7 @@ fun formatLinkedText(text: String, linkColor: Color): AnnotatedString {
             append(annotatedString)
 
             addStringAnnotation(
-                scope = "",
+                tag = "",
                 start = token.range.first,
                 end = token.range.last,
                 annotation = token.value

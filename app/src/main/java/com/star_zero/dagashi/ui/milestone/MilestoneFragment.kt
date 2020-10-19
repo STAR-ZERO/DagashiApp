@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.Card
-import androidx.compose.material.EmphasisAmbient
+import androidx.compose.material.AmbientEmphasisLevels
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideEmphasis
@@ -26,6 +26,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedTask
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.launchInComposition
@@ -107,7 +108,7 @@ private fun AppBar() {
 
 @Composable
 private fun MilestoneContent(viewModel: MilestoneViewModel) {
-    launchInComposition {
+    LaunchedTask {
         viewModel.getMilestones()
     }
 
@@ -162,14 +163,14 @@ private fun MilestoneCard(milestone: Milestone) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            ProvideEmphasis(emphasis = EmphasisAmbient.current.high) {
+            ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.high) {
                 Text(
                     text = milestone.title,
                     style = MaterialTheme.typography.subtitle1,
                 )
             }
             Spacer(modifier = Modifier.preferredHeight(8.dp))
-            ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
+            ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
                 Text(
                     text = milestone.description,
                     style = MaterialTheme.typography.caption,
