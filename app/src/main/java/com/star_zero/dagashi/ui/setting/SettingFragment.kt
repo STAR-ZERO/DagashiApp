@@ -9,6 +9,7 @@ import androidx.compose.foundation.Icon
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -132,11 +134,12 @@ private fun OpenLinkSetting(isOpenLinkInApp: Boolean, updateOpenLinkInApp: (Bool
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Text(
-            text = stringResource(id = R.string.setting_open_link),
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.weight(1f)
-        )
+        Box(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(id = R.string.setting_open_link),
+                style = MaterialTheme.typography.subtitle1,
+            )
+        }
 
         Spacer(modifier = Modifier.preferredWidth(8.dp))
 
