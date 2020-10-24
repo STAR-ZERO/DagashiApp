@@ -8,29 +8,14 @@ import android.widget.FrameLayout
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
-import androidx.compose.material.Card
-import androidx.compose.material.AmbientEmphasisLevels
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProvideEmphasis
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedTask
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.Recomposer
-import androidx.compose.runtime.launchInComposition
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.stringResource
@@ -44,8 +29,7 @@ import com.star_zero.dagashi.core.data.model.Milestone
 import com.star_zero.dagashi.ui.ambients.NavHandlerAmbient
 import com.star_zero.dagashi.ui.ambients.NavigationHandler
 import com.star_zero.dagashi.ui.components.ErrorRetry
-import com.star_zero.dagashi.ui.components.SwipeToRefreshIndicator
-import com.star_zero.dagashi.ui.components.SwipeToRefreshLayout
+import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -74,7 +58,7 @@ class MilestoneFragment : Fragment() {
                         Surface(color = MaterialTheme.colors.background) {
                             Scaffold(
                                 topBar = {
-                                    AppBar()
+                                    AppBar(viewModel = viewModel)
                                 }
                             ) {
                                 MilestoneContent(
@@ -90,8 +74,10 @@ class MilestoneFragment : Fragment() {
 }
 
 @Composable
-private fun AppBar() {
+private fun AppBar(viewModel: MilestoneViewModel) {
+    val coroutineScope = rememberCoroutineScope()
     val navHandler = NavHandlerAmbient.current
+
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.milestone_title))
@@ -101,6 +87,14 @@ private fun AppBar() {
                 navHandler.navigate(R.id.action_milestone_to_setting)
             }) {
                 Icon(Icons.Filled.Settings)
+            }
+
+            IconButton(onClick = {
+                coroutineScope.launch {
+                    viewModel.refresh()
+                }
+            }) {
+                Icon(Icons.Filled.Refresh)
             }
         }
     )
@@ -114,6 +108,7 @@ private fun MilestoneContent(viewModel: MilestoneViewModel) {
 
     val coroutineScope = rememberCoroutineScope()
 
+    @Suppress("CascadeIf")
     if (viewModel.hasError) {
         ErrorRetry(
             onRetry = {
@@ -122,20 +117,18 @@ private fun MilestoneContent(viewModel: MilestoneViewModel) {
                 }
             }
         )
-    } else {
-        SwipeToRefreshLayout(
-            refreshingState = viewModel.loading,
-            onRefresh = {
-                coroutineScope.launch {
-                    viewModel.refresh()
-                }
-            },
-            refreshIndicator = {
-                SwipeToRefreshIndicator()
-            }
+    } else if (viewModel.loading) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
         ) {
-            MilestoneList(viewModel.milestones)
+            LoadingProgress(
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
+    } else {
+        MilestoneList(viewModel.milestones)
     }
 }
 

@@ -11,17 +11,7 @@ import androidx.compose.foundation.ClickableText
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayout
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
-import androidx.compose.foundation.layout.preferredSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -34,13 +24,13 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedTask
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.launchInComposition
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticAmbientOf
@@ -64,10 +54,7 @@ import com.star_zero.dagashi.core.data.model.Label
 import com.star_zero.dagashi.core.data.model.Milestone
 import com.star_zero.dagashi.ui.ambients.NavHandlerAmbient
 import com.star_zero.dagashi.ui.ambients.NavigationHandler
-import com.star_zero.dagashi.ui.components.ErrorRetry
-import com.star_zero.dagashi.ui.components.SwipeToRefreshIndicator
-import com.star_zero.dagashi.ui.components.SwipeToRefreshLayout
-import com.star_zero.dagashi.ui.components.formatLinkedText
+import com.star_zero.dagashi.ui.components.*
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -112,7 +99,10 @@ class IssueFragment : Fragment() {
                         Surface(color = MaterialTheme.colors.background) {
                             Scaffold(
                                 topBar = {
-                                    AppBar(title = milestone.title)
+                                    AppBar(
+                                        viewModel = viewModel,
+                                        milestone = milestone,
+                                    )
                                 }
                             ) {
                                 IssueContent(viewModel, milestone)
@@ -131,17 +121,28 @@ class IssueFragment : Fragment() {
 }
 
 @Composable
-private fun AppBar(title: String) {
+private fun AppBar(viewModel: IssueViewModel, milestone: Milestone) {
+    val coroutineScope = rememberCoroutineScope()
     val navHandler = NavHandlerAmbient.current
+
     TopAppBar(
         title = {
-            Text(text = title)
+            Text(text = milestone.title)
         },
         navigationIcon = {
             IconButton(onClick = {
                 navHandler.popBackStack()
             }) {
                 Icon(Icons.Filled.ArrowBack)
+            }
+        },
+        actions = {
+            IconButton(onClick = {
+                coroutineScope.launch {
+                    viewModel.refresh(milestone)
+                }
+            }) {
+                Icon(Icons.Filled.Refresh)
             }
         }
     )
@@ -157,6 +158,7 @@ private fun IssueContent(viewModel: IssueViewModel, milestone: Milestone) {
 
     val coroutineScope = rememberCoroutineScope()
 
+    @Suppress("CascadeIf")
     if (viewModel.hasError) {
         ErrorRetry(
             onRetry = {
@@ -165,20 +167,18 @@ private fun IssueContent(viewModel: IssueViewModel, milestone: Milestone) {
                 }
             }
         )
-    } else {
-        SwipeToRefreshLayout(
-            refreshingState = viewModel.loading,
-            onRefresh = {
-                coroutineScope.launch {
-                    viewModel.refresh(milestone)
-                }
-            },
-            refreshIndicator = {
-                SwipeToRefreshIndicator()
-            }
+    } else if (viewModel.loading) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
         ) {
-            IssueList(viewModel.issues, isOpenLinkInApp)
+            LoadingProgress(
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
+    } else {
+        IssueList(viewModel.issues, isOpenLinkInApp)
     }
 }
 
