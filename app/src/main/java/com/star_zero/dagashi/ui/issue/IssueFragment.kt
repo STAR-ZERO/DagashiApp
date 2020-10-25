@@ -47,10 +47,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.ui.tooling.preview.Preview
 import coil.transform.CircleCropTransformation
 import com.star_zero.dagashi.R
-import com.star_zero.dagashi.core.data.model.Author
-import com.star_zero.dagashi.core.data.model.Comment
-import com.star_zero.dagashi.core.data.model.Issue
-import com.star_zero.dagashi.core.data.model.Label
+import com.star_zero.dagashi.shared.model.Author
+import com.star_zero.dagashi.shared.model.Comment
+import com.star_zero.dagashi.shared.model.Issue
+import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.ui.ambients.NavHandlerAmbient
 import com.star_zero.dagashi.ui.ambients.NavigationHandler

@@ -1,4 +1,4 @@
-package com.star_zero.dagashi.core.data.model
+package com.star_zero.dagashi.shared.model
 
 data class Label(
     val name: String,

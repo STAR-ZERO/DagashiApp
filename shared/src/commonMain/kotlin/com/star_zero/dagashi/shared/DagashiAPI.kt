@@ -2,7 +2,7 @@ package com.star_zero.dagashi.shared
 
 import com.star_zero.dagashi.shared.entity.IssueRootEntity
 import com.star_zero.dagashi.shared.entity.MilestoneRootEntity
-import com.star_zero.dagashi.shared.model.Milestone
+import com.star_zero.dagashi.shared.model.*
 import io.ktor.client.*
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.*
@@ -19,10 +19,6 @@ class DagashiAPI {
         }
     }
 
-    suspend fun milestone(): MilestoneRootEntity = withContext(DispatchersIO) {
-        client.get("$ENDPOINT/api/index.json")
-    }
-
     @Throws(Exception::class)
     suspend fun milestones(): List<Milestone> = withContext(DispatchersIO) {
         val milestoneRoot = client.get<MilestoneRootEntity>("$ENDPOINT/api/index.json")
@@ -36,8 +32,33 @@ class DagashiAPI {
         }
     }
 
-    suspend fun issue(path: String): IssueRootEntity = withContext(DispatchersIO) {
-        client.get("$ENDPOINT/api/issue/$path.json")
+    @Throws(Exception::class)
+    suspend fun issues(path: String): List<Issue> = withContext(DispatchersIO) {
+        val issueRoot = client.get<IssueRootEntity>("$ENDPOINT/api/issue/$path.json")
+        issueRoot.issues.nodes.map { issueNode ->
+            Issue(
+                issueNode.url,
+                issueNode.title,
+                issueNode.body,
+                issueNode.labels.nodes.map { labelNode ->
+                    Label(
+                        labelNode.name,
+                        // Append alpha and convert hex string into long
+                        "FF${labelNode.color}".toLong(radix = 16)
+                    )
+                },
+                issueNode.comments.nodes.map { commentNode ->
+                    Comment(
+                        commentNode.body,
+                        Author(
+                            commentNode.author.login,
+                            commentNode.author.url,
+                            commentNode.author.avatarUrl
+                        )
+                    )
+                }
+            )
+        }
     }
 
     companion object {

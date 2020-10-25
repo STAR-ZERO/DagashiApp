@@ -5,16 +5,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import com.star_zero.dagashi.core.data.model.Issue
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
 import com.star_zero.dagashi.core.data.repository.SettingRepository
+import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Milestone
 import kotlinx.coroutines.flow.map
 
 class IssueViewModel @ViewModelInject constructor(
     private val dagashiDataRepository: DagashiRepository,
     private val settingRepository: SettingRepository
-): ViewModel() {
+) : ViewModel() {
 
     val isOpenLinkInApp = settingRepository.settingsFlow.map { it.openLinkInApp }
 
@@ -24,7 +24,7 @@ class IssueViewModel @ViewModelInject constructor(
     var loading: Boolean by mutableStateOf(false)
         private set
 
-    var hasError  by mutableStateOf(false)
+    var hasError by mutableStateOf(false)
         private set
 
     suspend fun getIssues(milestone: Milestone) {
