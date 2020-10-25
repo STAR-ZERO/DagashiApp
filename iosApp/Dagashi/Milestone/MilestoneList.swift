@@ -9,7 +9,7 @@ import SwiftUI
 import shared
 
 struct MilestoneList: View {
-    @ObservedObject private var viewModel: ViewModel = ViewModel()
+    @ObservedObject var viewModel: ViewModel = ViewModel()
 
     var body: some View {
         NavigationView {
@@ -25,7 +25,9 @@ struct MilestoneList: View {
             ActivityIndicator()
         case .result(let milestones):
             List(milestones) { milestone in
-                MilestoneRow(milestone: milestone)
+                NavigationLink(destination: IssueList(milestone: milestone)) {
+                    MilestoneRow(milestone: milestone)
+                }
             }
         case .error:
             Text("Error")
