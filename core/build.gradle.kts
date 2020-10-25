@@ -1,8 +1,5 @@
-import com.google.protobuf.gradle.builtins
-import com.google.protobuf.gradle.generateProtoTasks
-import com.google.protobuf.gradle.id
-import com.google.protobuf.gradle.protobuf
-import com.google.protobuf.gradle.protoc
+
+import com.google.protobuf.gradle.*
 
 plugins {
     id("com.android.library")
@@ -16,7 +13,7 @@ plugins {
 apply<DagashiPlugin>()
 
 dependencies {
-    implementation(project(":shared"))
+    api(project(":shared"))
 
     api(Deps.KOTLIN_STDLIB)
 

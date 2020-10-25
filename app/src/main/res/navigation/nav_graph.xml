@@ -23,7 +23,7 @@
         android:name="com.star_zero.dagashi.ui.issue.IssueFragment">
         <argument
             android:name="milestone"
-            app:argType="com.star_zero.dagashi.core.data.model.Milestone" />
+            app:argType="com.star_zero.dagashi.shared.model.Milestone" />
     </fragment>
     <fragment
         android:id="@+id/setting"

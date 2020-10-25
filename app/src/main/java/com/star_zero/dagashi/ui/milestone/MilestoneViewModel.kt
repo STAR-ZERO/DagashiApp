@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import com.star_zero.dagashi.core.data.model.Milestone
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
+import com.star_zero.dagashi.shared.model.Milestone
 
 class MilestoneViewModel @ViewModelInject constructor(
     private val dagashiRepository: DagashiRepository

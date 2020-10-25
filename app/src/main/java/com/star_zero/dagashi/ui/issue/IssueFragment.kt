@@ -51,7 +51,7 @@ import com.star_zero.dagashi.core.data.model.Author
 import com.star_zero.dagashi.core.data.model.Comment
 import com.star_zero.dagashi.core.data.model.Issue
 import com.star_zero.dagashi.core.data.model.Label
-import com.star_zero.dagashi.core.data.model.Milestone
+import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.ui.ambients.NavHandlerAmbient
 import com.star_zero.dagashi.ui.ambients.NavigationHandler
 import com.star_zero.dagashi.ui.components.*

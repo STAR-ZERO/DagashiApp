@@ -1,7 +1,7 @@
 package com.star_zero.dagashi.core.data.repository
 
 import com.star_zero.dagashi.core.data.model.Issue
-import com.star_zero.dagashi.core.data.model.Milestone
+import com.star_zero.dagashi.shared.model.Milestone
 
 interface DagashiRepository {
     suspend fun milestones(): List<Milestone>

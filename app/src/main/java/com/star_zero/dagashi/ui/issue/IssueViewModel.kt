@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.star_zero.dagashi.core.data.model.Issue
-import com.star_zero.dagashi.core.data.model.Milestone
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
 import com.star_zero.dagashi.core.data.repository.SettingRepository
+import com.star_zero.dagashi.shared.model.Milestone
 import kotlinx.coroutines.flow.map
 
 class IssueViewModel @ViewModelInject constructor(
