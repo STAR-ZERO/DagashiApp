@@ -15,6 +15,11 @@ struct MilestoneList: View {
         NavigationView {
             content
                 .navigationBarTitle("Android Dagashi")
+                .navigationBarItems(trailing:Button(action: {
+                    self.viewModel.loadMilestones()
+                }) {
+                    Image(systemName: "arrow.clockwise")
+                })
         }
     }
 

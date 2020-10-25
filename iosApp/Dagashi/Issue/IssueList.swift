@@ -19,7 +19,12 @@ struct IssueList: View {
 
     var body: some View {
         content
-            .navigationBarTitle(Text(milestone.title))
+            .navigationBarTitle(milestone.title)
+            .navigationBarItems(trailing:Button(action: {
+                self.viewModel.loadIssues()
+            }) {
+                Image(systemName: "arrow.clockwise")
+            })
     }
     
     @ViewBuilder
@@ -51,10 +56,10 @@ extension IssueList {
 
         init(milestone: Milestone) {
             self.milestone = milestone
-            self.loadIssue()
+            self.loadIssues()
         }
 
-        func loadIssue() {
+        func loadIssues() {
             self.state = .loading
             api.issues(path: milestone.path, completionHandler: { issues, error in
                 if let issues = issues {
