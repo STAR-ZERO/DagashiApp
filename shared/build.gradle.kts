@@ -29,7 +29,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Deps.COROUTINE_CORE)
+                implementation(Deps.COROUTINE_NATIVE)
                 implementation(Deps.KTOR_CORE)
                 implementation(Deps.KTOR_SERIALIZATION)
                 implementation(Deps.SERIALIZATION_JSON)

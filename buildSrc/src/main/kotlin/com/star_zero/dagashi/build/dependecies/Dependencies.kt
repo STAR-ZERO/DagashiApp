@@ -6,7 +6,7 @@ object Dependencies {
 
     val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN}"
     const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
-    const val COROUTINE_CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
+    const val COROUTINE_NATIVE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9-native-mt"
 
     // Compose
     const val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.COMPOSE}"
