@@ -1,19 +1,22 @@
 DagashiApp
 ===
 
-Unofficial [Android Dagashi](https://androiddagashi.github.io/) Android app.
+Unofficial [Android Dagashi](https://androiddagashi.github.io/) Android / iOS app.
 
 ## Screenshots
 
-<img src="screenshots/demo.gif" alt="Demo" width="320" />
+### Android
 
-## Features
+<img src="screenshots/Android.gif" alt="Android" width="320" />
 
-WIP
+### iOS (WIP)
+
+<img src="screenshots/iOS.gif" alt="iOS" width="320" />
 
 ## Libraries
 
 - Jetpack Compose
+- Kotlin Multiplatform Mobile
 - Navigation Component
 - Dagger Hilt
 - Coroutines
