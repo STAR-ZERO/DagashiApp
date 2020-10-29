@@ -59,7 +59,7 @@ object Dependencies {
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-javalite:3.10.0"
     const val PROTOC = "com.google.protobuf:protoc:3.10.0"
 
-    const val ACCOMPANIST_COIL = "dev.chrisbanes.accompanist:accompanist-coil:0.3.0"
+    const val ACCOMPANIST_COIL = "dev.chrisbanes.accompanist:accompanist-coil:0.3.2"
 
     // Test
     const val JUNIT = "junit:junit:4.13"
