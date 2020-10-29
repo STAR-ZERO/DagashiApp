@@ -11,5 +11,6 @@ class DagashiRootPlugin : Plugin<Project> {
         val ext = project.property("ext") as ExtraPropertiesExtension
         Versions.androidGradlePlugin = ext["android_gradle_plugin_version"] as String
         Versions.kotlin = ext["kotlin_version"] as String
+        Versions.compose= ext["compose_version"] as String
     }
 }
