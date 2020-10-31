@@ -1,102 +1,55 @@
 package com.star_zero.dagashi.ui.setting
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.compose.foundation.Icon
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredWidth
-import androidx.compose.material.Checkbox
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.ui.tooling.preview.Preview
 import com.star_zero.dagashi.R
-import com.star_zero.dagashi.ui.ambients.NavHandlerAmbient
-import com.star_zero.dagashi.ui.ambients.NavigationHandler
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class SettingFragment : Fragment() {
-
-    private val viewModel: SettingViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return FrameLayout(requireContext()).apply {
-            id = R.id.setting_fragment
-
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            setContent(Recomposer.current()) {
-                Providers(NavHandlerAmbient provides NavigationHandler(findNavController())) {
-                    DagashiAppTheme {
-                        Surface(color = MaterialTheme.colors.background) {
-                            Scaffold(
-                                topBar = {
-                                    AppBar()
-                                }
-                            ) {
-                                SettingContent(viewModel)
-                            }
-                        }
+@Composable
+fun SettingScreen(navController: NavController, viewModelFactory: ViewModelProvider.Factory) {
+    val viewModel: SettingViewModel = viewModel(factory = viewModelFactory)
+    Surface(color = MaterialTheme.colors.background) {
+        Scaffold(
+            topBar = {
+                AppBar(
+                    navigateBack = {
+                        navController.popBackStack()
                     }
-                }
+                )
             }
+        ) {
+            SettingContent(viewModel)
         }
-    }
-
-    private fun onBack() {
-        findNavController().popBackStack()
     }
 }
 
 @Composable
-private fun AppBar() {
-    val navHandler = NavHandlerAmbient.current
+private fun AppBar(navigateBack: () -> Unit) {
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.setting_title))
         },
         navigationIcon = {
             IconButton(onClick = {
-                navHandler.popBackStack()
+                navigateBack()
             }) {
                 Icon(Icons.Filled.ArrowBack)
             }

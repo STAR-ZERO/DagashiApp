@@ -1,137 +1,82 @@
 package com.star_zero.dagashi.ui.issue
 
 import android.net.Uri
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.ClickableText
-import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.TextButton
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedTask
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.Recomposer
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.staticAmbientOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.UriHandlerAmbient
-import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.ui.tooling.preview.Preview
 import coil.transform.CircleCropTransformation
-import com.star_zero.dagashi.R
 import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
-import com.star_zero.dagashi.shared.model.Milestone
-import com.star_zero.dagashi.ui.ambients.NavHandlerAmbient
-import com.star_zero.dagashi.ui.ambients.NavigationHandler
-import com.star_zero.dagashi.ui.components.*
+import com.star_zero.dagashi.ui.components.ErrorRetry
+import com.star_zero.dagashi.ui.components.LoadingProgress
+import com.star_zero.dagashi.ui.components.formatLinkedText
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
-import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
 
-fun interface CustomTabHandler {
-    fun open(url: String)
-}
-
-val CustomTabHandlerAmbient = staticAmbientOf<CustomTabHandler>()
-
-@AndroidEntryPoint
-class IssueFragment : Fragment() {
-
-    private val args: IssueFragmentArgs by navArgs()
-
-    private val viewModel: IssueViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return FrameLayout(requireContext()).apply {
-            id = R.id.issue_fragment
-
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            val milestone = args.milestone
-
-            setContent(Recomposer.current()) {
-                Providers(
-                    NavHandlerAmbient provides NavigationHandler(findNavController()),
-                    CustomTabHandlerAmbient provides CustomTabHandler {
-                        openBrowser(it)
+@Composable
+fun IssueScreen(
+    navController: NavController,
+    viewModelFactory: ViewModelProvider.Factory,
+    path: String,
+    title: String,
+) {
+    val viewModel: IssueViewModel = viewModel(factory = viewModelFactory)
+    Surface(color = MaterialTheme.colors.background) {
+        Scaffold(
+            topBar = {
+                AppBar(
+                    viewModel = viewModel,
+                    path = path,
+                    title = title,
+                    navigateBack = {
+                        navController.popBackStack()
                     }
-                ) {
-                    DagashiAppTheme {
-                        Surface(color = MaterialTheme.colors.background) {
-                            Scaffold(
-                                topBar = {
-                                    AppBar(
-                                        viewModel = viewModel,
-                                        milestone = milestone,
-                                    )
-                                }
-                            ) {
-                                IssueContent(viewModel, milestone)
-                            }
-                        }
-                    }
-                }
+                )
             }
+        ) {
+            IssueContent(viewModel, path)
         }
-    }
-
-    private fun openBrowser(url: String) {
-        val customTabsIntent = CustomTabsIntent.Builder().build()
-        customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
     }
 }
 
 @Composable
-private fun AppBar(viewModel: IssueViewModel, milestone: Milestone) {
+private fun AppBar(
+    viewModel: IssueViewModel,
+    path: String,
+    title: String,
+    navigateBack: () -> Unit
+) {
     val coroutineScope = rememberCoroutineScope()
-    val navHandler = NavHandlerAmbient.current
-
     TopAppBar(
         title = {
-            Text(text = milestone.title)
+            Text(text = title)
         },
         navigationIcon = {
             IconButton(onClick = {
-                navHandler.popBackStack()
+                navigateBack()
             }) {
                 Icon(Icons.Filled.ArrowBack)
             }
@@ -139,7 +84,7 @@ private fun AppBar(viewModel: IssueViewModel, milestone: Milestone) {
         actions = {
             IconButton(onClick = {
                 coroutineScope.launch {
-                    viewModel.refresh(milestone)
+                    viewModel.refresh(path)
                 }
             }) {
                 Icon(Icons.Filled.Refresh)
@@ -149,9 +94,9 @@ private fun AppBar(viewModel: IssueViewModel, milestone: Milestone) {
 }
 
 @Composable
-private fun IssueContent(viewModel: IssueViewModel, milestone: Milestone) {
+private fun IssueContent(viewModel: IssueViewModel, path: String) {
     LaunchedTask {
-        viewModel.getIssues(milestone)
+        viewModel.getIssues(path)
     }
 
     val isOpenLinkInApp by viewModel.isOpenLinkInApp.collectAsState(initial = false)
@@ -163,7 +108,7 @@ private fun IssueContent(viewModel: IssueViewModel, milestone: Milestone) {
         ErrorRetry(
             onRetry = {
                 coroutineScope.launch {
-                    viewModel.refresh(milestone)
+                    viewModel.refresh(path)
                 }
             }
         )
@@ -196,11 +141,12 @@ private fun IssueList(issues: List<Issue>, isOpenLinkInApp: Boolean) {
 private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
 
     val uriHandler = UriHandlerAmbient.current
-    val customTabHandler = CustomTabHandlerAmbient.current
+    val context = ContextAmbient.current
 
     val openLink: (String) -> Unit = {
         if (isOpenLinkInApp) {
-            customTabHandler.open(it)
+            val customTabsIntent = CustomTabsIntent.Builder().build()
+            customTabsIntent.launchUrl(context, Uri.parse(it))
         } else {
             uriHandler.openUri(it)
         }

@@ -4,11 +4,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.savedstate.SavedStateRegistryOwner
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
 import com.star_zero.dagashi.core.data.repository.SettingRepository
 import com.star_zero.dagashi.shared.model.Issue
-import com.star_zero.dagashi.shared.model.Milestone
 import kotlinx.coroutines.flow.map
 
 class IssueViewModel @ViewModelInject constructor(
@@ -27,7 +29,7 @@ class IssueViewModel @ViewModelInject constructor(
     var hasError by mutableStateOf(false)
         private set
 
-    suspend fun getIssues(milestone: Milestone) {
+    suspend fun getIssues(path: String) {
         if (issues.isNotEmpty() || loading) {
             return
         }
@@ -35,7 +37,7 @@ class IssueViewModel @ViewModelInject constructor(
         try {
             hasError = false
             loading = true
-            issues = dagashiDataRepository.issues(milestone.path)
+            issues = dagashiDataRepository.issues(path)
         } catch (e: Exception) {
             e.printStackTrace()
             hasError = true
@@ -44,8 +46,28 @@ class IssueViewModel @ViewModelInject constructor(
         loading = false
     }
 
-    suspend fun refresh(milestone: Milestone) {
+    suspend fun refresh(path: String) {
         issues = listOf()
-        getIssues(milestone)
+        getIssues(path)
+    }
+
+    class Factory(
+        owner: SavedStateRegistryOwner,
+        private val dagashiRepository: DagashiRepository,
+        private val settingRepository: SettingRepository
+    ) : AbstractSavedStateViewModelFactory(owner, null) {
+
+        override fun <T : ViewModel?> create(
+            key: String,
+            modelClass: Class<T>,
+            handle: SavedStateHandle
+        ): T {
+            @Suppress("UNCHECKED_CAST")
+            return IssueViewModel(
+                dagashiRepository,
+                settingRepository
+            ) as T
+        }
+
     }
 }

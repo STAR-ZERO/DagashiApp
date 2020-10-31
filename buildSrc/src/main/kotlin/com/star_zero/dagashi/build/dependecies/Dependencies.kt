@@ -32,15 +32,12 @@ object Dependencies {
     const val ANDROIDX_HILT_VIEWMODEL = "androidx.hilt:hilt-lifecycle-viewmodel:$ANDROIDX_HILT_VERSION"
     const val ANDROIDX_HILT_COMPILER = "androidx.hilt:hilt-compiler:$ANDROIDX_HILT_VERSION"
 
-    private const val NAVIGATION_VERSION = "2.3.0"
-    const val NAVIGATION_FRAGMENT = "androidx.navigation:navigation-fragment-ktx:$NAVIGATION_VERSION"
-    const val NAVIGATION_UI = "androidx.navigation:navigation-ui-ktx:$NAVIGATION_VERSION"
-    const val NAVIGATION_SAFE_ARGS_PLUGIN = "androidx.navigation:navigation-safe-args-gradle-plugin:$NAVIGATION_VERSION"
+    const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:1.0.0-alpha01"
 
     const val BROWSER = "androidx.browser:browser:1.2.0"
 
     // Dagger
-    private const val DAGGER_HILT_VERSION = "2.28.3-alpha"
+    private const val DAGGER_HILT_VERSION = "2.29.1-alpha"
     const val DAGGER_HILT_PLUGIN = "com.google.dagger:hilt-android-gradle-plugin:$DAGGER_HILT_VERSION"
     const val DAGGER_HILT_ANDROID = "com.google.dagger:hilt-android:$DAGGER_HILT_VERSION"
     const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-android-compiler:$DAGGER_HILT_VERSION"

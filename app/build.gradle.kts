@@ -3,7 +3,6 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    id("androidx.navigation.safeargs.kotlin")
 }
 
 apply<DagashiPlugin>()
@@ -45,8 +44,7 @@ dependencies {
     implementation(Deps.VIEWMODEL)
     implementation(Deps.LIVEDATA)
 
-    implementation(Deps.NAVIGATION_FRAGMENT)
-    implementation(Deps.NAVIGATION_UI)
+    implementation(Deps.NAVIGATION_COMPOSE)
 
     implementation(Deps.DAGGER_HILT_ANDROID)
     kapt(Deps.DAGGER_HILT_COMPILER)

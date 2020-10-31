@@ -1,11 +1,5 @@
 package com.star_zero.dagashi.ui.milestone
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,69 +8,52 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedTask
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
 import androidx.ui.tooling.preview.Preview
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.shared.model.Milestone
-import com.star_zero.dagashi.ui.ambients.NavHandlerAmbient
-import com.star_zero.dagashi.ui.ambients.NavigationHandler
 import com.star_zero.dagashi.ui.components.ErrorRetry
 import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class MilestoneFragment : Fragment() {
-
-    private val viewModel: MilestoneViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return FrameLayout(requireContext()).apply {
-            id = R.id.milestone_fragment
-
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            setContent(Recomposer.current()) {
-                Providers(NavHandlerAmbient provides NavigationHandler(findNavController())) {
-                    DagashiAppTheme {
-                        Surface(color = MaterialTheme.colors.background) {
-                            Scaffold(
-                                topBar = {
-                                    AppBar(viewModel = viewModel)
-                                }
-                            ) {
-                                MilestoneContent(
-                                    viewModel = viewModel
-                                )
-                            }
-                        }
+@Composable
+fun MilestoneScreen(navController: NavController, viewModelFactory: ViewModelProvider.Factory) {
+    val viewModel: MilestoneViewModel = viewModel(factory = viewModelFactory)
+    Surface(color = MaterialTheme.colors.background) {
+        Scaffold(
+            topBar = {
+                AppBar(
+                    viewModel = viewModel,
+                    navigateToSetting = {
+                        navController.navigate("setting")
                     }
-                }
+                )
             }
+        ) {
+            MilestoneContent(
+                viewModel = viewModel,
+                navigateToIssue = { milestone ->
+                    navController.navigate("issue/${milestone.path}/${milestone.title}")
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun AppBar(viewModel: MilestoneViewModel) {
+private fun AppBar(viewModel: MilestoneViewModel, navigateToSetting: () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
-    val navHandler = NavHandlerAmbient.current
 
     TopAppBar(
         title = {
@@ -84,7 +61,7 @@ private fun AppBar(viewModel: MilestoneViewModel) {
         },
         actions = {
             IconButton(onClick = {
-                navHandler.navigate(R.id.action_milestone_to_setting)
+                navigateToSetting()
             }) {
                 Icon(Icons.Filled.Settings)
             }
@@ -101,7 +78,7 @@ private fun AppBar(viewModel: MilestoneViewModel) {
 }
 
 @Composable
-private fun MilestoneContent(viewModel: MilestoneViewModel) {
+private fun MilestoneContent(viewModel: MilestoneViewModel, navigateToIssue: (Milestone) -> Unit) {
     LaunchedTask {
         viewModel.getMilestones()
     }
@@ -128,29 +105,27 @@ private fun MilestoneContent(viewModel: MilestoneViewModel) {
             )
         }
     } else {
-        MilestoneList(viewModel.milestones)
+        MilestoneList(viewModel.milestones, navigateToIssue)
     }
 }
 
 @Composable
-private fun MilestoneList(milestones: List<Milestone>) {
+private fun MilestoneList(milestones: List<Milestone>, navigateToIssue: (Milestone) -> Unit) {
     LazyColumnFor(
         items = milestones,
         contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)
     ) { milestone ->
-        MilestoneCard(milestone)
+        MilestoneCard(milestone, navigateToIssue)
     }
 }
 
 @Composable
-private fun MilestoneCard(milestone: Milestone) {
-    val navHandler = NavHandlerAmbient.current
+private fun MilestoneCard(milestone: Milestone, navigateToIssue: (Milestone) -> Unit) {
     Card(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickable(onClick = {
-                val action = MilestoneFragmentDirections.actionMilestoneToIssue(milestone)
-                navHandler.navigate(action)
+                navigateToIssue(milestone)
             })
     ) {
         Column(
@@ -184,7 +159,7 @@ private fun PreviewMilestone() {
         ""
     )
     DagashiAppTheme {
-        MilestoneCard(milestone)
+        MilestoneCard(milestone, {})
     }
 }
 
@@ -198,7 +173,7 @@ private fun PreviewMilestoneDark() {
         ""
     )
     DagashiAppTheme(darkTheme = true) {
-        MilestoneCard(milestone)
+        MilestoneCard(milestone, {})
     }
 }
 // endregion
