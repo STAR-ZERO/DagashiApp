@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="11">
+      <module name="DagashiApp.desktop.commonMain" target="1.8" />
+      <module name="DagashiApp.desktop.commonTest" target="1.8" />
+      <module name="DagashiApp.desktop.jvmMain" target="1.8" />
+      <module name="DagashiApp.desktop.jvmTest" target="1.8" />
+      <module name="DagashiApp.shared.commonMain" target="1.8" />
+      <module name="DagashiApp.shared.commonTest" target="1.8" />
+      <module name="DagashiApp.shared.desktopMain" target="1.8" />
+      <module name="DagashiApp.shared.desktopTest" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

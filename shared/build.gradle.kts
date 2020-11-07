@@ -19,6 +19,7 @@ repositories {
 
 kotlin {
     android()
+    jvm("desktop")
     ios {
         binaries {
             framework {
@@ -50,6 +51,11 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13")
+            }
+        }
+        val desktopMain by getting {
+            dependencies {
+                implementation(Deps.KTOR_DESKTOP)
             }
         }
         val iosMain by getting {

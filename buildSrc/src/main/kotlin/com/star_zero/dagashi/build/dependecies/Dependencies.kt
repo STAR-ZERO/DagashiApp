@@ -46,6 +46,7 @@ object Dependencies {
     private const val KTOR_VERSION = "1.4.1"
     const val KTOR_CORE = "io.ktor:ktor-client-core:$KTOR_VERSION"
     const val KTOR_ANDROID = "io.ktor:ktor-client-android:$KTOR_VERSION"
+    const val KTOR_DESKTOP = "io.ktor:ktor-client-cio:$KTOR_VERSION"
     const val KTOR_IOS = "io.ktor:ktor-client-ios:$KTOR_VERSION"
     const val KTOR_SERIALIZATION = "io.ktor:ktor-client-serialization:$KTOR_VERSION"
 
