@@ -1,6 +1,5 @@
 package com.star_zero.dagashi.ui.milestone
 
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
@@ -9,7 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedTask
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,7 +78,7 @@ private fun AppBar(viewModel: MilestoneViewModel, navigateToSetting: () -> Unit)
 
 @Composable
 private fun MilestoneContent(viewModel: MilestoneViewModel, navigateToIssue: (Milestone) -> Unit) {
-    LaunchedTask {
+    LaunchedEffect(Unit) {
         viewModel.getMilestones()
     }
 

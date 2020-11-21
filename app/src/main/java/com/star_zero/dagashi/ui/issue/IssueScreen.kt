@@ -1,10 +1,8 @@
 package com.star_zero.dagashi.ui.issue
 
 import android.net.Uri
-import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.ClickableText
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
@@ -95,7 +93,7 @@ private fun AppBar(
 
 @Composable
 private fun IssueContent(viewModel: IssueViewModel, path: String) {
-    LaunchedTask {
+    LaunchedEffect(Unit) {
         viewModel.getIssues(path)
     }
 
@@ -177,7 +175,7 @@ private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
 
             ClickableText(
                 text = linkedText,
-                style = MaterialTheme.typography.caption,
+                style = MaterialTheme.typography.caption.copy(color = AmbientContentColor.current),
                 onClick = { position ->
                     val annotation = linkedText.getStringAnnotations(
                         start = position,

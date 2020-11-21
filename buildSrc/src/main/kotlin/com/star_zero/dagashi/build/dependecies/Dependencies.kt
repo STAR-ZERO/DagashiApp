@@ -32,7 +32,7 @@ object Dependencies {
     const val ANDROIDX_HILT_VIEWMODEL = "androidx.hilt:hilt-lifecycle-viewmodel:$ANDROIDX_HILT_VERSION"
     const val ANDROIDX_HILT_COMPILER = "androidx.hilt:hilt-compiler:$ANDROIDX_HILT_VERSION"
 
-    const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:1.0.0-alpha01"
+    const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:1.0.0-alpha02"
 
     const val BROWSER = "androidx.browser:browser:1.2.0"
 
@@ -57,7 +57,7 @@ object Dependencies {
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-javalite:3.10.0"
     const val PROTOC = "com.google.protobuf:protoc:3.10.0"
 
-    const val ACCOMPANIST_COIL = "dev.chrisbanes.accompanist:accompanist-coil:0.3.2"
+    const val ACCOMPANIST_COIL = "dev.chrisbanes.accompanist:accompanist-coil:0.3.3.1"
 
     // Test
     const val JUNIT = "junit:junit:4.13"
