@@ -5,7 +5,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.ClickableText
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -15,8 +15,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ContextAmbient
-import androidx.compose.ui.platform.UriHandlerAmbient
+import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.AmbientUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
@@ -127,19 +127,18 @@ private fun IssueContent(viewModel: IssueViewModel, path: String) {
 
 @Composable
 private fun IssueList(issues: List<Issue>, isOpenLinkInApp: Boolean) {
-    LazyColumnFor(
-        items = issues,
-        contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)
-    ) { issue ->
-        IssueCard(issue, isOpenLinkInApp)
+    LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)) {
+        items(issues) { issue ->
+            IssueCard(issue, isOpenLinkInApp)
+        }
     }
 }
 
 @Composable
 private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
 
-    val uriHandler = UriHandlerAmbient.current
-    val context = ContextAmbient.current
+    val uriHandler = AmbientUriHandler.current
+    val context = AmbientContext.current
 
     val openLink: (String) -> Unit = {
         if (isOpenLinkInApp) {

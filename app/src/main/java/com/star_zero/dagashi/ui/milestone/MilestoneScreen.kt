@@ -2,13 +2,14 @@ package com.star_zero.dagashi.ui.milestone
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -110,11 +111,10 @@ private fun MilestoneContent(viewModel: MilestoneViewModel, navigateToIssue: (Mi
 
 @Composable
 private fun MilestoneList(milestones: List<Milestone>, navigateToIssue: (Milestone) -> Unit) {
-    LazyColumnFor(
-        items = milestones,
-        contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)
-    ) { milestone ->
-        MilestoneCard(milestone, navigateToIssue)
+    LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)) {
+        items(milestones) { milestone ->
+            MilestoneCard(milestone, navigateToIssue)
+        }
     }
 }
 
@@ -130,14 +130,16 @@ private fun MilestoneCard(milestone: Milestone, navigateToIssue: (Milestone) -> 
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.high) {
+            Providers(AmbientContentAlpha provides ContentAlpha.high) {
                 Text(
                     text = milestone.title,
                     style = MaterialTheme.typography.subtitle1,
                 )
             }
+
             Spacer(modifier = Modifier.preferredHeight(8.dp))
-            ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+
+            Providers(AmbientContentAlpha provides ContentAlpha.medium) {
                 Text(
                     text = milestone.body,
                     style = MaterialTheme.typography.caption,

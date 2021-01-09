@@ -3,7 +3,7 @@ package com.star_zero.dagashi.ui.components
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.annotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 
 // Ref: https://github.com/android/compose-samples/blob/e5e45ee2adfa9b050309aae1d25aad76b5452aca/Jetchat/app/src/main/java/com/example/compose/jetchat/conversation/MessageFormatter.kt
 val symbolPattern by lazy {
@@ -13,7 +13,7 @@ val symbolPattern by lazy {
 fun formatLinkedText(text: String, linkColor: Color): AnnotatedString {
     val tokens = symbolPattern.findAll(text)
 
-    return annotatedString {
+    return buildAnnotatedString {
 
         var cursorPosition = 0
 
