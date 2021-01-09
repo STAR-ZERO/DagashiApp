@@ -11,7 +11,7 @@ object Dependencies {
     // Compose
     val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.COMPOSE}"
     val COMPOSE_MATERIAL = "androidx.compose.material:material:${Versions.COMPOSE}"
-    val COMPOSE_UI_TOOLING = "androidx.ui:ui-tooling:${Versions.COMPOSE}"
+    val COMPOSE_UI_TOOLING = "androidx.compose.ui:ui-tooling:${Versions.COMPOSE}"
 
     // AndroidX
     const val ANDROIDX_CORE = "androidx.core:core-ktx:1.3.1"
@@ -32,7 +32,7 @@ object Dependencies {
     const val ANDROIDX_HILT_VIEWMODEL = "androidx.hilt:hilt-lifecycle-viewmodel:$ANDROIDX_HILT_VERSION"
     const val ANDROIDX_HILT_COMPILER = "androidx.hilt:hilt-compiler:$ANDROIDX_HILT_VERSION"
 
-    const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:1.0.0-alpha02"
+    const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:1.0.0-alpha04"
 
     const val BROWSER = "androidx.browser:browser:1.2.0"
 

@@ -13,11 +13,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.ui.tooling.preview.Preview
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import kotlinx.coroutines.launch

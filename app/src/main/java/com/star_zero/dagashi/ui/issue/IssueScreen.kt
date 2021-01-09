@@ -17,11 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.UriHandlerAmbient
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.ui.tooling.preview.Preview
 import coil.transform.CircleCropTransformation
 import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
