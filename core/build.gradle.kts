@@ -7,7 +7,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-android-extensions")
     id("dagger.hilt.android.plugin")
-    id("com.google.protobuf") version "0.8.13"
+    id("com.google.protobuf")
 }
 
 apply<DagashiPlugin>()

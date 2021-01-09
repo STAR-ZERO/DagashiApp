@@ -12,6 +12,7 @@ buildscript {
         classpath(Deps.KOTLIN_PLUGIN)
         classpath(Deps.DAGGER_HILT_PLUGIN)
         classpath(Deps.SERIALIZATION_PLUGIN)
+        classpath("com.google.protobuf:protobuf-gradle-plugin:0.8.14")
         classpath("org.jetbrains.compose:compose-gradle-plugin:0.1.0-build113")
     }
 }
