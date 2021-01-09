@@ -5,7 +5,6 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("kotlin-android-extensions")
     id("dagger.hilt.android.plugin")
     id("com.google.protobuf")
 }

@@ -11,8 +11,6 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
-import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsFeature
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class DagashiPlugin : Plugin<Project> {
@@ -61,11 +59,6 @@ class DagashiPlugin : Plugin<Project> {
                 "-Xopt-in=kotlin.RequiresOptIn"
             )
             kotlinOptions.freeCompilerArgs = kotlinOptions.freeCompilerArgs + args
-        }
-
-        // Use only "parcelize" (except "views")
-        project.extensions.findByType(AndroidExtensionsExtension::class.java)?.apply {
-            features = setOf(AndroidExtensionsFeature.PARCELIZE.featureName)
         }
     }
 
