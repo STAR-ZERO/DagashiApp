@@ -7,15 +7,20 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.star_zero.dagashi.shared.DagashiAPI
+import com.star_zero.dagashi.shared.DagashiSDK
+import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
+import com.star_zero.dagashi.shared.network.DagashiAPI
 import com.star_zero.dagashi.shared.model.Milestone
+
+val dagashiSDK = DagashiSDK(DatabaseDriverFactory())
 
 @Composable
 fun MilestoneScreen() {
     var milestones: List<Milestone> by remember { mutableStateOf(listOf()) }
 
     LaunchedTask {
-        milestones = DagashiAPI().milestones()
+        // TODO: Use cache
+        milestones = dagashiSDK.getMilestone(true)
     }
 
     Surface(color = MaterialTheme.colors.background) {

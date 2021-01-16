@@ -16,7 +16,7 @@ struct MilestoneList: View {
             content
                 .navigationBarTitle("Android Dagashi")
                 .navigationBarItems(trailing:Button(action: {
-                    self.viewModel.loadMilestones()
+                    self.viewModel.loadMilestones(forceReload: true)
                 }) {
                     Image(systemName: "arrow.clockwise")
                 })
@@ -49,15 +49,14 @@ extension MilestoneList {
     
     class ViewModel: ObservableObject {
         @Published var state = State.loading
-        private let api = DagashiAPI()
 
         init() {
-            self.loadMilestones()
+            self.loadMilestones(forceReload: false)
         }
 
-        func loadMilestones() {
+        func loadMilestones(forceReload: Bool) {
             self.state = .loading
-            api.milestones(completionHandler: { milestoens, error in
+            dagashiSDK.getMilestone(forceReload: forceReload, completionHandler: { milestoens, error in
                 if let milestoens = milestoens {
                     self.state = .result(milestoens)
                 } else {

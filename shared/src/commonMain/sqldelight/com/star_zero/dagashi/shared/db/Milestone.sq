@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS Milestones (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL,
+    path TEXT NOT NULL,
+    sort INTEGER AS Int NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM Milestones
+ORDER BY sort;
+
+insertMilestone:
+INSERT INTO Milestones (id, title, body, path, sort)
+VALUES (?, ?, ?, ?, ?);
+
+deleteMilestones:
+DELETE FROM Milestones;

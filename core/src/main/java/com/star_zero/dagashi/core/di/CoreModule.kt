@@ -7,7 +7,8 @@ import com.star_zero.dagashi.core.data.repository.DagashiDataRepository
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
 import com.star_zero.dagashi.core.data.repository.SettingDataRepository
 import com.star_zero.dagashi.core.data.repository.SettingRepository
-import com.star_zero.dagashi.shared.DagashiAPI
+import com.star_zero.dagashi.shared.DagashiSDK
+import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,8 +19,10 @@ import dagger.hilt.android.components.ApplicationComponent
 object CoreModule {
 
     @Provides
-    fun provideDagashiRepository(): DagashiRepository {
-        return DagashiDataRepository(DagashiAPI())
+    fun provideDagashiRepository(application: Application): DagashiRepository {
+        val databaseDriverFactory = DatabaseDriverFactory(application)
+        val dagashiSDK = DagashiSDK(databaseDriverFactory)
+        return DagashiDataRepository(dagashiSDK)
     }
 
     @Provides

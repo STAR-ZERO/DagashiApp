@@ -24,7 +24,7 @@ class MilestoneViewModel @ViewModelInject constructor(
     var hasError by mutableStateOf(false)
         private set
 
-    suspend fun getMilestones() {
+    suspend fun getMilestones(forceReload: Boolean) {
         if (milestones.isNotEmpty() || loading) {
             return
         }
@@ -32,7 +32,7 @@ class MilestoneViewModel @ViewModelInject constructor(
         try {
             hasError = false
             loading = true
-            milestones = dagashiRepository.milestones()
+            milestones = dagashiRepository.milestones(forceReload)
         } catch (e: Exception) {
             e.printStackTrace()
             hasError = true
@@ -43,7 +43,7 @@ class MilestoneViewModel @ViewModelInject constructor(
 
     suspend fun refresh() {
         milestones = listOf()
-        getMilestones()
+        getMilestones(true)
     }
 
     class Factory(

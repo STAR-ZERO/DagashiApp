@@ -1,5 +1,6 @@
-package com.star_zero.dagashi.shared
+package com.star_zero.dagashi.shared.network
 
+import com.star_zero.dagashi.shared.DispatchersIO
 import com.star_zero.dagashi.shared.entity.IssueRootEntity
 import com.star_zero.dagashi.shared.entity.MilestoneRootEntity
 import com.star_zero.dagashi.shared.model.*

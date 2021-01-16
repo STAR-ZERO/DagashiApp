@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
+    id("com.squareup.sqldelight")
 }
 
 repositories {
@@ -27,6 +28,15 @@ kotlin {
             }
         }
     }
+
+    // https://github.com/cashapp/sqldelight/issues/2044#issuecomment-721319037
+    val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
+    if (onPhone) {
+        iosArm64("ios")
+    } else {
+        iosX64("ios")
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -34,6 +44,7 @@ kotlin {
                 implementation(Deps.KTOR_CORE)
                 implementation(Deps.KTOR_SERIALIZATION)
                 implementation(Deps.SERIALIZATION_JSON)
+                implementation("com.squareup.sqldelight:runtime:1.4.3")
             }
         }
         val commonTest by getting {
@@ -45,6 +56,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(Deps.KTOR_ANDROID)
+                implementation("com.squareup.sqldelight:android-driver:1.4.3")
             }
         }
         val androidTest by getting {
@@ -56,11 +68,13 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(Deps.KTOR_DESKTOP)
+                implementation("com.squareup.sqldelight:sqlite-driver:1.4.3")
             }
         }
         val iosMain by getting {
             dependencies {
                 implementation(Deps.KTOR_IOS)
+                implementation("com.squareup.sqldelight:native-driver:1.4.3")
             }
         }
         val iosTest by getting
@@ -87,3 +101,9 @@ val packForXcode by tasks.creating(Sync::class) {
     into(targetDir)
 }
 tasks.getByName("build").dependsOn(packForXcode)
+
+sqldelight {
+    database("DagashiDatabase") {
+        packageName = "com.star_zero.dagashi.shared.db"
+    }
+}

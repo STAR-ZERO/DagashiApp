@@ -19,6 +19,7 @@
 		BA69E9E225453DF3001E13AD /* MilestoneRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA69E9E125453DF3001E13AD /* MilestoneRow.swift */; };
 		BA76F7472545ADB3003CFA86 /* IssueList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA76F7462545ADB3003CFA86 /* IssueList.swift */; };
 		BA76F74D2545B17A003CFA86 /* IssueRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA76F74C2545B17A003CFA86 /* IssueRow.swift */; };
+		BA94F2CF25B290070085FCE2 /* Sdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA94F2CE25B290070085FCE2 /* Sdk.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		BA69E9E125453DF3001E13AD /* MilestoneRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneRow.swift; sourceTree = "<group>"; };
 		BA76F7462545ADB3003CFA86 /* IssueList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueList.swift; sourceTree = "<group>"; };
 		BA76F74C2545B17A003CFA86 /* IssueRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueRow.swift; sourceTree = "<group>"; };
+		BA94F2CE25B290070085FCE2 /* Sdk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sdk.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				BA691B712545227500FC99EE /* Milestone */,
 				BA76F7452545ADA1003CFA86 /* Issue */,
 				BA11899A25441C3000FA25E3 /* DagashiApp.swift */,
+				BA94F2CE25B290070085FCE2 /* Sdk.swift */,
 				BA11899E25441C3100FA25E3 /* Assets.xcassets */,
 				BA1189A325441C3100FA25E3 /* Info.plist */,
 				BA1189A025441C3100FA25E3 /* Preview Content */,
@@ -347,6 +350,7 @@
 				BA76F7472545ADB3003CFA86 /* IssueList.swift in Sources */,
 				BA69E9DA25453B21001E13AD /* ActivityIndicator.swift in Sources */,
 				BA76F74D2545B17A003CFA86 /* IssueRow.swift in Sources */,
+				BA94F2CF25B290070085FCE2 /* Sdk.swift in Sources */,
 				BA69E9E225453DF3001E13AD /* MilestoneRow.swift in Sources */,
 				BA691B732545228300FC99EE /* MilestoneList.swift in Sources */,
 				BA11899B25441C3000FA25E3 /* DagashiApp.swift in Sources */,

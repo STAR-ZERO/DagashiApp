@@ -80,7 +80,7 @@ private fun AppBar(viewModel: MilestoneViewModel, navigateToSetting: () -> Unit)
 @Composable
 private fun MilestoneContent(viewModel: MilestoneViewModel, navigateToIssue: (Milestone) -> Unit) {
     LaunchedEffect(Unit) {
-        viewModel.getMilestones()
+        viewModel.getMilestones(false)
     }
 
     val coroutineScope = rememberCoroutineScope()

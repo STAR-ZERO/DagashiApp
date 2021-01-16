@@ -51,7 +51,6 @@ extension IssueList {
     
     class ViewModel: ObservableObject {
         @Published var state = State.loading
-        private let api = DagashiAPI()
         private let milestone: Milestone
 
         init(milestone: Milestone) {
@@ -61,7 +60,7 @@ extension IssueList {
 
         func loadIssues() {
             self.state = .loading
-            api.issues(path: milestone.path, completionHandler: { issues, error in
+            dagashiSDK.getIssue(path: milestone.path, completionHandler: { issues, error in
                 if let issues = issues {
                     self.state = .result(issues)
                 } else {
