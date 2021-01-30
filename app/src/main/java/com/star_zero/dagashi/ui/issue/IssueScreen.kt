@@ -6,6 +6,7 @@ import androidx.compose.foundation.ClickableText
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -76,7 +77,7 @@ private fun AppBar(
             IconButton(onClick = {
                 navigateBack()
             }) {
-                Icon(Icons.Filled.ArrowBack)
+                Icon(Icons.Filled.ArrowBack, "Back")
             }
         },
         actions = {
@@ -85,7 +86,7 @@ private fun AppBar(
                     viewModel.refresh(path)
                 }
             }) {
-                Icon(Icons.Filled.Refresh)
+                Icon(Icons.Filled.Refresh, "Refresh")
             }
         }
     )
@@ -251,10 +252,11 @@ private fun Comment(comment: Comment, modifier: Modifier = Modifier) {
 
             CoilImage(
                 data = comment.author.avatarUrl,
+                contentDescription = null,
+                modifier = Modifier.preferredSize(24.dp),
                 requestBuilder = {
                     transformations(CircleCropTransformation())
-                },
-                modifier = Modifier.preferredSize(24.dp)
+                }
             )
 
             Spacer(modifier = Modifier.preferredSize(8.dp))

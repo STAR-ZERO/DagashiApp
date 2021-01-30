@@ -3,6 +3,7 @@ package com.star_zero.dagashi.ui.milestone
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
@@ -63,7 +64,8 @@ private fun AppBar(viewModel: MilestoneViewModel, navigateToSetting: () -> Unit)
             IconButton(onClick = {
                 navigateToSetting()
             }) {
-                Icon(Icons.Filled.Settings)
+
+                Icon(Icons.Filled.Settings, "Settings")
             }
 
             IconButton(onClick = {
@@ -71,7 +73,7 @@ private fun AppBar(viewModel: MilestoneViewModel, navigateToSetting: () -> Unit)
                     viewModel.refresh()
                 }
             }) {
-                Icon(Icons.Filled.Refresh)
+                Icon(Icons.Filled.Refresh, "Refresh")
             }
         }
     )

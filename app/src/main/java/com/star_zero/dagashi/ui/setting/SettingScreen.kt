@@ -50,7 +50,7 @@ private fun AppBar(navigateBack: () -> Unit) {
             IconButton(onClick = {
                 navigateBack()
             }) {
-                Icon(Icons.Filled.ArrowBack)
+                Icon(Icons.Filled.ArrowBack, "Back")
             }
         }
     )
