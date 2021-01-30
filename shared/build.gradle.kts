@@ -44,7 +44,7 @@ kotlin {
                 implementation(Deps.KTOR_CORE)
                 implementation(Deps.KTOR_SERIALIZATION)
                 implementation(Deps.SERIALIZATION_JSON)
-                implementation("com.squareup.sqldelight:runtime:1.4.3")
+                implementation(Deps.SQLDELIGHT_RUNTIME)
             }
         }
         val commonTest by getting {
@@ -56,7 +56,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(Deps.KTOR_ANDROID)
-                implementation("com.squareup.sqldelight:android-driver:1.4.3")
+                implementation(Deps.SQLDELIGHT_ANDROID)
             }
         }
         val androidTest by getting {
@@ -68,13 +68,13 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(Deps.KTOR_DESKTOP)
-                implementation("com.squareup.sqldelight:sqlite-driver:1.4.3")
+                implementation(Deps.SQLDELIGHT_SQLITE)
             }
         }
         val iosMain by getting {
             dependencies {
                 implementation(Deps.KTOR_IOS)
-                implementation("com.squareup.sqldelight:native-driver:1.4.3")
+                implementation(Deps.SQLDELIGHT_NATIVE)
             }
         }
         val iosTest by getting

@@ -13,6 +13,9 @@ object Dependencies {
     val COMPOSE_MATERIAL = "androidx.compose.material:material:${Versions.COMPOSE}"
     val COMPOSE_UI_TOOLING = "androidx.compose.ui:ui-tooling:${Versions.COMPOSE}"
 
+    // Compose Desktop
+    val COMPOSE_DESKTOP_PLUGIN = "org.jetbrains.compose:compose-gradle-plugin:0.2.0-build132"
+
     // AndroidX
     const val ANDROIDX_CORE = "androidx.core:core-ktx:1.3.1"
     const val APPCOMPAT = "androidx.appcompat:appcompat:1.2.0"
@@ -53,7 +56,16 @@ object Dependencies {
     val SERIALIZATION_PLUGIN = "org.jetbrains.kotlin:kotlin-serialization:${Versions.KOTLIN}"
     const val SERIALIZATION_JSON = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0"
 
+    // DB
+    private const val SQLDELIGHT_VERSION = "1.4.3"
+    const val SQLDELIGHT_PLUGIN = "com.squareup.sqldelight:gradle-plugin:$SQLDELIGHT_VERSION"
+    const val SQLDELIGHT_RUNTIME = "com.squareup.sqldelight:runtime:$SQLDELIGHT_VERSION"
+    const val SQLDELIGHT_ANDROID = "com.squareup.sqldelight:android-driver:$SQLDELIGHT_VERSION"
+    const val SQLDELIGHT_SQLITE = "com.squareup.sqldelight:sqlite-driver:$SQLDELIGHT_VERSION"
+    const val SQLDELIGHT_NATIVE = "com.squareup.sqldelight:native-driver:$SQLDELIGHT_VERSION"
+
     // etc
+    const val PROTOBUF_PLUGIN = "com.google.protobuf:protobuf-gradle-plugin:0.8.14"
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-javalite:3.10.0"
     const val PROTOC = "com.google.protobuf:protoc:3.10.0"
 
