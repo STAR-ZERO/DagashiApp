@@ -2,6 +2,7 @@ package com.star_zero.dagashi.ui.issue
 
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -37,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +53,7 @@ import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.ui.components.ErrorRetry
+import com.star_zero.dagashi.ui.components.FlowRow
 import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.components.formatLinkedText
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
@@ -245,27 +249,26 @@ private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
 
 @Composable
 private fun IssueLabels(labels: List<Label>) {
-    // FIXME: FlowRow was removed. I have to use custom layout
-//    FlowRow(
-//        mainAxisSpacing = 4.dp,
-//        crossAxisSpacing = 4.dp
-//    ) {
-//        labels.forEach { label ->
-//            Box(
-//                Modifier.background(
-//                    color = Color(label.color),
-//                    shape = RoundedCornerShape(percent = 50)
-//                )
-//            ) {
-//                Text(
-//                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-//                    text = label.name,
-//                    style = MaterialTheme.typography.overline,
-//                    color = Color.White
-//                )
-//            }
-//        }
-//    }
+    FlowRow(
+        verticalSpacing = 4.dp,
+        horizontalSpacing = 4.dp,
+    ) {
+        labels.forEach { label ->
+            Box(
+                Modifier.background(
+                    color = Color(label.color),
+                    shape = RoundedCornerShape(percent = 50)
+                )
+            ) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    text = label.name,
+                    style = MaterialTheme.typography.overline,
+                    color = Color.White
+                )
+            }
+        }
+    }
 }
 
 @Composable
