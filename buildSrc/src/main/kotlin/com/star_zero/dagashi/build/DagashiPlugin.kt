@@ -11,16 +11,17 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class DagashiPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.plugins.withType(AppPlugin::class.java) {
+        project.plugins.withType<AppPlugin> {
             val extension = project.extensions.getByName("android") as BaseAppModuleExtension
             setupCommon(project, extension)
         }
 
-        project.plugins.withType(LibraryPlugin::class.java) {
+        project.plugins.withType<LibraryPlugin> {
             val extension = project.extensions.getByName("android") as LibraryExtension
             setupCommon(project, extension)
             setupLibraryProject(extension)
@@ -50,11 +51,10 @@ class DagashiPlugin : Plugin<Project> {
         }
 
         // kotlin
-        project.tasks.withType(KotlinCompile::class.java).configureEach {
+        project.tasks.withType<KotlinCompile>().configureEach {
             kotlinOptions.jvmTarget = "1.8"
 
             val args = listOf(
-                "-Xallow-jvm-ir-dependencies",
                 "-Xskip-prerelease-check",
                 "-Xopt-in=kotlin.RequiresOptIn"
             )

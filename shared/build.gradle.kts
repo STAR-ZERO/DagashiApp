@@ -13,8 +13,20 @@ repositories {
     google()
     jcenter()
     mavenCentral()
-    maven {
-        url = uri("https://dl.bintray.com/kotlin/kotlin-eap")
+    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+}
+
+android {
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+
+    // https://stackoverflow.com/questions/65372825/kotlin-multiplatform-configuration-issue
+    configurations {
+        create("androidTestApi")
+        create("androidTestDebugApi")
+        create("androidTestReleaseApi")
+        create("testApi")
+        create("testDebugApi")
+        create("testReleaseApi")
     }
 }
 
@@ -82,10 +94,6 @@ kotlin {
 }
 
 apply<DagashiPlugin>()
-
-android {
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-}
 
 val packForXcode by tasks.creating(Sync::class) {
     group = "build"
