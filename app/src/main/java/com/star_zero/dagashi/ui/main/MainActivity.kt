@@ -3,6 +3,7 @@ package com.star_zero.dagashi.ui.main
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,8 +18,11 @@ import com.star_zero.dagashi.ui.milestone.MilestoneViewModel
 import com.star_zero.dagashi.ui.setting.SettingScreen
 import com.star_zero.dagashi.ui.setting.SettingViewModel
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
+import com.star_zero.dagashi.ui.util.AppNavigator
+import com.star_zero.dagashi.ui.util.LocalNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import javax.inject.Provider
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -34,42 +38,43 @@ class MainActivity : AppCompatActivity() {
         setContent {
             DagashiAppTheme {
                 val navController = rememberNavController()
-                NavHost(
-                    navController = navController,
-                    startDestination = "milestone",
-                ) {
-                    composable("milestone") { backStackEntry ->
-                        val viewModelFactory = MilestoneViewModel.Factory(
-                            backStackEntry,
-                            dagashiRepository
-                        )
-                        MilestoneScreen(navController, viewModelFactory)
-                    }
-                    composable(
-                        "issue/{path}/{title}",
-                        arguments = listOf(
-                            navArgument("path") { type = NavType.StringType },
-                            navArgument("title") { type = NavType.StringType },
-                        )
-                    ) { backStackEntry ->
-                        val viewModelFactory = IssueViewModel.Factory(
-                            backStackEntry,
-                            dagashiRepository,
-                            settingRepository
-                        )
-                        IssueScreen(
-                            navController = navController,
-                            viewModelFactory = viewModelFactory,
-                            path = backStackEntry.arguments!!.getString("path")!!,
-                            title = backStackEntry.arguments!!.getString("title")!!
-                        )
-                    }
-                    composable("setting") { backStackEntry ->
-                        val viewModelFactory = SettingViewModel.Factory(
-                            backStackEntry,
-                            settingRepository
-                        )
-                        SettingScreen(navController, viewModelFactory)
+                CompositionLocalProvider(LocalNavigator provides AppNavigator(navController)) {
+                    NavHost(
+                        navController = navController,
+                        startDestination = "milestone",
+                    ) {
+                        composable("milestone") { backStackEntry ->
+                            val viewModelFactory = MilestoneViewModel.Factory(
+                                backStackEntry,
+                                dagashiRepository
+                            )
+                            MilestoneScreen(viewModelFactory)
+                        }
+                        composable(
+                            "issue/{path}/{title}",
+                            arguments = listOf(
+                                navArgument("path") { type = NavType.StringType },
+                                navArgument("title") { type = NavType.StringType },
+                            )
+                        ) { backStackEntry ->
+                            val viewModelFactory = IssueViewModel.Factory(
+                                backStackEntry,
+                                dagashiRepository,
+                                settingRepository
+                            )
+                            IssueScreen(
+                                viewModelFactory = viewModelFactory,
+                                path = backStackEntry.arguments!!.getString("path")!!,
+                                title = backStackEntry.arguments!!.getString("title")!!
+                            )
+                        }
+                        composable("setting") { backStackEntry ->
+                            val viewModelFactory = SettingViewModel.Factory(
+                                backStackEntry,
+                                settingRepository
+                            )
+                            SettingScreen(viewModelFactory)
+                        }
                     }
                 }
             }

@@ -42,18 +42,23 @@ import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.ui.components.ErrorRetry
 import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
+import com.star_zero.dagashi.ui.util.LocalNavigator
+import com.star_zero.dagashi.ui.util.Navigator
 import kotlinx.coroutines.launch
 
 @Composable
-fun MilestoneScreen(navController: NavController, viewModelFactory: ViewModelProvider.Factory) {
+fun MilestoneScreen(viewModelFactory: ViewModelProvider.Factory) {
     val viewModel: MilestoneViewModel = viewModel(factory = viewModelFactory)
+
+    val navigator = LocalNavigator.current
+
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
             topBar = {
                 AppBar(
                     viewModel = viewModel,
                     navigateToSetting = {
-                        navController.navigate("setting")
+                        navigator.navigateSetting()
                     }
                 )
             }
@@ -61,7 +66,7 @@ fun MilestoneScreen(navController: NavController, viewModelFactory: ViewModelPro
             MilestoneContent(
                 viewModel = viewModel,
                 navigateToIssue = { milestone ->
-                    navController.navigate("issue/${milestone.path}/${milestone.title}")
+                    navigator.navigateIssue(milestone.path, milestone.title)
                 }
             )
         }
@@ -139,7 +144,8 @@ private fun MilestoneList(milestones: List<Milestone>, navigateToIssue: (Milesto
 @Composable
 private fun MilestoneCard(milestone: Milestone, navigateToIssue: (Milestone) -> Unit) {
     Card(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickable(onClick = {
                 navigateToIssue(milestone)

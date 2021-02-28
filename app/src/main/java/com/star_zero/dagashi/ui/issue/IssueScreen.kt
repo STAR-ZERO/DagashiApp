@@ -57,17 +57,18 @@ import com.star_zero.dagashi.ui.components.FlowRow
 import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.components.formatLinkedText
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
+import com.star_zero.dagashi.ui.util.LocalNavigator
 import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
 
 @Composable
 fun IssueScreen(
-    navController: NavController,
     viewModelFactory: ViewModelProvider.Factory,
     path: String,
     title: String,
 ) {
     val viewModel: IssueViewModel = viewModel(factory = viewModelFactory)
+    val navigator = LocalNavigator.current
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
             topBar = {
@@ -76,7 +77,7 @@ fun IssueScreen(
                     path = path,
                     title = title,
                     navigateBack = {
-                        navController.popBackStack()
+                        navigator.navigateBack()
                     }
                 )
             }

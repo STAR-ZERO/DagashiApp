@@ -32,17 +32,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
+import com.star_zero.dagashi.ui.util.LocalNavigator
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingScreen(navController: NavController, viewModelFactory: ViewModelProvider.Factory) {
+fun SettingScreen(viewModelFactory: ViewModelProvider.Factory) {
     val viewModel: SettingViewModel = viewModel(factory = viewModelFactory)
+    val navigator = LocalNavigator.current
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
             topBar = {
                 AppBar(
                     navigateBack = {
-                        navController.popBackStack()
+                        navigator.navigateBack()
                     }
                 )
             }
