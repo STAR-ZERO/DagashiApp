@@ -2,7 +2,6 @@ package com.star_zero.dagashi.ui.util
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 
 val LocalNavigator = staticCompositionLocalOf<Navigator> {
     error("CompositionLocal `Navigator` not present")

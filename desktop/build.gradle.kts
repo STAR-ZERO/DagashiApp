@@ -8,7 +8,8 @@ plugins {
 
 kotlin {
     jvm {
-        withJava()
+        // https://github.com/JetBrains/compose-jb/issues/585
+        // withJava()
     }
     sourceSets {
         named("jvmMain") {

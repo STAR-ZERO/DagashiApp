@@ -18,7 +18,7 @@ object Dependencies {
 
     // AndroidX
     const val ANDROIDX_CORE = "androidx.core:core-ktx:1.3.1"
-    const val APPCOMPAT = "androidx.appcompat:appcompat:1.2.0"
+    const val APPCOMPAT = "androidx.appcompat:appcompat:1.3.0"
 
     const val CONSTRAINT = "androidx.constraintlayout:constraintlayout:2.0.1"
     const val MATERIAL = "com.google.android.material:material:1.2.1"
@@ -35,7 +35,7 @@ object Dependencies {
     const val ANDROIDX_HILT_VIEWMODEL = "androidx.hilt:hilt-lifecycle-viewmodel:$ANDROIDX_HILT_VERSION"
     const val ANDROIDX_HILT_COMPILER = "androidx.hilt:hilt-compiler:$ANDROIDX_HILT_VERSION"
 
-    const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:1.0.0-alpha08"
+    const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:2.4.0-alpha01"
 
     const val BROWSER = "androidx.browser:browser:1.2.0"
 

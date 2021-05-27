@@ -35,15 +35,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.ui.components.ErrorRetry
 import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.LocalNavigator
-import com.star_zero.dagashi.ui.util.Navigator
 import kotlinx.coroutines.launch
 
 @Composable

@@ -22,7 +22,6 @@ import com.star_zero.dagashi.ui.util.AppNavigator
 import com.star_zero.dagashi.ui.util.LocalNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import javax.inject.Provider
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
