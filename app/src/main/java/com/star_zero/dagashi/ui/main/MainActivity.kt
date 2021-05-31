@@ -3,12 +3,13 @@ package com.star_zero.dagashi.ui.main
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,20 +49,7 @@ class MainActivity : AppCompatActivity() {
                         startDestination = "milestone",
                     ) {
                         composable("milestone") { backStackEntry ->
-
-                            val viewModel: MilestoneViewModel = hiltViewModel(backStackEntry)
-                            val uiState by viewModel.uiState.collectAsState()
-
-                            LaunchedEffect(null) {
-                                viewModel.getMilestones(false)
-                            }
-
-                            MilestoneScreen(
-                                uiState = uiState,
-                                onRefresh = {
-                                    viewModel.refresh()
-                                }
-                            )
+                            MilestoneNav(backStackEntry)
                         }
                         composable(
                             "issue/{path}/{title}",
@@ -70,16 +58,7 @@ class MainActivity : AppCompatActivity() {
                                 navArgument("title") { type = NavType.StringType },
                             )
                         ) { backStackEntry ->
-                            val viewModelFactory = IssueViewModel.Factory(
-                                backStackEntry,
-                                dagashiRepository,
-                                settingRepository
-                            )
-                            IssueScreen(
-                                viewModelFactory = viewModelFactory,
-                                path = backStackEntry.arguments!!.getString("path")!!,
-                                title = backStackEntry.arguments!!.getString("title")!!
-                            )
+                            IssueNav(backStackEntry)
                         }
                         composable("setting") { backStackEntry ->
                             val viewModelFactory = SettingViewModel.Factory(
@@ -92,5 +71,45 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    @Composable
+    private fun MilestoneNav(backStackEntry: NavBackStackEntry) {
+        val viewModel: MilestoneViewModel = hiltViewModel(backStackEntry)
+        val uiState by viewModel.uiState.collectAsState()
+
+        LaunchedEffect(null) {
+            viewModel.getMilestones(false)
+        }
+
+        MilestoneScreen(
+            uiState = uiState,
+            onRefresh = {
+                viewModel.refresh()
+            }
+        )
+    }
+
+    @Composable
+    private fun IssueNav(backStackEntry: NavBackStackEntry) {
+        val viewModel: IssueViewModel = hiltViewModel(backStackEntry)
+        val uiState by viewModel.uiState.collectAsState()
+        val isOpenLinkInApp by viewModel.isOpenLinkInApp.collectAsState(initial = false)
+
+        val path = backStackEntry.arguments!!.getString("path")!!
+        val title = backStackEntry.arguments!!.getString("title")!!
+
+        LaunchedEffect(null) {
+            viewModel.getIssues(path)
+        }
+
+        IssueScreen(
+            uiState = uiState,
+            title = title,
+            isOpenLinkInApp = isOpenLinkInApp,
+            onRefresh = {
+                viewModel.refresh(path)
+            }
+        )
     }
 }

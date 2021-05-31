@@ -32,11 +32,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,9 +40,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import coil.transform.CircleCropTransformation
 import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
@@ -59,22 +52,20 @@ import com.star_zero.dagashi.ui.components.formatLinkedText
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.LocalNavigator
 import dev.chrisbanes.accompanist.coil.CoilImage
-import kotlinx.coroutines.launch
 
 @Composable
 fun IssueScreen(
-    viewModelFactory: ViewModelProvider.Factory,
-    path: String,
+    uiState: IssueUiState,
     title: String,
+    isOpenLinkInApp: Boolean,
+    onRefresh: () -> Unit,
 ) {
-    val viewModel: IssueViewModel = viewModel(factory = viewModelFactory)
     val navigator = LocalNavigator.current
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
             topBar = {
                 AppBar(
-                    viewModel = viewModel,
-                    path = path,
+                    onRefresh = onRefresh,
                     title = title,
                     navigateBack = {
                         navigator.navigateBack()
@@ -82,19 +73,17 @@ fun IssueScreen(
                 )
             }
         ) {
-            IssueContent(viewModel, path)
+            IssueContent(uiState, isOpenLinkInApp, onRefresh)
         }
     }
 }
 
 @Composable
 private fun AppBar(
-    viewModel: IssueViewModel,
-    path: String,
     title: String,
+    onRefresh: () -> Unit,
     navigateBack: () -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
     TopAppBar(
         title = {
             Text(text = title)
@@ -108,9 +97,7 @@ private fun AppBar(
         },
         actions = {
             IconButton(onClick = {
-                coroutineScope.launch {
-                    viewModel.refresh(path)
-                }
+                onRefresh()
             }) {
                 Icon(Icons.Filled.Refresh, "Refresh")
             }
@@ -119,25 +106,19 @@ private fun AppBar(
 }
 
 @Composable
-private fun IssueContent(viewModel: IssueViewModel, path: String) {
-    LaunchedEffect(null) {
-        viewModel.getIssues(path)
-    }
-
-    val isOpenLinkInApp by viewModel.isOpenLinkInApp.collectAsState(initial = false)
-
-    val coroutineScope = rememberCoroutineScope()
-
+private fun IssueContent(
+    uiState: IssueUiState,
+    isOpenLinkInApp: Boolean,
+    onRefresh: () -> Unit
+) {
     @Suppress("CascadeIf")
-    if (viewModel.hasError) {
+    if (uiState.error) {
         ErrorRetry(
             onRetry = {
-                coroutineScope.launch {
-                    viewModel.refresh(path)
-                }
+                onRefresh()
             }
         )
-    } else if (viewModel.loading) {
+    } else if (uiState.loading) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -148,7 +129,7 @@ private fun IssueContent(viewModel: IssueViewModel, path: String) {
             )
         }
     } else {
-        IssueList(viewModel.issues, isOpenLinkInApp)
+        IssueList(uiState.issues, isOpenLinkInApp)
     }
 }
 

@@ -1,75 +1,49 @@
 package com.star_zero.dagashi.ui.issue
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.savedstate.SavedStateRegistryOwner
+import androidx.lifecycle.viewModelScope
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
 import com.star_zero.dagashi.core.data.repository.SettingRepository
-import com.star_zero.dagashi.shared.model.Issue
+import com.star_zero.dagashi.ui.util.update
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class IssueViewModel @Inject constructor(
     private val dagashiDataRepository: DagashiRepository,
-    private val settingRepository: SettingRepository
+    settingRepository: SettingRepository
 ) : ViewModel() {
 
     val isOpenLinkInApp = settingRepository.settingsFlow.map { it.openLinkInApp }
 
-    var issues: List<Issue> by mutableStateOf(listOf())
-        private set
+    private val _uiState = MutableStateFlow(IssueUiState())
+    val uiState = _uiState.asStateFlow()
 
-    var loading: Boolean by mutableStateOf(false)
-        private set
-
-    var hasError by mutableStateOf(false)
-        private set
-
-    suspend fun getIssues(path: String) {
-        if (issues.isNotEmpty() || loading) {
+    fun getIssues(path: String) {
+        if (_uiState.value.issues.isNotEmpty() || _uiState.value.loading) {
             return
         }
 
-        try {
-            hasError = false
-            loading = true
-            issues = dagashiDataRepository.issues(path)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            hasError = true
+        viewModelScope.launch {
+            try {
+                _uiState.update { copy(loading = true, error = false) }
+                val issues = dagashiDataRepository.issues(path)
+                _uiState.update { copy(issues = issues) }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _uiState.update { copy(error = true) }
+            } finally {
+                _uiState.update { copy(loading = false) }
+            }
         }
-
-        loading = false
     }
 
-    suspend fun refresh(path: String) {
-        issues = listOf()
+    fun refresh(path: String) {
+        _uiState.update { copy(issues = listOf()) }
         getIssues(path)
-    }
-
-    class Factory(
-        owner: SavedStateRegistryOwner,
-        private val dagashiRepository: DagashiRepository,
-        private val settingRepository: SettingRepository
-    ) : AbstractSavedStateViewModelFactory(owner, null) {
-
-        override fun <T : ViewModel?> create(
-            key: String,
-            modelClass: Class<T>,
-            handle: SavedStateHandle
-        ): T {
-            @Suppress("UNCHECKED_CAST")
-            return IssueViewModel(
-                dagashiRepository,
-                settingRepository
-            ) as T
-        }
-
     }
 }
