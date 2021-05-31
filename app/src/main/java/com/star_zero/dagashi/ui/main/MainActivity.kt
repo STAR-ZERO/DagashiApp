@@ -61,11 +61,7 @@ class MainActivity : AppCompatActivity() {
                             IssueNav(backStackEntry)
                         }
                         composable("setting") { backStackEntry ->
-                            val viewModelFactory = SettingViewModel.Factory(
-                                backStackEntry,
-                                settingRepository
-                            )
-                            SettingScreen(viewModelFactory)
+                            SettingNav(backStackEntry)
                         }
                     }
                 }
@@ -109,6 +105,18 @@ class MainActivity : AppCompatActivity() {
             isOpenLinkInApp = isOpenLinkInApp,
             onRefresh = {
                 viewModel.refresh(path)
+            }
+        )
+    }
+
+    @Composable
+    private fun SettingNav(backStackEntry: NavBackStackEntry) {
+        val viewModel: SettingViewModel = hiltViewModel(backStackEntry)
+        val isOpenLinkInApp by viewModel.isOpenLinkInApp.collectAsState(initial = false)
+        SettingScreen(
+            isOpenLinkInApp = isOpenLinkInApp,
+            updateOpenLinkInApp = {
+                viewModel.updateOpenLinkInApp(it)
             }
         )
     }

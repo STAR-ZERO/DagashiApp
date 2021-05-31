@@ -19,25 +19,17 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.LocalNavigator
-import kotlinx.coroutines.launch
 
 @Composable
-fun SettingScreen(viewModelFactory: ViewModelProvider.Factory) {
-    val viewModel: SettingViewModel = viewModel(factory = viewModelFactory)
+fun SettingScreen(isOpenLinkInApp: Boolean, updateOpenLinkInApp: (Boolean) -> Unit) {
     val navigator = LocalNavigator.current
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
@@ -49,7 +41,7 @@ fun SettingScreen(viewModelFactory: ViewModelProvider.Factory) {
                 )
             }
         ) {
-            SettingContent(viewModel)
+            SettingContent(isOpenLinkInApp, updateOpenLinkInApp)
         }
     }
 }
@@ -71,19 +63,13 @@ private fun AppBar(navigateBack: () -> Unit) {
 }
 
 @Composable
-private fun SettingContent(viewModel: SettingViewModel) {
-    val isOpenLinkInApp by viewModel.isOpenLinkInApp.collectAsState(initial = false)
-
-    val coroutineScope = rememberCoroutineScope()
-
+private fun SettingContent(isOpenLinkInApp: Boolean, updateOpenLinkInApp: (Boolean) -> Unit) {
     LazyColumn {
         item {
             OpenLinkSetting(
                 isOpenLinkInApp = isOpenLinkInApp,
                 updateOpenLinkInApp = { enabled ->
-                    coroutineScope.launch {
-                        viewModel.updateOpenLinkInApp(enabled)
-                    }
+                    updateOpenLinkInApp(enabled)
                 }
             )
         }
