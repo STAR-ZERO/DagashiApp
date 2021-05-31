@@ -3,7 +3,6 @@ package com.star_zero.dagashi.ui.issue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -11,9 +10,12 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
 import com.star_zero.dagashi.core.data.repository.SettingRepository
 import com.star_zero.dagashi.shared.model.Issue
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class IssueViewModel @ViewModelInject constructor(
+@HiltViewModel
+class IssueViewModel @Inject constructor(
     private val dagashiDataRepository: DagashiRepository,
     private val settingRepository: SettingRepository
 ) : ViewModel() {

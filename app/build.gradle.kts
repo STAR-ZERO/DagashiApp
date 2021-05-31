@@ -48,9 +48,6 @@ dependencies {
     implementation(Deps.DAGGER_HILT_ANDROID)
     kapt(Deps.DAGGER_HILT_COMPILER)
 
-    implementation(Deps.ANDROIDX_HILT_VIEWMODEL)
-    kapt(Deps.ANDROIDX_HILT_COMPILER)
-
     implementation(Deps.BROWSER)
 
     implementation(Deps.ACCOMPANIST_COIL)

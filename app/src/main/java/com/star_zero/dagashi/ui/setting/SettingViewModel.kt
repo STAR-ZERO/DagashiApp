@@ -1,14 +1,16 @@
 package com.star_zero.dagashi.ui.setting
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.star_zero.dagashi.core.data.repository.SettingRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class SettingViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SettingViewModel @Inject constructor(
     private val settingRepository: SettingRepository
 ) : ViewModel() {
     val isOpenLinkInApp = settingRepository.settingsFlow.map { it.openLinkInApp }

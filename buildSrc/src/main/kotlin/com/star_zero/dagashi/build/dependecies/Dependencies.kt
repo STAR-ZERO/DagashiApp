@@ -40,10 +40,10 @@ object Dependencies {
     const val BROWSER = "androidx.browser:browser:1.2.0"
 
     // Dagger
-    private const val DAGGER_HILT_VERSION = "2.29.1-alpha"
+    private const val DAGGER_HILT_VERSION = "2.36"
     const val DAGGER_HILT_PLUGIN = "com.google.dagger:hilt-android-gradle-plugin:$DAGGER_HILT_VERSION"
     const val DAGGER_HILT_ANDROID = "com.google.dagger:hilt-android:$DAGGER_HILT_VERSION"
-    const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-android-compiler:$DAGGER_HILT_VERSION"
+    const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-compiler:$DAGGER_HILT_VERSION"
 
     // API
     private const val KTOR_VERSION = "1.4.1"

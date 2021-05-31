@@ -3,15 +3,17 @@ package com.star_zero.dagashi.ui.milestone
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
 import com.star_zero.dagashi.shared.model.Milestone
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MilestoneViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MilestoneViewModel @Inject constructor(
     private val dagashiRepository: DagashiRepository
 ) : ViewModel() {
 
