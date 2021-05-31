@@ -26,34 +26,30 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.ui.components.ErrorRetry
 import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.LocalNavigator
-import kotlinx.coroutines.launch
 
 @Composable
-fun MilestoneScreen(viewModelFactory: ViewModelProvider.Factory) {
-    val viewModel: MilestoneViewModel = viewModel(factory = viewModelFactory)
-
+fun MilestoneScreen(
+    uiState: MilestoneUiState,
+    onRefresh: () -> Unit,
+) {
     val navigator = LocalNavigator.current
 
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
             topBar = {
                 AppBar(
-                    viewModel = viewModel,
+                    onRefresh = onRefresh,
                     navigateToSetting = {
                         navigator.navigateSetting()
                     }
@@ -61,7 +57,8 @@ fun MilestoneScreen(viewModelFactory: ViewModelProvider.Factory) {
             }
         ) {
             MilestoneContent(
-                viewModel = viewModel,
+                uiState = uiState,
+                onRefresh = onRefresh,
                 navigateToIssue = { milestone ->
                     navigator.navigateIssue(milestone.path, milestone.title)
                 }
@@ -71,9 +68,7 @@ fun MilestoneScreen(viewModelFactory: ViewModelProvider.Factory) {
 }
 
 @Composable
-private fun AppBar(viewModel: MilestoneViewModel, navigateToSetting: () -> Unit) {
-    val coroutineScope = rememberCoroutineScope()
-
+private fun AppBar(onRefresh: () -> Unit, navigateToSetting: () -> Unit) {
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.milestone_title))
@@ -87,9 +82,7 @@ private fun AppBar(viewModel: MilestoneViewModel, navigateToSetting: () -> Unit)
             }
 
             IconButton(onClick = {
-                coroutineScope.launch {
-                    viewModel.refresh()
-                }
+                onRefresh()
             }) {
                 Icon(Icons.Filled.Refresh, "Refresh")
             }
@@ -98,23 +91,19 @@ private fun AppBar(viewModel: MilestoneViewModel, navigateToSetting: () -> Unit)
 }
 
 @Composable
-private fun MilestoneContent(viewModel: MilestoneViewModel, navigateToIssue: (Milestone) -> Unit) {
-    LaunchedEffect(null) {
-        viewModel.getMilestones(false)
-    }
-
-    val coroutineScope = rememberCoroutineScope()
-
+private fun MilestoneContent(
+    uiState: MilestoneUiState,
+    onRefresh: () -> Unit,
+    navigateToIssue: (Milestone) -> Unit,
+) {
     @Suppress("CascadeIf")
-    if (viewModel.hasError) {
+    if (uiState.error) {
         ErrorRetry(
             onRetry = {
-                coroutineScope.launch {
-                    viewModel.refresh()
-                }
+                onRefresh()
             }
         )
-    } else if (viewModel.loading) {
+    } else if (uiState.loading) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -125,7 +114,7 @@ private fun MilestoneContent(viewModel: MilestoneViewModel, navigateToIssue: (Mi
             )
         }
     } else {
-        MilestoneList(viewModel.milestones, navigateToIssue)
+        MilestoneList(uiState.milestones, navigateToIssue)
     }
 }
 

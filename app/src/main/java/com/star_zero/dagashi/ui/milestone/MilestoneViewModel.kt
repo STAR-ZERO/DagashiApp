@@ -6,10 +6,16 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
 import com.star_zero.dagashi.shared.model.Milestone
+import com.star_zero.dagashi.ui.util.update
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,50 +23,32 @@ class MilestoneViewModel @Inject constructor(
     private val dagashiRepository: DagashiRepository
 ) : ViewModel() {
 
-    var milestones: List<Milestone> by mutableStateOf(listOf())
-        private set
+    private val _uiState = MutableStateFlow(MilestoneUiState())
+    val uiState = _uiState.asStateFlow()
 
-    var loading: Boolean by mutableStateOf(false)
-        private set
-
-    var hasError by mutableStateOf(false)
-        private set
-
-    suspend fun getMilestones(forceReload: Boolean) {
-        if (milestones.isNotEmpty() || loading) {
+    fun getMilestones(forceReload: Boolean) {
+        if (_uiState.value.milestones.isNotEmpty() || _uiState.value.loading) {
             return
         }
 
-        try {
-            hasError = false
-            loading = true
-            milestones = dagashiRepository.milestones(forceReload)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            hasError = true
+        viewModelScope.launch {
+            try {
+                _uiState.update {
+                    copy(loading = true, error = false)
+                }
+                val milestones = dagashiRepository.milestones(forceReload)
+                _uiState.update { copy(milestones = milestones) }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _uiState.update { copy(error = true) }
+            } finally {
+                _uiState.update { copy(loading = false) }
+            }
         }
-
-        loading = false
     }
 
-    suspend fun refresh() {
-        milestones = listOf()
+    fun refresh() {
+        _uiState.update { copy(milestones = listOf()) }
         getMilestones(true)
-    }
-
-    class Factory(
-        owner: SavedStateRegistryOwner,
-        private val dagashiRepository: DagashiRepository
-    ) : AbstractSavedStateViewModelFactory(owner, null) {
-
-        override fun <T : ViewModel?> create(
-            key: String,
-            modelClass: Class<T>,
-            handle: SavedStateHandle
-        ): T {
-            @Suppress("UNCHECKED_CAST")
-            return MilestoneViewModel(dagashiRepository) as T
-        }
-
     }
 }

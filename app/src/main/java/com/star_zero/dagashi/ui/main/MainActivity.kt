@@ -4,6 +4,11 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -43,11 +48,20 @@ class MainActivity : AppCompatActivity() {
                         startDestination = "milestone",
                     ) {
                         composable("milestone") { backStackEntry ->
-                            val viewModelFactory = MilestoneViewModel.Factory(
-                                backStackEntry,
-                                dagashiRepository
+
+                            val viewModel: MilestoneViewModel = hiltViewModel(backStackEntry)
+                            val uiState by viewModel.uiState.collectAsState()
+
+                            LaunchedEffect(null) {
+                                viewModel.getMilestones(false)
+                            }
+
+                            MilestoneScreen(
+                                uiState = uiState,
+                                onRefresh = {
+                                    viewModel.refresh()
+                                }
                             )
-                            MilestoneScreen(viewModelFactory)
                         }
                         composable(
                             "issue/{path}/{title}",

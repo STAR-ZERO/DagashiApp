@@ -31,11 +31,8 @@ object Dependencies {
 
     const val DATASTORE = "androidx.datastore:datastore-core:1.0.0-alpha01"
 
-    private const val ANDROIDX_HILT_VERSION = "1.0.0-alpha03"
-    const val ANDROIDX_HILT_VIEWMODEL = "androidx.hilt:hilt-lifecycle-viewmodel:$ANDROIDX_HILT_VERSION"
-    const val ANDROIDX_HILT_COMPILER = "androidx.hilt:hilt-compiler:$ANDROIDX_HILT_VERSION"
-
     const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:2.4.0-alpha01"
+    const val HILT_NAVIGATION_COMPOSE = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha02"
 
     const val BROWSER = "androidx.browser:browser:1.2.0"
 

@@ -44,6 +44,7 @@ dependencies {
     implementation(Deps.LIVEDATA)
 
     implementation(Deps.NAVIGATION_COMPOSE)
+    implementation(Deps.HILT_NAVIGATION_COMPOSE)
 
     implementation(Deps.DAGGER_HILT_ANDROID)
     kapt(Deps.DAGGER_HILT_COMPILER)
