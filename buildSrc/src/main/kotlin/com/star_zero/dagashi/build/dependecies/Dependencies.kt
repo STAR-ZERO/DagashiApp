@@ -5,8 +5,8 @@ object Dependencies {
     val KOTLIN_PLUGIN = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
 
     val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN}"
-    const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
-    const val COROUTINE_NATIVE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9-native-mt"
+    const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+    const val COROUTINE_NATIVE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-native-mt"
 
     // Compose
     val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.COMPOSE}"
