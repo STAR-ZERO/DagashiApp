@@ -9,7 +9,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,8 +47,8 @@ class MainActivity : AppCompatActivity() {
                         navController = navController,
                         startDestination = "milestone",
                     ) {
-                        composable("milestone") { backStackEntry ->
-                            MilestoneNav(backStackEntry)
+                        composable("milestone") {
+                            MilestoneNav()
                         }
                         composable(
                             "issue/{path}/{title}",
@@ -58,10 +57,12 @@ class MainActivity : AppCompatActivity() {
                                 navArgument("title") { type = NavType.StringType },
                             )
                         ) { backStackEntry ->
-                            IssueNav(backStackEntry)
+                            val path = backStackEntry.arguments!!.getString("path")!!
+                            val title = backStackEntry.arguments!!.getString("title")!!
+                            IssueNav(path, title)
                         }
-                        composable("setting") { backStackEntry ->
-                            SettingNav(backStackEntry)
+                        composable("setting") {
+                            SettingNav()
                         }
                     }
                 }
@@ -70,8 +71,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    private fun MilestoneNav(backStackEntry: NavBackStackEntry) {
-        val viewModel: MilestoneViewModel = hiltViewModel(backStackEntry)
+    private fun MilestoneNav() {
+        val viewModel: MilestoneViewModel = hiltViewModel()
         val uiState by viewModel.uiState.collectAsState()
 
         LaunchedEffect(null) {
@@ -87,13 +88,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    private fun IssueNav(backStackEntry: NavBackStackEntry) {
-        val viewModel: IssueViewModel = hiltViewModel(backStackEntry)
+    private fun IssueNav(path: String, title: String) {
+        val viewModel: IssueViewModel = hiltViewModel()
         val uiState by viewModel.uiState.collectAsState()
         val isOpenLinkInApp by viewModel.isOpenLinkInApp.collectAsState(initial = false)
-
-        val path = backStackEntry.arguments!!.getString("path")!!
-        val title = backStackEntry.arguments!!.getString("title")!!
 
         LaunchedEffect(null) {
             viewModel.getIssues(path)
@@ -110,8 +108,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    private fun SettingNav(backStackEntry: NavBackStackEntry) {
-        val viewModel: SettingViewModel = hiltViewModel(backStackEntry)
+    private fun SettingNav() {
+        val viewModel: SettingViewModel = hiltViewModel()
         val isOpenLinkInApp by viewModel.isOpenLinkInApp.collectAsState(initial = false)
         SettingScreen(
             isOpenLinkInApp = isOpenLinkInApp,
