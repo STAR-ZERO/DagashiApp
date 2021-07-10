@@ -43,12 +43,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.transform.CircleCropTransformation
 import com.google.accompanist.coil.rememberCoilPainter
+import com.google.accompanist.flowlayout.FlowRow
 import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.ui.components.ErrorRetry
-import com.star_zero.dagashi.ui.components.FlowRow
 import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.components.formatLinkedText
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
@@ -233,8 +233,8 @@ private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
 @Composable
 private fun IssueLabels(labels: List<Label>) {
     FlowRow(
-        verticalSpacing = 4.dp,
-        horizontalSpacing = 4.dp,
+        mainAxisSpacing = 4.dp,
+        crossAxisSpacing = 4.dp,
     ) {
         labels.forEach { label ->
             Box(
