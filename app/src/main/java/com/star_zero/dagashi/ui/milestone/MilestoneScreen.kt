@@ -121,7 +121,7 @@ private fun MilestoneContent(
 @Composable
 private fun MilestoneList(milestones: List<Milestone>, navigateToIssue: (Milestone) -> Unit) {
     LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)) {
-        items(milestones) { milestone ->
+        items(milestones, key = { it.id }) { milestone ->
             MilestoneCard(milestone, navigateToIssue)
         }
     }

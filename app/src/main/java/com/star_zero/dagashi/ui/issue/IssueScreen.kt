@@ -137,7 +137,7 @@ private fun IssueContent(
 @Composable
 private fun IssueList(issues: List<Issue>, isOpenLinkInApp: Boolean) {
     LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)) {
-        items(issues) { issue ->
+        items(issues, key = { it.url }) { issue ->
             IssueCard(issue, isOpenLinkInApp)
         }
     }
