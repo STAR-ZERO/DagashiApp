@@ -5,8 +5,11 @@ import com.star_zero.dagashi.core.data.datastore.Settings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SettingDataRepository(
+@Singleton
+class SettingDataRepository @Inject constructor(
     private val settingsDataStore: DataStore<Settings>,
 ) : SettingRepository {
 

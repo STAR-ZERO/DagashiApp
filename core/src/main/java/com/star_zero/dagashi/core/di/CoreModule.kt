@@ -1,6 +1,5 @@
 package com.star_zero.dagashi.core.di
 
-import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
@@ -12,29 +11,43 @@ import com.star_zero.dagashi.core.data.repository.SettingDataRepository
 import com.star_zero.dagashi.core.data.repository.SettingRepository
 import com.star_zero.dagashi.shared.DagashiSDK
 import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object CoreModule {
+abstract class CoreModule {
 
-    val Context.settingsDataStore: DataStore<Settings> by dataStore(
-        fileName = "settings.pb",
-        serializer = SettingsSerializer
-    )
+    @Singleton
+    @Binds
+    abstract fun bindDagashiRepository(repository: DagashiDataRepository): DagashiRepository
 
-    @Provides
-    fun provideDagashiRepository(application: Application): DagashiRepository {
-        val databaseDriverFactory = DatabaseDriverFactory(application)
-        val dagashiSDK = DagashiSDK(databaseDriverFactory)
-        return DagashiDataRepository(dagashiSDK)
-    }
+    @Singleton
+    @Binds
+    abstract fun bindSettingRepository(repository: SettingDataRepository): SettingRepository
 
-    @Provides
-    fun provideSettingRepository(application: Application): SettingRepository {
-        return SettingDataRepository(application.settingsDataStore)
+    companion object {
+        private val Context.settingsDataStore: DataStore<Settings> by dataStore(
+            fileName = "settings.pb",
+            serializer = SettingsSerializer
+        )
+
+        @Singleton
+        @Provides
+        fun provideSettingDataStore(@ApplicationContext context: Context): DataStore<Settings> {
+            return context.settingsDataStore
+        }
+
+        @Singleton
+        @Provides
+        fun provideDagashiSDK(@ApplicationContext context: Context): DagashiSDK {
+            val databaseDriverFactory = DatabaseDriverFactory(context)
+            return DagashiSDK(databaseDriverFactory)
+        }
     }
 }
