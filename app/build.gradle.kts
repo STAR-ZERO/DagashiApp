@@ -37,9 +37,6 @@ dependencies {
     implementation(Deps.COMPOSE_MATERIAL)
     implementation(Deps.COMPOSE_UI_TOOLING)
 
-    implementation(Deps.CONSTRAINT)
-    implementation(Deps.FRAGMENT)
-
     implementation(Deps.VIEWMODEL)
     implementation(Deps.LIVEDATA)
 

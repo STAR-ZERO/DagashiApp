@@ -20,10 +20,7 @@ object Dependencies {
     const val ANDROIDX_CORE = "androidx.core:core-ktx:1.6.0"
     const val APPCOMPAT = "androidx.appcompat:appcompat:1.3.0"
 
-    const val CONSTRAINT = "androidx.constraintlayout:constraintlayout:2.0.1"
     const val MATERIAL = "com.google.android.material:material:1.2.1"
-
-    const val FRAGMENT = "androidx.fragment:fragment-ktx:1.4.0-alpha04"
 
     private const val LIFECYCLE_VERSION = "2.4.0-alpha02"
     const val VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:$LIFECYCLE_VERSION"
