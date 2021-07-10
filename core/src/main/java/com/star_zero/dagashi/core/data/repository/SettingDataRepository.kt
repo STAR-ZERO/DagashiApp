@@ -1,6 +1,6 @@
 package com.star_zero.dagashi.core.data.repository
 
-import androidx.datastore.DataStore
+import androidx.datastore.core.DataStore
 import com.star_zero.dagashi.core.data.datastore.Settings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

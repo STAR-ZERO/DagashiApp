@@ -17,33 +17,33 @@ object Dependencies {
     val COMPOSE_DESKTOP_PLUGIN = "org.jetbrains.compose:compose-gradle-plugin:0.2.0-build132"
 
     // AndroidX
-    const val ANDROIDX_CORE = "androidx.core:core-ktx:1.3.1"
+    const val ANDROIDX_CORE = "androidx.core:core-ktx:1.6.0"
     const val APPCOMPAT = "androidx.appcompat:appcompat:1.3.0"
 
     const val CONSTRAINT = "androidx.constraintlayout:constraintlayout:2.0.1"
     const val MATERIAL = "com.google.android.material:material:1.2.1"
 
-    const val FRAGMENT = "androidx.fragment:fragment-ktx:1.3.0-alpha08"
+    const val FRAGMENT = "androidx.fragment:fragment-ktx:1.4.0-alpha04"
 
-    private const val LIFECYCLE_VERSION = "2.3.0-alpha07"
+    private const val LIFECYCLE_VERSION = "2.4.0-alpha02"
     const val VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:$LIFECYCLE_VERSION"
     const val LIVEDATA = "androidx.lifecycle:lifecycle-livedata-ktx:$LIFECYCLE_VERSION"
 
-    const val DATASTORE = "androidx.datastore:datastore-core:1.0.0-alpha01"
+    const val DATASTORE = "androidx.datastore:datastore:1.0.0-rc01"
 
-    const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:2.4.0-alpha01"
-    const val HILT_NAVIGATION_COMPOSE = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha02"
+    const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:1.0.0-alpha10"
+    const val HILT_NAVIGATION_COMPOSE = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha03"
 
     const val BROWSER = "androidx.browser:browser:1.2.0"
 
     // Dagger
-    private const val DAGGER_HILT_VERSION = "2.36"
+    private const val DAGGER_HILT_VERSION = "2.37"
     const val DAGGER_HILT_PLUGIN = "com.google.dagger:hilt-android-gradle-plugin:$DAGGER_HILT_VERSION"
     const val DAGGER_HILT_ANDROID = "com.google.dagger:hilt-android:$DAGGER_HILT_VERSION"
     const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-compiler:$DAGGER_HILT_VERSION"
 
     // API
-    private const val KTOR_VERSION = "1.4.1"
+    private const val KTOR_VERSION = "1.5.4"
     const val KTOR_CORE = "io.ktor:ktor-client-core:$KTOR_VERSION"
     const val KTOR_ANDROID = "io.ktor:ktor-client-android:$KTOR_VERSION"
     const val KTOR_DESKTOP = "io.ktor:ktor-client-cio:$KTOR_VERSION"
@@ -51,10 +51,10 @@ object Dependencies {
     const val KTOR_SERIALIZATION = "io.ktor:ktor-client-serialization:$KTOR_VERSION"
 
     val SERIALIZATION_PLUGIN = "org.jetbrains.kotlin:kotlin-serialization:${Versions.KOTLIN}"
-    const val SERIALIZATION_JSON = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0"
+    const val SERIALIZATION_JSON = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2"
 
     // DB
-    private const val SQLDELIGHT_VERSION = "1.4.3"
+    private const val SQLDELIGHT_VERSION = "1.5.0"
     const val SQLDELIGHT_PLUGIN = "com.squareup.sqldelight:gradle-plugin:$SQLDELIGHT_VERSION"
     const val SQLDELIGHT_RUNTIME = "com.squareup.sqldelight:runtime:$SQLDELIGHT_VERSION"
     const val SQLDELIGHT_ANDROID = "com.squareup.sqldelight:android-driver:$SQLDELIGHT_VERSION"
@@ -66,7 +66,7 @@ object Dependencies {
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-javalite:3.10.0"
     const val PROTOC = "com.google.protobuf:protoc:3.10.0"
 
-    const val ACCOMPANIST_COIL = "dev.chrisbanes.accompanist:accompanist-coil:0.6.0"
+    const val ACCOMPANIST_COIL = "com.google.accompanist:accompanist-coil:0.13.0"
 
     // Test
     const val JUNIT = "junit:junit:4.13"

@@ -1,7 +1,10 @@
 package com.star_zero.dagashi.core.di
 
 import android.app.Application
-import androidx.datastore.createDataStore
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import com.star_zero.dagashi.core.data.datastore.Settings
 import com.star_zero.dagashi.core.data.datastore.SettingsSerializer
 import com.star_zero.dagashi.core.data.repository.DagashiDataRepository
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
@@ -18,6 +21,11 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object CoreModule {
 
+    val Context.settingsDataStore: DataStore<Settings> by dataStore(
+        fileName = "settings.pb",
+        serializer = SettingsSerializer
+    )
+
     @Provides
     fun provideDagashiRepository(application: Application): DagashiRepository {
         val databaseDriverFactory = DatabaseDriverFactory(application)
@@ -27,10 +35,6 @@ object CoreModule {
 
     @Provides
     fun provideSettingRepository(application: Application): SettingRepository {
-        val settingsDataStore = application.createDataStore(
-            fileName = "settings.pb",
-            serializer = SettingsSerializer
-        )
-        return SettingDataRepository(settingsDataStore)
+        return SettingDataRepository(application.settingsDataStore)
     }
 }

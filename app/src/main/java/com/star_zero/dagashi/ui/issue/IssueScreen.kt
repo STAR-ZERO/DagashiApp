@@ -2,6 +2,7 @@ package com.star_zero.dagashi.ui.issue
 
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.transform.CircleCropTransformation
+import com.google.accompanist.coil.rememberCoilPainter
 import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
@@ -51,7 +53,6 @@ import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.components.formatLinkedText
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.LocalNavigator
-import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun IssueScreen(
@@ -258,13 +259,15 @@ private fun Comment(comment: Comment, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row(modifier = Modifier.padding(vertical = 8.dp)) {
 
-            CoilImage(
-                data = comment.author.avatarUrl,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                requestBuilder = {
-                    transformations(CircleCropTransformation())
-                }
+            Image(
+                painter = rememberCoilPainter(
+                    request = comment.author.avatarUrl,
+                    requestBuilder = {
+                        transformations(CircleCropTransformation())
+                    }
+                ),
+                contentDescription = comment.author.name,
+                modifier = Modifier.size(24.dp)
             )
 
             Spacer(modifier = Modifier.size(8.dp))
