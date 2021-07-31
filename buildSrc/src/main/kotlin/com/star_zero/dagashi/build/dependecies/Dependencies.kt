@@ -63,7 +63,7 @@ object Dependencies {
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-javalite:3.10.0"
     const val PROTOC = "com.google.protobuf:protoc:3.10.0"
 
-    private const val ACCOMPANIST_VERSION = "0.13.0"
+    private const val ACCOMPANIST_VERSION = "0.15.0"
     const val ACCOMPANIST_COIL = "com.google.accompanist:accompanist-coil:$ACCOMPANIST_VERSION"
     const val ACCOMPANIST_FLOW = "com.google.accompanist:accompanist-flowlayout:$ACCOMPANIST_VERSION"
 
