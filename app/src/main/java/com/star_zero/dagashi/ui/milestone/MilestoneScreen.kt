@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,23 +18,25 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.ui.components.ErrorRetry
-import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.LocalNavigator
 
@@ -46,7 +48,10 @@ fun MilestoneScreen(
     val navigator = LocalNavigator.current
 
     Surface(color = MaterialTheme.colors.background) {
+        val scaffoldState = rememberScaffoldState()
+
         Scaffold(
+            scaffoldState = scaffoldState,
             topBar = {
                 AppBar(
                     onRefresh = onRefresh,
@@ -54,10 +59,11 @@ fun MilestoneScreen(
                         navigator.navigateSetting()
                     }
                 )
-            }
+            },
         ) {
             MilestoneContent(
                 uiState = uiState,
+                scaffoldState = scaffoldState,
                 onRefresh = onRefresh,
                 navigateToIssue = { milestone ->
                     navigator.navigateIssue(milestone.path, milestone.title)
@@ -77,14 +83,7 @@ private fun AppBar(onRefresh: () -> Unit, navigateToSetting: () -> Unit) {
             IconButton(onClick = {
                 navigateToSetting()
             }) {
-
                 Icon(Icons.Filled.Settings, "Settings")
-            }
-
-            IconButton(onClick = {
-                onRefresh()
-            }) {
-                Icon(Icons.Filled.Refresh, "Refresh")
             }
         }
     )
@@ -93,28 +92,34 @@ private fun AppBar(onRefresh: () -> Unit, navigateToSetting: () -> Unit) {
 @Composable
 private fun MilestoneContent(
     uiState: MilestoneUiState,
+    scaffoldState: ScaffoldState,
     onRefresh: () -> Unit,
     navigateToIssue: (Milestone) -> Unit,
 ) {
-    @Suppress("CascadeIf")
-    if (uiState.error) {
+    if (uiState.error && uiState.milestones.isEmpty()) {
         ErrorRetry(
             onRetry = {
                 onRefresh()
             }
         )
-    } else if (uiState.loading) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
-            LoadingProgress(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
     } else {
-        MilestoneList(uiState.milestones, navigateToIssue)
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(uiState.loading),
+            onRefresh = { onRefresh() }
+        ) {
+            if (uiState.milestones.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize()) // dummy ui for SwipeRefresh
+            } else {
+                MilestoneList(uiState.milestones, navigateToIssue)
+            }
+        }
+
+        if (uiState.error) {
+            val message = stringResource(id = R.string.text_error)
+            LaunchedEffect(scaffoldState.snackbarHostState) {
+                scaffoldState.snackbarHostState.showSnackbar(message)
+            }
+        }
     }
 }
 

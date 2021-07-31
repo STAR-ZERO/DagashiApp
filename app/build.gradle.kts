@@ -50,6 +50,7 @@ dependencies {
 
     implementation(Deps.ACCOMPANIST_COIL)
     implementation(Deps.ACCOMPANIST_FLOW)
+    implementation(Deps.ACCOMPANIST_SWIPE_REFRESH)
 
     testImplementation(Deps.JUNIT)
     androidTestImplementation(Deps.ANDROIDX_JUNIT)

@@ -24,7 +24,7 @@ class IssueViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun getIssues(path: String) {
-        if (_uiState.value.issues.isNotEmpty() || _uiState.value.loading) {
+        if (_uiState.value.loading) {
             return
         }
 
@@ -43,7 +43,6 @@ class IssueViewModel @Inject constructor(
     }
 
     fun refresh(path: String) {
-        _uiState.update { copy(issues = listOf()) }
         getIssues(path)
     }
 }

@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,31 +25,36 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.transform.CircleCropTransformation
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.star_zero.dagashi.R
 import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.ui.components.ErrorRetry
-import com.star_zero.dagashi.ui.components.LoadingProgress
 import com.star_zero.dagashi.ui.components.formatLinkedText
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.LocalNavigator
@@ -63,10 +68,12 @@ fun IssueScreen(
 ) {
     val navigator = LocalNavigator.current
     Surface(color = MaterialTheme.colors.background) {
+        val scaffoldState = rememberScaffoldState()
+
         Scaffold(
+            scaffoldState = scaffoldState,
             topBar = {
                 AppBar(
-                    onRefresh = onRefresh,
                     title = title,
                     navigateBack = {
                         navigator.navigateBack()
@@ -74,7 +81,12 @@ fun IssueScreen(
                 )
             }
         ) {
-            IssueContent(uiState, isOpenLinkInApp, onRefresh)
+            IssueContent(
+                uiState = uiState,
+                scaffoldState = scaffoldState,
+                isOpenLinkInApp = isOpenLinkInApp,
+                onRefresh = onRefresh
+            )
         }
     }
 }
@@ -82,7 +94,6 @@ fun IssueScreen(
 @Composable
 private fun AppBar(
     title: String,
-    onRefresh: () -> Unit,
     navigateBack: () -> Unit
 ) {
     TopAppBar(
@@ -96,41 +107,40 @@ private fun AppBar(
                 Icon(Icons.Filled.ArrowBack, "Back")
             }
         },
-        actions = {
-            IconButton(onClick = {
-                onRefresh()
-            }) {
-                Icon(Icons.Filled.Refresh, "Refresh")
-            }
-        }
     )
 }
 
 @Composable
 private fun IssueContent(
     uiState: IssueUiState,
+    scaffoldState: ScaffoldState,
     isOpenLinkInApp: Boolean,
     onRefresh: () -> Unit
 ) {
-    @Suppress("CascadeIf")
-    if (uiState.error) {
+    if (uiState.error && uiState.issues.isEmpty()) {
         ErrorRetry(
             onRetry = {
                 onRefresh()
             }
         )
-    } else if (uiState.loading) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
-            LoadingProgress(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
     } else {
-        IssueList(uiState.issues, isOpenLinkInApp)
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(uiState.loading),
+            onRefresh = { onRefresh() }
+        ) {
+            if (uiState.issues.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize()) // dummy ui for SwipeRefresh
+            } else {
+                IssueList(uiState.issues, isOpenLinkInApp)
+            }
+        }
+
+        if (uiState.error) {
+            val message = stringResource(id = R.string.text_error)
+            LaunchedEffect(scaffoldState.snackbarHostState) {
+                scaffoldState.snackbarHostState.showSnackbar(message)
+            }
+        }
     }
 }
 
