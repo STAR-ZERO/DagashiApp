@@ -171,7 +171,8 @@ private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
     Card(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        elevation = 4.dp,
     ) {
         Column(
             modifier = Modifier.padding(8.dp)

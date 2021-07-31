@@ -140,7 +140,8 @@ private fun MilestoneCard(milestone: Milestone, navigateToIssue: (Milestone) -> 
             .fillMaxWidth()
             .clickable(onClick = {
                 navigateToIssue(milestone)
-            })
+            }),
+        elevation = 4.dp,
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
