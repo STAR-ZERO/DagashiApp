@@ -6,7 +6,7 @@ apply(from = "build_dependencies.gradle.kts")
 
 repositories {
     google()
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
