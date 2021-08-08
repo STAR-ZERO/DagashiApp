@@ -1,8 +1,16 @@
 package com.star_zero.dagashi.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -10,10 +18,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
-import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
 import com.star_zero.dagashi.core.data.repository.SettingRepository
 import com.star_zero.dagashi.ui.issue.IssueScreen
@@ -37,17 +45,48 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var settingRepository: SettingRepository
 
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             DagashiAppTheme {
-                val navController = rememberNavController()
+                val navController = rememberAnimatedNavController()
                 CompositionLocalProvider(LocalNavigator provides AppNavigator(navController)) {
-                    NavHost(
+                    AnimatedNavHost(
                         navController = navController,
                         startDestination = "milestone",
                     ) {
-                        composable("milestone") {
+                        composable(
+                            "milestone",
+                            exitTransition = { _, target ->
+                                when (target.destination.route) {
+                                    "issue/{path}/{title}" -> {
+                                        slideOutHorizontally(
+                                            targetOffsetX = { -it },
+                                            animationSpec = tween(
+                                                durationMillis = NAV_ANIMATION_DURATION,
+                                                easing = LinearEasing
+                                            )
+                                        )
+                                    }
+                                    else -> null
+                                }
+                            },
+                            popEnterTransition = { initial, _ ->
+                                when (initial.destination.route) {
+                                    "issue/{path}/{title}" -> {
+                                        slideInHorizontally(
+                                            initialOffsetX = { -it },
+                                            animationSpec = tween(
+                                                durationMillis = NAV_ANIMATION_DURATION,
+                                                easing = LinearEasing
+                                            )
+                                        )
+                                    }
+                                    else -> null
+                                }
+                            },
+                        ) {
                             MilestoneNav()
                         }
                         composable(
@@ -55,13 +94,72 @@ class MainActivity : AppCompatActivity() {
                             arguments = listOf(
                                 navArgument("path") { type = NavType.StringType },
                                 navArgument("title") { type = NavType.StringType },
-                            )
+                            ),
+                            enterTransition = { initial, _ ->
+                                when (initial.destination.route) {
+                                    "milestone" -> {
+                                        slideInHorizontally(
+                                            initialOffsetX = { it },
+                                            animationSpec = tween(
+                                                durationMillis = NAV_ANIMATION_DURATION,
+                                                easing = LinearEasing
+                                            )
+                                        )
+                                    }
+                                    else -> null
+                                }
+                            },
+                            popExitTransition = { _, target ->
+                                when (target.destination.route) {
+                                    "milestone" -> {
+                                        slideOutHorizontally(
+                                            targetOffsetX = { it },
+                                            animationSpec = tween(
+                                                durationMillis = NAV_ANIMATION_DURATION,
+                                                easing = LinearEasing
+                                            )
+                                        )
+                                    }
+                                    else -> null
+                                }
+                            }
                         ) { backStackEntry ->
                             val path = backStackEntry.arguments!!.getString("path")!!
                             val title = backStackEntry.arguments!!.getString("title")!!
                             IssueNav(path, title)
                         }
-                        composable("setting") {
+                        composable(
+                            "setting",
+                            enterTransition = { initial, _ ->
+                                when (initial.destination.route) {
+                                    "milestone" -> {
+                                        slideInVertically(
+                                            initialOffsetY = { it },
+                                            animationSpec = tween(
+                                                durationMillis = NAV_ANIMATION_DURATION,
+                                                easing = LinearEasing
+                                            )
+                                        )
+                                    }
+                                    else -> null
+                                }
+                            },
+                            popExitTransition = { _, target ->
+                                Log.d("HOGE", "v ${target.destination.route}")
+                                when (target.destination.route) {
+                                    "milestone" -> {
+                                        slideOutVertically(
+                                            targetOffsetY = { it },
+                                            animationSpec = tween(
+                                                durationMillis = NAV_ANIMATION_DURATION,
+                                                easing = LinearEasing
+                                            )
+                                        )
+                                    }
+                                    else -> null
+                                }
+                            },
+                        ) {
                             SettingNav()
                         }
                     }
@@ -117,5 +215,9 @@ class MainActivity : AppCompatActivity() {
                 viewModel.updateOpenLinkInApp(it)
             }
         )
+    }
+
+    companion object {
+        private const val NAV_ANIMATION_DURATION = 300
     }
 }

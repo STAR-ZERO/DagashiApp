@@ -65,6 +65,7 @@ object Dependencies {
     private const val ACCOMPANIST_VERSION = "0.16.0"
     const val ACCOMPANIST_FLOW = "com.google.accompanist:accompanist-flowlayout:$ACCOMPANIST_VERSION"
     const val ACCOMPANIST_SWIPE_REFRESH = "com.google.accompanist:accompanist-swiperefresh:$ACCOMPANIST_VERSION"
+    const val ACCOMPANIST_NAVIGATION_ANIMATION = "com.google.accompanist:accompanist-navigation-animation:$ACCOMPANIST_VERSION"
 
     const val COMPOSE_COIL = "io.coil-kt:coil-compose:1.3.2"
 

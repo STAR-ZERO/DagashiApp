@@ -54,6 +54,7 @@ dependencies {
 
     implementation(Deps.ACCOMPANIST_FLOW)
     implementation(Deps.ACCOMPANIST_SWIPE_REFRESH)
+    implementation(Deps.ACCOMPANIST_NAVIGATION_ANIMATION)
 
     implementation(Deps.COMPOSE_COIL)
 
