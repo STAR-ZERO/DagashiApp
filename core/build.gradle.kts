@@ -11,10 +11,12 @@ plugins {
 
 apply<DagashiPlugin>()
 
+hilt {
+    enableAggregatingTask = true
+}
+
 dependencies {
     api(project(":shared"))
-
-    api(Deps.KOTLIN_STDLIB)
 
     api(Deps.ANDROIDX_CORE)
     api(Deps.APPCOMPAT)

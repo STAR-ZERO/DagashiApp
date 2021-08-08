@@ -4,9 +4,8 @@ object Dependencies {
     val ANDROID_GRADLE_PLUGIN = "com.android.tools.build:gradle:${Versions.ANDROID_GRADLE_PLUGIN}"
     val KOTLIN_PLUGIN = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
 
-    val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN}"
-    const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
-    const val COROUTINE_NATIVE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-native-mt"
+    const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
+    const val COROUTINE_NATIVE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt"
 
     // Compose
     val COMPOSE_UI = "androidx.compose.ui:ui:${Versions.COMPOSE}"
@@ -26,7 +25,7 @@ object Dependencies {
     const val VIEWMODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:$LIFECYCLE_VERSION"
     const val LIVEDATA = "androidx.lifecycle:lifecycle-livedata-ktx:$LIFECYCLE_VERSION"
 
-    const val DATASTORE = "androidx.datastore:datastore:1.0.0-rc01"
+    const val DATASTORE = "androidx.datastore:datastore:1.0.0"
 
     const val NAVIGATION_COMPOSE = "androidx.navigation:navigation-compose:1.0.0-alpha10"
     const val HILT_NAVIGATION_COMPOSE = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha03"
@@ -34,13 +33,13 @@ object Dependencies {
     const val BROWSER = "androidx.browser:browser:1.2.0"
 
     // Dagger
-    private const val DAGGER_HILT_VERSION = "2.37"
+    private const val DAGGER_HILT_VERSION = "2.38.1"
     const val DAGGER_HILT_PLUGIN = "com.google.dagger:hilt-android-gradle-plugin:$DAGGER_HILT_VERSION"
     const val DAGGER_HILT_ANDROID = "com.google.dagger:hilt-android:$DAGGER_HILT_VERSION"
     const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-compiler:$DAGGER_HILT_VERSION"
 
     // API
-    private const val KTOR_VERSION = "1.5.4"
+    private const val KTOR_VERSION = "1.6.2"
     const val KTOR_CORE = "io.ktor:ktor-client-core:$KTOR_VERSION"
     const val KTOR_ANDROID = "io.ktor:ktor-client-android:$KTOR_VERSION"
     const val KTOR_DESKTOP = "io.ktor:ktor-client-cio:$KTOR_VERSION"
@@ -51,7 +50,7 @@ object Dependencies {
     const val SERIALIZATION_JSON = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2"
 
     // DB
-    private const val SQLDELIGHT_VERSION = "1.5.0"
+    private const val SQLDELIGHT_VERSION = "1.5.1"
     const val SQLDELIGHT_PLUGIN = "com.squareup.sqldelight:gradle-plugin:$SQLDELIGHT_VERSION"
     const val SQLDELIGHT_RUNTIME = "com.squareup.sqldelight:runtime:$SQLDELIGHT_VERSION"
     const val SQLDELIGHT_ANDROID = "com.squareup.sqldelight:android-driver:$SQLDELIGHT_VERSION"
