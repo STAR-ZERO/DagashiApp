@@ -68,6 +68,8 @@ object Dependencies {
     const val ACCOMPANIST_FLOW = "com.google.accompanist:accompanist-flowlayout:$ACCOMPANIST_VERSION"
     const val ACCOMPANIST_SWIPE_REFRESH = "com.google.accompanist:accompanist-swiperefresh:$ACCOMPANIST_VERSION"
 
+    const val GRADLE_VERSIONS_PLUGIN = "com.github.ben-manes:gradle-versions-plugin:0.39.0"
+
     // Test
     const val JUNIT = "junit:junit:4.13"
     const val ANDROIDX_JUNIT = "androidx.test.ext:junit:1.1.2"

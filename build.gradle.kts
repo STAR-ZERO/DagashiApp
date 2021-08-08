@@ -6,6 +6,7 @@ buildscript {
         google()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        gradlePluginPortal()
     }
     dependencies {
         classpath(Deps.ANDROID_GRADLE_PLUGIN)
@@ -15,6 +16,7 @@ buildscript {
         classpath(Deps.PROTOBUF_PLUGIN)
         classpath(Deps.SQLDELIGHT_PLUGIN)
         classpath(Deps.COMPOSE_DESKTOP_PLUGIN)
+        classpath(Deps.GRADLE_VERSIONS_PLUGIN)
     }
 }
 
@@ -23,7 +25,10 @@ allprojects {
         google()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        gradlePluginPortal()
     }
+    // ./gradlew dependencyUpdates -DoutputFormatter=html
+    apply(plugin = "com.github.ben-manes.versions")
 }
 
 tasks.register("clean", Delete::class) {
