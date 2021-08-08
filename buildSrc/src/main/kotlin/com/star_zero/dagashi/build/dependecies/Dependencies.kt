@@ -62,10 +62,11 @@ object Dependencies {
     const val PROTOBUF_JAVA = "com.google.protobuf:protobuf-javalite:3.10.0"
     const val PROTOC = "com.google.protobuf:protoc:3.10.0"
 
-    private const val ACCOMPANIST_VERSION = "0.15.0"
-    const val ACCOMPANIST_COIL = "com.google.accompanist:accompanist-coil:$ACCOMPANIST_VERSION"
+    private const val ACCOMPANIST_VERSION = "0.16.0"
     const val ACCOMPANIST_FLOW = "com.google.accompanist:accompanist-flowlayout:$ACCOMPANIST_VERSION"
     const val ACCOMPANIST_SWIPE_REFRESH = "com.google.accompanist:accompanist-swiperefresh:$ACCOMPANIST_VERSION"
+
+    const val COMPOSE_COIL = "io.coil-kt:coil-compose:1.3.2"
 
     const val GRADLE_VERSIONS_PLUGIN = "com.github.ben-manes:gradle-versions-plugin:0.39.0"
 
