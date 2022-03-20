@@ -17,7 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
-import androidx.navigation.compose.navArgument
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var settingRepository: SettingRepository
 
-    @ExperimentalAnimationApi
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         composable(
                             "milestone",
-                            exitTransition = { _, target ->
-                                when (target.destination.route) {
+                            exitTransition = {
+                                when (targetState.destination.route) {
                                     "issue/{path}/{title}" -> {
                                         slideOutHorizontally(
                                             targetOffsetX = { -it },
@@ -71,8 +71,8 @@ class MainActivity : AppCompatActivity() {
                                     else -> null
                                 }
                             },
-                            popEnterTransition = { initial, _ ->
-                                when (initial.destination.route) {
+                            popEnterTransition = {
+                                when (initialState.destination.route) {
                                     "issue/{path}/{title}" -> {
                                         slideInHorizontally(
                                             initialOffsetX = { -it },
@@ -94,8 +94,8 @@ class MainActivity : AppCompatActivity() {
                                 navArgument("path") { type = NavType.StringType },
                                 navArgument("title") { type = NavType.StringType },
                             ),
-                            enterTransition = { initial, _ ->
-                                when (initial.destination.route) {
+                            enterTransition = {
+                                when (initialState.destination.route) {
                                     "milestone" -> {
                                         slideInHorizontally(
                                             initialOffsetX = { it },
@@ -108,8 +108,8 @@ class MainActivity : AppCompatActivity() {
                                     else -> null
                                 }
                             },
-                            popExitTransition = { _, target ->
-                                when (target.destination.route) {
+                            popExitTransition = {
+                                when (targetState.destination.route) {
                                     "milestone" -> {
                                         slideOutHorizontally(
                                             targetOffsetX = { it },
@@ -129,8 +129,8 @@ class MainActivity : AppCompatActivity() {
                         }
                         composable(
                             "setting",
-                            enterTransition = { initial, _ ->
-                                when (initial.destination.route) {
+                            enterTransition = {
+                                when (initialState.destination.route) {
                                     "milestone" -> {
                                         slideInVertically(
                                             initialOffsetY = { it },
@@ -143,8 +143,8 @@ class MainActivity : AppCompatActivity() {
                                     else -> null
                                 }
                             },
-                            popExitTransition = { _, target ->
-                                when (target.destination.route) {
+                            popExitTransition = {
+                                when (targetState.destination.route) {
                                     "milestone" -> {
                                         slideOutVertically(
                                             targetOffsetY = { it },
