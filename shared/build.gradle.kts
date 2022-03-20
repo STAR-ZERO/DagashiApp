@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -8,106 +6,77 @@ plugins {
     id("com.squareup.sqldelight")
 }
 
-repositories {
-    gradlePluginPortal()
-    google()
-    mavenCentral()
-    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
-}
-
-android {
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
-    // https://stackoverflow.com/questions/65372825/kotlin-multiplatform-configuration-issue
-    configurations {
-        create("androidTestApi")
-        create("androidTestDebugApi")
-        create("androidTestReleaseApi")
-        create("testApi")
-        create("testDebugApi")
-        create("testReleaseApi")
-    }
-}
-
 kotlin {
     android()
-    jvm("desktop")
-    ios {
-        binaries {
-            framework {
-                baseName = "shared"
-            }
-        }
-    }
 
-    // https://github.com/cashapp/sqldelight/issues/2044#issuecomment-721319037
-    val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
-    if (onPhone) {
-        iosArm64("ios")
-    } else {
-        iosX64("ios")
+    listOf(
+        iosX64(),
+        iosArm64(),
+    ).forEach {
+        it.binaries.framework {
+            baseName = "shared"
+        }
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(Deps.COROUTINE_NATIVE)
-                implementation(Deps.KTOR_CORE)
-                implementation(Deps.KTOR_SERIALIZATION)
-                implementation(Deps.SERIALIZATION_JSON)
-                implementation(Deps.SQLDELIGHT_RUNTIME)
+                implementation(libs.coroutines.native)
+                implementation(libs.ktor.core)
+                implementation(libs.ktor.serialization)
+                implementation(libs.kotlinx.serialization)
+                implementation(libs.sqldelight.runtime)
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(libs.kotlin.test.common)
+                implementation(libs.kotlin.test.annotations)
             }
         }
         val androidMain by getting {
             dependencies {
-                implementation(Deps.KTOR_ANDROID)
-                implementation(Deps.SQLDELIGHT_ANDROID)
+                implementation(libs.ktor.android)
+                implementation(libs.sqldelight.android)
             }
         }
         val androidTest by getting {
+            dependsOn(commonMain)
             dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13")
+                implementation(libs.kotlin.test.junit)
+                implementation(libs.junit)
             }
         }
-        val desktopMain by getting {
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+
             dependencies {
-                implementation(Deps.KTOR_DESKTOP)
-                implementation(Deps.SQLDELIGHT_SQLITE)
+                implementation(libs.ktor.ios)
+                implementation(libs.sqldelight.native)
             }
         }
-        val iosMain by getting {
-            dependencies {
-                implementation(Deps.KTOR_IOS)
-                implementation(Deps.SQLDELIGHT_NATIVE)
-            }
+        val iosX64Test by getting
+        val iosArm64Test by getting
+        val iosTest by creating {
+            dependsOn(commonTest)
+            iosX64Test.dependsOn(this)
+            iosArm64Test.dependsOn(this)
         }
-        val iosTest by getting
     }
 }
 
-apply<DagashiPlugin>()
-
-val packForXcode by tasks.creating(Sync::class) {
-    group = "build"
-    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
-    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
-    val targetName = "ios" + if (sdkName.startsWith("iphoneos")) "Arm64" else "X64"
-    val framework =
-        kotlin.targets.getByName<KotlinNativeTarget>(targetName).binaries.getFramework(mode)
-    inputs.property("mode", mode)
-    dependsOn(framework.linkTask)
-    val targetDir = File(buildDir, "xcode-frameworks")
-    from({ framework.outputDirectory })
-    into(targetDir)
+android {
+    compileSdk = AndroidConfigurations.COMPILE_SDK
+    defaultConfig {
+        minSdk = AndroidConfigurations.MIN_SDK
+        targetSdk = AndroidConfigurations.TARGET_SDK
+    }
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 }
-tasks.getByName("build").dependsOn(packForXcode)
 
 sqldelight {
     database("DagashiDatabase") {

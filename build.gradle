@@ -1,0 +1,25 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath(libs.bundles.plugins)
+    }
+}
+
+allprojects {
+    // ./gradlew dependencyUpdates -DoutputFormatter=html
+    apply plugin: "com.github.ben-manes.versions"
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
