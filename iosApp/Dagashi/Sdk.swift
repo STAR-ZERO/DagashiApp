@@ -7,4 +7,7 @@
 
 import shared
 
-let dagashiSDK = DagashiSDK(databaseDriverFactory: DatabaseDriverFactory())
+let dagashiSDK = DagashiSDK(
+    dagashiAPI: DagashiAPI.Companion().create(),
+    databaseDriverFactory: DatabaseDriverFactory()
+)

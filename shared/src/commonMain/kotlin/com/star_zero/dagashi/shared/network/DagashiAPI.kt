@@ -3,22 +3,18 @@ package com.star_zero.dagashi.shared.network
 import com.star_zero.dagashi.shared.DispatchersIO
 import com.star_zero.dagashi.shared.entity.IssueRootEntity
 import com.star_zero.dagashi.shared.entity.MilestoneRootEntity
-import com.star_zero.dagashi.shared.model.*
-import io.ktor.client.*
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.*
+import com.star_zero.dagashi.shared.model.Author
+import com.star_zero.dagashi.shared.model.Comment
+import com.star_zero.dagashi.shared.model.Issue
+import com.star_zero.dagashi.shared.model.Label
+import com.star_zero.dagashi.shared.model.Milestone
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
 
-class DagashiAPI {
-
-    private val client = HttpClient {
-        install(JsonFeature) {
-            val json = Json { ignoreUnknownKeys = true }
-            serializer = KotlinxSerializer(json)
-        }
-    }
+class DagashiAPI(
+    private val client: HttpClient
+) {
 
     @Throws(Exception::class)
     suspend fun milestones(): List<Milestone> = withContext(DispatchersIO) {

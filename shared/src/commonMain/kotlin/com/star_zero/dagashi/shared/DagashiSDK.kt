@@ -6,8 +6,10 @@ import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.shared.network.DagashiAPI
 
-class DagashiSDK(databaseDriverFactory: DatabaseDriverFactory) {
-    private val dagashiAPI = DagashiAPI()
+class DagashiSDK(
+    private val dagashiAPI: DagashiAPI,
+    databaseDriverFactory: DatabaseDriverFactory
+) {
     private val db = DagashiDatabase(databaseDriverFactory.createDriver())
 
     suspend fun getMilestone(forceReload: Boolean): List<Milestone> {

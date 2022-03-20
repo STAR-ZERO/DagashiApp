@@ -12,8 +12,6 @@
 		BA1189A225441C3100FA25E3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA1189A125441C3100FA25E3 /* Preview Assets.xcassets */; };
 		BA1189AD25441C3100FA25E3 /* DagashiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1189AC25441C3100FA25E3 /* DagashiTests.swift */; };
 		BA1189B825441C3100FA25E3 /* DagashiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1189B725441C3100FA25E3 /* DagashiUITests.swift */; };
-		BA1189D925441E6900FA25E3 /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA1189D825441E6900FA25E3 /* shared.framework */; };
-		BA1189DA25441E6900FA25E3 /* shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BA1189D825441E6900FA25E3 /* shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA691B732545228300FC99EE /* MilestoneList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA691B722545228300FC99EE /* MilestoneList.swift */; };
 		BA69E9DA25453B21001E13AD /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA69E9D925453B21001E13AD /* ActivityIndicator.swift */; };
 		BA69E9E225453DF3001E13AD /* MilestoneRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA69E9E125453DF3001E13AD /* MilestoneRow.swift */; };
@@ -38,20 +36,6 @@
 			remoteInfo = Dagashi;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		BA1189DB25441E6900FA25E3 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BA1189DA25441E6900FA25E3 /* shared.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		BA11899725441C3000FA25E3 /* Dagashi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dagashi.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,7 +63,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA1189D925441E6900FA25E3 /* shared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,7 +190,6 @@
 				BA11899325441C3000FA25E3 /* Sources */,
 				BA11899425441C3000FA25E3 /* Frameworks */,
 				BA11899525441C3000FA25E3 /* Resources */,
-				BA1189DB25441E6900FA25E3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -338,7 +320,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :shared:packForXCode -PXCODE_CONFIGURATION=${CONFIGURATION}\n";
+			shellScript = "cd \"$SRCROOT/..\"\n./gradlew :shared:embedAndSignAppleFrameworkForXcode\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -513,7 +495,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Dagashi/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				INFOPLIST_FILE = Dagashi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -535,7 +517,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Dagashi/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				INFOPLIST_FILE = Dagashi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
