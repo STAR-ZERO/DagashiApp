@@ -1,6 +1,5 @@
 package com.star_zero.dagashi.shared.network
 
-import com.star_zero.dagashi.shared.DispatchersIO
 import com.star_zero.dagashi.shared.entity.IssueRootEntity
 import com.star_zero.dagashi.shared.entity.MilestoneRootEntity
 import com.star_zero.dagashi.shared.model.Author
@@ -10,16 +9,15 @@ import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.shared.model.Milestone
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
-import kotlinx.coroutines.withContext
 
 class DagashiAPI(
     private val client: HttpClient
 ) {
 
     @Throws(Exception::class)
-    suspend fun milestones(): List<Milestone> = withContext(DispatchersIO) {
+    suspend fun milestones(): List<Milestone> {
         val milestoneRoot = client.get<MilestoneRootEntity>("$ENDPOINT/api/index.json")
-        milestoneRoot.milestones.nodes.map {
+        return milestoneRoot.milestones.nodes.map {
             Milestone(
                 it.id,
                 it.title,
@@ -30,9 +28,9 @@ class DagashiAPI(
     }
 
     @Throws(Exception::class)
-    suspend fun issues(path: String): List<Issue> = withContext(DispatchersIO) {
+    suspend fun issues(path: String): List<Issue> {
         val issueRoot = client.get<IssueRootEntity>("$ENDPOINT/api/issue/$path.json")
-        issueRoot.issues.nodes.map { issueNode ->
+        return issueRoot.issues.nodes.map { issueNode ->
             Issue(
                 issueNode.url,
                 issueNode.title,

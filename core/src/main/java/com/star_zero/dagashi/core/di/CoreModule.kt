@@ -3,6 +3,7 @@ package com.star_zero.dagashi.core.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import com.star_zero.dagashi.core.AppDispatchers
 import com.star_zero.dagashi.core.data.datastore.Settings
 import com.star_zero.dagashi.core.data.datastore.SettingsSerializer
 import com.star_zero.dagashi.core.data.repository.DagashiDataRepository
@@ -19,6 +20,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
@@ -38,6 +40,16 @@ abstract class CoreModule {
             fileName = "settings.pb",
             serializer = SettingsSerializer
         )
+
+        @Singleton
+        @Provides
+        fun provideAppDispatchers(): AppDispatchers {
+            return object : AppDispatchers {
+                override val main = Dispatchers.Main
+                override val io = Dispatchers.IO
+                override val default = Dispatchers.Default
+            }
+        }
 
         @Singleton
         @Provides
