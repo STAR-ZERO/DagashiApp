@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.star_zero.dagashi.R
@@ -41,7 +42,23 @@ import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.LocalNavigator
 
 @Composable
-fun MilestoneScreen(
+fun MilestoneScreen() {
+    val viewModel: MilestoneViewModel = hiltViewModel()
+
+    LaunchedEffect(Unit) {
+        viewModel.getMilestones(false)
+    }
+
+    MilestoneContainer(
+        uiState = viewModel.uiState,
+        onRefresh = {
+            viewModel.refresh()
+        }
+    )
+}
+
+@Composable
+private fun MilestoneContainer(
     uiState: MilestoneUiState,
     onRefresh: () -> Unit,
 ) {
@@ -54,7 +71,6 @@ fun MilestoneScreen(
             scaffoldState = scaffoldState,
             topBar = {
                 AppBar(
-                    onRefresh = onRefresh,
                     navigateToSetting = {
                         navigator.navigateSetting()
                     }
@@ -74,7 +90,7 @@ fun MilestoneScreen(
 }
 
 @Composable
-private fun AppBar(onRefresh: () -> Unit, navigateToSetting: () -> Unit) {
+private fun AppBar(navigateToSetting: () -> Unit) {
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.milestone_title))

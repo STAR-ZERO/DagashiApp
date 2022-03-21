@@ -19,17 +19,37 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.LocalNavigator
 
 @Composable
-fun SettingScreen(isOpenLinkInApp: Boolean, updateOpenLinkInApp: (Boolean) -> Unit) {
+fun SettingScreen() {
+    val viewModel: SettingViewModel = hiltViewModel()
+
+    val uiState by viewModel.uiState.collectAsState(initial = SettingUiState())
+
+    SettingContainer(
+        uiState = uiState,
+        updateOpenLinkInApp = {
+            viewModel.updateOpenLinkInApp(it)
+        }
+    )
+}
+
+@Composable
+private fun SettingContainer(
+    uiState: SettingUiState,
+    updateOpenLinkInApp: (Boolean) -> Unit
+) {
     val navigator = LocalNavigator.current
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
@@ -41,7 +61,7 @@ fun SettingScreen(isOpenLinkInApp: Boolean, updateOpenLinkInApp: (Boolean) -> Un
                 )
             }
         ) {
-            SettingContent(isOpenLinkInApp, updateOpenLinkInApp)
+            SettingContent(uiState, updateOpenLinkInApp)
         }
     }
 }
@@ -63,11 +83,14 @@ private fun AppBar(navigateBack: () -> Unit) {
 }
 
 @Composable
-private fun SettingContent(isOpenLinkInApp: Boolean, updateOpenLinkInApp: (Boolean) -> Unit) {
+private fun SettingContent(
+    uiState: SettingUiState,
+    updateOpenLinkInApp: (Boolean) -> Unit
+) {
     LazyColumn {
         item {
             OpenLinkSetting(
-                isOpenLinkInApp = isOpenLinkInApp,
+                isOpenLinkInApp = uiState.isOpenLinkInApp,
                 updateOpenLinkInApp = { enabled ->
                     updateOpenLinkInApp(enabled)
                 }

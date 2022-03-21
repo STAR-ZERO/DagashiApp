@@ -10,39 +10,22 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.star_zero.dagashi.core.data.repository.DagashiRepository
-import com.star_zero.dagashi.core.data.repository.SettingRepository
 import com.star_zero.dagashi.ui.issue.IssueScreen
-import com.star_zero.dagashi.ui.issue.IssueViewModel
 import com.star_zero.dagashi.ui.milestone.MilestoneScreen
-import com.star_zero.dagashi.ui.milestone.MilestoneViewModel
 import com.star_zero.dagashi.ui.setting.SettingScreen
-import com.star_zero.dagashi.ui.setting.SettingViewModel
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.AppNavigator
 import com.star_zero.dagashi.ui.util.LocalNavigator
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var dagashiRepository: DagashiRepository
-
-    @Inject
-    lateinit var settingRepository: SettingRepository
 
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                             },
                         ) {
-                            MilestoneNav()
+                            MilestoneScreen()
                         }
                         composable(
                             "issue/{path}/{title}",
@@ -125,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                         ) { backStackEntry ->
                             val path = backStackEntry.arguments!!.getString("path")!!
                             val title = backStackEntry.arguments!!.getString("title")!!
-                            IssueNav(path, title)
+                            IssueScreen(path, title)
                         }
                         composable(
                             "setting",
@@ -158,7 +141,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                             },
                         ) {
-                            SettingNav()
+                            SettingScreen()
                         }
                     }
                 }
@@ -166,56 +149,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @Composable
-    private fun MilestoneNav() {
-        val viewModel: MilestoneViewModel = hiltViewModel()
-        val uiState by viewModel.uiState.collectAsState()
-
-        LaunchedEffect(null) {
-            viewModel.getMilestones(false)
-        }
-
-        MilestoneScreen(
-            uiState = uiState,
-            onRefresh = {
-                viewModel.refresh()
-            }
-        )
-    }
-
-    @Composable
-    private fun IssueNav(path: String, title: String) {
-        val viewModel: IssueViewModel = hiltViewModel()
-        val uiState by viewModel.uiState.collectAsState()
-        val isOpenLinkInApp by viewModel.isOpenLinkInApp.collectAsState(initial = false)
-
-        LaunchedEffect(null) {
-            viewModel.getIssues(path)
-        }
-
-        IssueScreen(
-            uiState = uiState,
-            title = title,
-            isOpenLinkInApp = isOpenLinkInApp,
-            onRefresh = {
-                viewModel.refresh(path)
-            }
-        )
-    }
-
-    @Composable
-    private fun SettingNav() {
-        val viewModel: SettingViewModel = hiltViewModel()
-        val isOpenLinkInApp by viewModel.isOpenLinkInApp.collectAsState(initial = false)
-        SettingScreen(
-            isOpenLinkInApp = isOpenLinkInApp,
-            updateOpenLinkInApp = {
-                viewModel.updateOpenLinkInApp(it)
-            }
-        )
-    }
-
     companion object {
-        private const val NAV_ANIMATION_DURATION = 300
+        private const val NAV_ANIMATION_DURATION = 200
     }
 }

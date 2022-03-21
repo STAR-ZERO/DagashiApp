@@ -44,6 +44,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.google.accompanist.flowlayout.FlowRow
@@ -60,10 +61,26 @@ import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.ui.util.LocalNavigator
 
 @Composable
-fun IssueScreen(
+fun IssueScreen(path: String, title: String) {
+    val viewModel: IssueViewModel = hiltViewModel()
+
+    LaunchedEffect(path) {
+        viewModel.getIssues(path)
+    }
+
+    IssueContainer(
+        uiState = viewModel.uiState,
+        title = title,
+        onRefresh = {
+            viewModel.refresh(path)
+        }
+    )
+}
+
+@Composable
+private fun IssueContainer(
     uiState: IssueUiState,
     title: String,
-    isOpenLinkInApp: Boolean,
     onRefresh: () -> Unit,
 ) {
     val navigator = LocalNavigator.current
@@ -84,7 +101,6 @@ fun IssueScreen(
             IssueContent(
                 uiState = uiState,
                 scaffoldState = scaffoldState,
-                isOpenLinkInApp = isOpenLinkInApp,
                 onRefresh = onRefresh
             )
         }
@@ -114,7 +130,6 @@ private fun AppBar(
 private fun IssueContent(
     uiState: IssueUiState,
     scaffoldState: ScaffoldState,
-    isOpenLinkInApp: Boolean,
     onRefresh: () -> Unit
 ) {
     if (uiState.error && uiState.issues.isEmpty()) {
@@ -131,7 +146,7 @@ private fun IssueContent(
             if (uiState.issues.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize()) // dummy ui for SwipeRefresh
             } else {
-                IssueList(uiState.issues, isOpenLinkInApp)
+                IssueList(uiState)
             }
         }
 
@@ -145,10 +160,10 @@ private fun IssueContent(
 }
 
 @Composable
-private fun IssueList(issues: List<Issue>, isOpenLinkInApp: Boolean) {
+private fun IssueList(uiState: IssueUiState) {
     LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)) {
-        items(issues, key = { it.url }) { issue ->
-            IssueCard(issue, isOpenLinkInApp)
+        items(uiState.issues, key = { it.url }) { issue ->
+            IssueCard(issue, uiState.isOpenLinkInApp)
         }
     }
 }
