@@ -46,7 +46,7 @@ android {
 }
 
 dependencies {
-    implementation project(":core")
+    implementation project(":androidApp:core")
 
     implementation libs.bundles.androidx.compose
 
