@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -36,7 +37,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.compose.get()
+        kotlinCompilerExtensionVersion libs.versions.androidx.compose.get()
     }
     packagingOptions {
         resources {
@@ -45,10 +46,19 @@ android {
     }
 }
 
+kotlin {
+    sourceSets {
+        debug {
+            kotlin.srcDir("build/generated/ksp/debug/kotlin")
+        }
+        release {
+            kotlin.srcDir("build/generated/ksp/release/kotlin")
+        }
+    }
+}
+
 dependencies {
     implementation project(":androidApp:core")
-
-    implementation libs.bundles.androidx.compose
 
     implementation libs.androidx.lifecycle.viewmodel
     implementation libs.androidx.lifecycle.livedata
@@ -57,6 +67,8 @@ dependencies {
     kapt libs.hilt.compiler
 
     implementation libs.androidx.browser
+
+    ksp libs.compose.destinations.ksp
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit

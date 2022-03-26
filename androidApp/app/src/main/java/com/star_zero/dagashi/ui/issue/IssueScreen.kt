@@ -50,6 +50,8 @@ import coil.transform.CircleCropTransformation
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
@@ -58,10 +60,14 @@ import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.ui.components.ErrorRetry
 import com.star_zero.dagashi.ui.components.formatLinkedText
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
-import com.star_zero.dagashi.ui.util.LocalNavigator
 
+@Destination
 @Composable
-fun IssueScreen(path: String, title: String) {
+fun IssueScreen(
+    navigator: DestinationsNavigator,
+    path: String,
+    title: String
+) {
     val viewModel: IssueViewModel = hiltViewModel()
 
     LaunchedEffect(path) {
@@ -73,6 +79,9 @@ fun IssueScreen(path: String, title: String) {
         title = title,
         onRefresh = {
             viewModel.refresh(path)
+        },
+        navigateBack = {
+            navigator.popBackStack()
         }
     )
 }
@@ -82,8 +91,8 @@ private fun IssueContainer(
     uiState: IssueUiState,
     title: String,
     onRefresh: () -> Unit,
+    navigateBack: () -> Unit
 ) {
-    val navigator = LocalNavigator.current
     Surface(color = MaterialTheme.colors.background) {
         val scaffoldState = rememberScaffoldState()
 
@@ -93,7 +102,7 @@ private fun IssueContainer(
                 AppBar(
                     title = title,
                     navigateBack = {
-                        navigator.navigateBack()
+                        navigateBack()
                     }
                 )
             }

@@ -35,14 +35,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.ui.components.ErrorRetry
+import com.star_zero.dagashi.ui.destinations.IssueScreenDestination
+import com.star_zero.dagashi.ui.destinations.SettingScreenDestination
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
-import com.star_zero.dagashi.ui.util.LocalNavigator
 
+@Destination(start = true)
 @Composable
-fun MilestoneScreen() {
+fun MilestoneScreen(navigator: DestinationsNavigator) {
     val viewModel: MilestoneViewModel = hiltViewModel()
 
     LaunchedEffect(Unit) {
@@ -53,6 +57,17 @@ fun MilestoneScreen() {
         uiState = viewModel.uiState,
         onRefresh = {
             viewModel.refresh()
+        },
+        navigateIssue = { milestone ->
+            navigator.navigate(
+                IssueScreenDestination(
+                    path = milestone.path,
+                    title = milestone.title
+                )
+            )
+        },
+        navigateSetting = {
+            navigator.navigate(SettingScreenDestination())
         }
     )
 }
@@ -61,9 +76,9 @@ fun MilestoneScreen() {
 private fun MilestoneContainer(
     uiState: MilestoneUiState,
     onRefresh: () -> Unit,
+    navigateIssue: (Milestone) -> Unit,
+    navigateSetting: () -> Unit
 ) {
-    val navigator = LocalNavigator.current
-
     Surface(color = MaterialTheme.colors.background) {
         val scaffoldState = rememberScaffoldState()
 
@@ -72,7 +87,7 @@ private fun MilestoneContainer(
             topBar = {
                 AppBar(
                     navigateToSetting = {
-                        navigator.navigateSetting()
+                        navigateSetting()
                     }
                 )
             },
@@ -82,7 +97,7 @@ private fun MilestoneContainer(
                 scaffoldState = scaffoldState,
                 onRefresh = onRefresh,
                 navigateToIssue = { milestone ->
-                    navigator.navigateIssue(milestone.path, milestone.title)
+                    navigateIssue(milestone)
                 }
             )
         }

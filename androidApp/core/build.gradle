@@ -28,7 +28,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.compose.get()
+        kotlinCompilerExtensionVersion libs.versions.androidx.compose.get()
     }
     packagingOptions {
         resources {
@@ -39,6 +39,8 @@ android {
 
 dependencies {
     api project(":shared")
+
+    api libs.bundles.androidx.compose
 
     api libs.androidx.core
     api libs.androidx.compat
