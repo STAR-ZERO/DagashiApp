@@ -18,6 +18,7 @@
 		BA76F7472545ADB3003CFA86 /* IssueList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA76F7462545ADB3003CFA86 /* IssueList.swift */; };
 		BA76F74D2545B17A003CFA86 /* IssueRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA76F74C2545B17A003CFA86 /* IssueRow.swift */; };
 		BA7EC30F27EED6B2008C26AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7EC30E27EED6B2008C26AC /* AppDelegate.swift */; };
+		BA7EC31127EEE27E008C26AC /* NavigationLinkLazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7EC31027EEE27E008C26AC /* NavigationLinkLazyView.swift */; };
 		BA94F2CF25B290070085FCE2 /* Sdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA94F2CE25B290070085FCE2 /* Sdk.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		BA76F7462545ADB3003CFA86 /* IssueList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueList.swift; sourceTree = "<group>"; };
 		BA76F74C2545B17A003CFA86 /* IssueRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueRow.swift; sourceTree = "<group>"; };
 		BA7EC30E27EED6B2008C26AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BA7EC31027EEE27E008C26AC /* NavigationLinkLazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLinkLazyView.swift; sourceTree = "<group>"; };
 		BA94F2CE25B290070085FCE2 /* Sdk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sdk.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -169,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				BA69E9D925453B21001E13AD /* ActivityIndicator.swift */,
+				BA7EC31027EEE27E008C26AC /* NavigationLinkLazyView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				BA76F74D2545B17A003CFA86 /* IssueRow.swift in Sources */,
 				BA94F2CF25B290070085FCE2 /* Sdk.swift in Sources */,
 				BA69E9E225453DF3001E13AD /* MilestoneRow.swift in Sources */,
+				BA7EC31127EEE27E008C26AC /* NavigationLinkLazyView.swift in Sources */,
 				BA691B732545228300FC99EE /* MilestoneList.swift in Sources */,
 				BA11899B25441C3000FA25E3 /* DagashiApp.swift in Sources */,
 			);

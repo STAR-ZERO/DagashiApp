@@ -30,7 +30,7 @@ struct MilestoneList: View {
             ActivityIndicator()
         case .result(let milestones):
             List(milestones) { milestone in
-                NavigationLink(destination: IssueList(milestone: milestone)) {
+                NavigationLink(destination: NavigationLinkLazyView(IssueList(milestone: milestone))) {
                     MilestoneRow(milestone: milestone)
                 }
             }
