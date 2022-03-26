@@ -1,4 +1,4 @@
-package com.star_zero.dagashi.shared.network
+package com.star_zero.dagashi.shared.api
 
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier

@@ -1,4 +1,4 @@
-package com.star_zero.dagashi.shared.entity
+package com.star_zero.dagashi.shared.api.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

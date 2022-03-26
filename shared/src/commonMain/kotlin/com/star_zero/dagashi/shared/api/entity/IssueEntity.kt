@@ -1,22 +1,22 @@
-package com.star_zero.dagashi.shared.entity
+package com.star_zero.dagashi.shared.api.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class IssueRootEntity(
+internal data class IssueRootEntity(
     @SerialName("issues")
     val issues: IssueEntity,
 )
 
 @Serializable
-data class IssueEntity(
+internal data class IssueEntity(
     @SerialName("nodes")
     val nodes: List<IssueNodeEntity>,
 )
 
 @Serializable
-data class IssueNodeEntity(
+internal data class IssueNodeEntity(
     @SerialName("url")
     val url: String,
     @SerialName("title")
@@ -30,13 +30,13 @@ data class IssueNodeEntity(
 )
 
 @Serializable
-data class LabelEntity(
+internal data class LabelEntity(
     @SerialName("nodes")
     val nodes: List<LabelNodeEntity>,
 )
 
 @Serializable
-data class LabelNodeEntity(
+internal data class LabelNodeEntity(
     @SerialName("name")
     val name: String,
     @SerialName("color")
@@ -44,13 +44,13 @@ data class LabelNodeEntity(
 )
 
 @Serializable
-data class CommentEntity(
+internal data class CommentEntity(
     @SerialName("nodes")
     val nodes: List<CommentNodeEntity>,
 )
 
 @Serializable
-data class CommentNodeEntity(
+internal data class CommentNodeEntity(
     @SerialName("body")
     val body: String,
     @SerialName("author")
@@ -58,7 +58,7 @@ data class CommentNodeEntity(
 )
 
 @Serializable
-data class CommentNodeAuthor(
+internal data class CommentNodeAuthor(
     @SerialName("login")
     val login: String,
     @SerialName("url")

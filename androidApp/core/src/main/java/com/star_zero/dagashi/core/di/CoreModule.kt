@@ -13,8 +13,8 @@ import com.star_zero.dagashi.core.data.repository.SettingDataRepository
 import com.star_zero.dagashi.core.data.repository.SettingRepository
 import com.star_zero.dagashi.shared.DagashiSDK
 import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
-import com.star_zero.dagashi.shared.network.DagashiAPI
-import com.star_zero.dagashi.shared.network.create
+import com.star_zero.dagashi.shared.api.DagashiAPI
+import com.star_zero.dagashi.shared.api.create
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

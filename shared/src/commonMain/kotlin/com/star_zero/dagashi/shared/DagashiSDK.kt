@@ -1,10 +1,10 @@
 package com.star_zero.dagashi.shared
 
+import com.star_zero.dagashi.shared.api.DagashiAPI
 import com.star_zero.dagashi.shared.db.DagashiDatabase
 import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Milestone
-import com.star_zero.dagashi.shared.network.DagashiAPI
 
 class DagashiSDK(
     private val dagashiAPI: DagashiAPI,
@@ -27,10 +27,8 @@ class DagashiSDK(
                 }
             ).executeAsList()
 
-            if (cachedMilestones.isEmpty()) {
+            cachedMilestones.ifEmpty {
                 fetchAndCacheMilestones()
-            } else {
-                cachedMilestones
             }
         }
     }
