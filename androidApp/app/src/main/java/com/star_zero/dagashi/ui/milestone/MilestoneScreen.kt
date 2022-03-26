@@ -44,7 +44,10 @@ import com.star_zero.dagashi.ui.destinations.IssueScreenDestination
 import com.star_zero.dagashi.ui.destinations.SettingScreenDestination
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 
-@Destination(start = true)
+@Destination(
+    start = true,
+    style = MilestoneTransitions::class
+)
 @Composable
 fun MilestoneScreen(navigator: DestinationsNavigator) {
     val viewModel: MilestoneViewModel = hiltViewModel()

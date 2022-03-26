@@ -32,7 +32,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 
-@Destination
+@Destination(style = SettingTransitions::class)
 @Composable
 fun SettingScreen(
     navigator: DestinationsNavigator

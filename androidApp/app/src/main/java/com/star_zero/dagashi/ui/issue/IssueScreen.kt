@@ -61,7 +61,7 @@ import com.star_zero.dagashi.ui.components.ErrorRetry
 import com.star_zero.dagashi.ui.components.formatLinkedText
 import com.star_zero.dagashi.ui.theme.DagashiAppTheme
 
-@Destination
+@Destination(style = IssueTransitions::class)
 @Composable
 fun IssueScreen(
     navigator: DestinationsNavigator,
