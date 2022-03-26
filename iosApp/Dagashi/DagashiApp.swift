@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct DagashiApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
         WindowGroup {
             MilestoneList()
         }
     }
 }
+
+

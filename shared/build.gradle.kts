@@ -24,8 +24,10 @@ kotlin {
                 implementation(libs.coroutines.core)
                 implementation(libs.ktor.core)
                 implementation(libs.ktor.serialization)
+                implementation(libs.ktor.logging)
                 implementation(libs.kotlinx.serialization)
                 implementation(libs.sqldelight.runtime)
+                implementation(libs.napier)
             }
         }
         val commonTest by getting {

@@ -3,6 +3,7 @@ package com.star_zero.dagashi.core.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import com.star_zero.dagashi.core.AppConfig
 import com.star_zero.dagashi.core.AppDispatchers
 import com.star_zero.dagashi.core.data.datastore.Settings
 import com.star_zero.dagashi.core.data.datastore.SettingsSerializer
@@ -59,10 +60,13 @@ abstract class CoreModule {
 
         @Singleton
         @Provides
-        fun provideDagashiSDK(@ApplicationContext context: Context): DagashiSDK {
+        fun provideDagashiSDK(
+            @ApplicationContext context: Context,
+            appConfig: AppConfig
+        ): DagashiSDK {
             val databaseDriverFactory = DatabaseDriverFactory(context)
             return DagashiSDK(
-                DagashiAPI.create(),
+                DagashiAPI.create(appConfig.debug),
                 databaseDriverFactory,
             )
         }

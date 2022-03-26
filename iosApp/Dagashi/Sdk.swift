@@ -8,6 +8,6 @@
 import shared
 
 let dagashiSDK = DagashiSDK(
-    dagashiAPI: DagashiAPI.Companion().create(),
+    dagashiAPI: DagashiAPI.Companion().create(debug: debug),
     databaseDriverFactory: DatabaseDriverFactory()
 )

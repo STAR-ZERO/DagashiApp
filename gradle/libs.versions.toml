@@ -47,6 +47,7 @@ ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
 ktor-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 
 kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2"
 
@@ -59,6 +60,8 @@ protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protob
 sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sqldelight" }
 sqldelight-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-native = { module = "com.squareup.sqldelight:native-driver", version.ref = "sqldelight" }
+
+napier = "io.github.aakira:napier:2.4.0"
 
 # debug
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }

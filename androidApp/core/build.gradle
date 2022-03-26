@@ -52,6 +52,8 @@ dependencies {
     api libs.androidx.datastore
     api libs.protobuf.java
 
+    api libs.napier
+
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.espresso

@@ -2,6 +2,7 @@ package com.star_zero.dagashi.core.data.repository
 
 import androidx.datastore.core.DataStore
 import com.star_zero.dagashi.core.data.datastore.Settings
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import java.io.IOException
@@ -16,8 +17,7 @@ class SettingDataRepository @Inject constructor(
     override val settingsFlow: Flow<Settings> = settingsDataStore.data
         .catch { e ->
             if (e is IOException) {
-                // TODO: Use Timber
-                e.printStackTrace()
+                Napier.e("Error setting data store", e)
                 emit(Settings.getDefaultInstance())
             } else {
                 throw e
