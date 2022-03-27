@@ -7,6 +7,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "DagashiApp"
+include ":shared"
 include ":androidApp:app"
 include ":androidApp:core"
-include ":shared"
+include ":androidApp:features:issue"
+include ":androidApp:features:setting"
+include ":androidApp:features:milestone"

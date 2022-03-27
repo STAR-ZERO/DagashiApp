@@ -1,28 +1,19 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
 }
 
 android {
     compileSdk AndroidConfigurations.COMPILE_SDK
 
     defaultConfig {
-        applicationId = "com.star_zero.dagashi"
         minSdk AndroidConfigurations.MIN_SDK
         targetSdk AndroidConfigurations.TARGET_SDK
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-        }
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     compileOptions {
@@ -56,14 +47,18 @@ kotlin {
     }
 }
 
+ksp {
+    arg("compose-destinations.mode", "destinations")
+    arg("compose-destinations.moduleName", "milestone")
+}
+
 dependencies {
     implementation project(":androidApp:core")
-    implementation project(":androidApp:features:issue")
-    implementation project(":androidApp:features:setting")
-    implementation project(":androidApp:features:milestone")
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler
+
+    ksp libs.compose.destinations.ksp
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit

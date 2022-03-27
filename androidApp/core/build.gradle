@@ -48,6 +48,9 @@ dependencies {
 
     api libs.coroutines.android
 
+    api libs.androidx.lifecycle.viewmodel
+    api libs.androidx.lifecycle.livedata
+
     implementation libs.hilt.android
     kapt libs.hilt.compiler
 
