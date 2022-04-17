@@ -1,4 +1,4 @@
-package com.star_zero.dagashi.core.data.datastore
+package com.star_zero.dagashi.core.data.datasource.datastore
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer

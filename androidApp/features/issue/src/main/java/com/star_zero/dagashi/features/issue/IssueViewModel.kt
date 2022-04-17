@@ -6,9 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
-import com.star_zero.dagashi.core.data.repository.SettingRepository
+import com.star_zero.dagashi.shared.repoitory.SettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +23,7 @@ class IssueViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             uiState = uiState.copy(
-                isOpenLinkInApp = settingRepository.settingsFlow.first().openLinkInApp
+                isOpenLinkInApp = settingRepository.isOpenLinkInApp()
             )
         }
     }

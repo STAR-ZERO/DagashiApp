@@ -1,20 +1,17 @@
 package com.star_zero.dagashi.core.di
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import com.star_zero.dagashi.core.AppConfig
 import com.star_zero.dagashi.core.AppDispatchers
-import com.star_zero.dagashi.core.data.datastore.Settings
-import com.star_zero.dagashi.core.data.datastore.SettingsSerializer
+import com.star_zero.dagashi.core.data.datasource.LocalSettingsDataSource
 import com.star_zero.dagashi.core.data.repository.DagashiDataRepository
 import com.star_zero.dagashi.core.data.repository.DagashiRepository
-import com.star_zero.dagashi.core.data.repository.SettingDataRepository
-import com.star_zero.dagashi.core.data.repository.SettingRepository
 import com.star_zero.dagashi.shared.DagashiSDK
-import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
 import com.star_zero.dagashi.shared.api.DagashiAPI
 import com.star_zero.dagashi.shared.api.create
+import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
+import com.star_zero.dagashi.shared.local.LocalSettings
+import com.star_zero.dagashi.shared.repoitory.SettingRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -32,15 +29,7 @@ abstract class CoreModule {
     @Binds
     abstract fun bindDagashiRepository(repository: DagashiDataRepository): DagashiRepository
 
-    @Singleton
-    @Binds
-    abstract fun bindSettingRepository(repository: SettingDataRepository): SettingRepository
-
     companion object {
-        private val Context.settingsDataStore: DataStore<Settings> by dataStore(
-            fileName = "settings.pb",
-            serializer = SettingsSerializer
-        )
 
         @Singleton
         @Provides
@@ -54,8 +43,14 @@ abstract class CoreModule {
 
         @Singleton
         @Provides
-        fun provideSettingDataStore(@ApplicationContext context: Context): DataStore<Settings> {
-            return context.settingsDataStore
+        fun provideLocalSettings(@ApplicationContext context: Context): LocalSettings {
+            return LocalSettingsDataSource.create(context)
+        }
+
+        @Singleton
+        @Provides
+        fun provideSettingRepository(localSettings: LocalSettings): SettingRepository {
+            return SettingRepository(localSettings)
         }
 
         @Singleton
