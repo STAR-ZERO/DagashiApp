@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.star_zero.dagashi.core.data.repository.DagashiRepository
+import com.star_zero.dagashi.shared.repoitory.IssueRepository
 import com.star_zero.dagashi.shared.repoitory.SettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IssueViewModel @Inject constructor(
-    private val dagashiDataRepository: DagashiRepository,
+    private val issueRepository: IssueRepository,
     settingRepository: SettingRepository
 ) : ViewModel() {
 
@@ -36,7 +36,7 @@ class IssueViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 uiState = uiState.copy(loading = true, error = false)
-                val issues = dagashiDataRepository.issues(path)
+                val issues = issueRepository.getIssues(path)
                 uiState = uiState.copy(issues = issues)
             } catch (e: Exception) {
                 e.printStackTrace()

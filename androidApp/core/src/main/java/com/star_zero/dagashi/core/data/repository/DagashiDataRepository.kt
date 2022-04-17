@@ -2,7 +2,6 @@ package com.star_zero.dagashi.core.data.repository
 
 import com.star_zero.dagashi.core.AppDispatchers
 import com.star_zero.dagashi.shared.DagashiSDK
-import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Milestone
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -18,8 +17,4 @@ class DagashiDataRepository @Inject constructor(
         withContext(appDispatchers.io) {
             dagashiSDK.getMilestone(forceReload)
         }
-
-    override suspend fun issues(path: String): List<Issue> = withContext(appDispatchers.io) {
-        dagashiSDK.getIssue(path)
-    }
 }

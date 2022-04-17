@@ -41,10 +41,7 @@ import com.star_zero.dagashi.core.ui.components.ErrorRetry
 import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.shared.model.Milestone
 
-@Destination(
-    start = true,
-    style = MilestoneTransitions::class
-)
+@Destination(style = MilestoneTransitions::class)
 @Composable
 fun MilestoneScreen(navigator: MilestoneNavigator) {
     val viewModel: MilestoneViewModel = hiltViewModel()

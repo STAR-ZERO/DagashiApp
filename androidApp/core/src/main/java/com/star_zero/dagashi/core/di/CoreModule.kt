@@ -11,6 +11,7 @@ import com.star_zero.dagashi.shared.api.DagashiAPI
 import com.star_zero.dagashi.shared.api.create
 import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
 import com.star_zero.dagashi.shared.local.LocalSettings
+import com.star_zero.dagashi.shared.repoitory.IssueRepository
 import com.star_zero.dagashi.shared.repoitory.SettingRepository
 import dagger.Binds
 import dagger.Module
@@ -43,8 +44,20 @@ abstract class CoreModule {
 
         @Singleton
         @Provides
+        fun provideDagashiAPI(appConfig: AppConfig): DagashiAPI {
+            return DagashiAPI.create(appConfig.debug)
+        }
+
+        @Singleton
+        @Provides
         fun provideLocalSettings(@ApplicationContext context: Context): LocalSettings {
             return LocalSettingsDataSource.create(context)
+        }
+
+        @Singleton
+        @Provides
+        fun provideIssueRepository(dagashiAPI: DagashiAPI): IssueRepository {
+            return IssueRepository(dagashiAPI)
         }
 
         @Singleton
@@ -57,11 +70,11 @@ abstract class CoreModule {
         @Provides
         fun provideDagashiSDK(
             @ApplicationContext context: Context,
-            appConfig: AppConfig
+            dagashiAPI: DagashiAPI,
         ): DagashiSDK {
             val databaseDriverFactory = DatabaseDriverFactory(context)
             return DagashiSDK(
-                DagashiAPI.create(appConfig.debug),
+                dagashiAPI,
                 databaseDriverFactory,
             )
         }
