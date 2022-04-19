@@ -36,12 +36,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.star_zero.dagashi.core.CoreString
 import com.star_zero.dagashi.core.ui.components.ErrorRetry
 import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.shared.model.Milestone
 
-@Destination(style = MilestoneTransitions::class)
+@Destination(style = DestinationStyle.Runtime::class)
 @Composable
 fun MilestoneScreen(navigator: MilestoneNavigator) {
     val viewModel: MilestoneViewModel = hiltViewModel()

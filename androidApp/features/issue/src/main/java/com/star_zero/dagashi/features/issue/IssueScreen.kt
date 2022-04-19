@@ -51,6 +51,7 @@ import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.star_zero.dagashi.core.CoreString
 import com.star_zero.dagashi.core.ui.components.ErrorRetry
 import com.star_zero.dagashi.core.ui.components.formatLinkedText
@@ -60,7 +61,7 @@ import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
 
-@Destination(style = IssueTransitions::class)
+@Destination(style = DestinationStyle.Runtime::class)
 @Composable
 fun IssueScreen(
     navigator: IssueNavigator,
