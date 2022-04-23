@@ -1,22 +1,18 @@
-package com.star_zero.dagashi.shared
+package com.star_zero.dagashi.shared.repoitory
 
 import com.star_zero.dagashi.shared.api.DagashiAPI
 import com.star_zero.dagashi.shared.db.DagashiDatabase
-import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
-import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Milestone
 
-class DagashiSDK(
+class MilestoneRepository(
     private val dagashiAPI: DagashiAPI,
-    databaseDriverFactory: DatabaseDriverFactory
+    private val dagashiDb: DagashiDatabase
 ) {
-    private val db = DagashiDatabase(databaseDriverFactory.createDriver())
-
     suspend fun getMilestone(forceReload: Boolean): List<Milestone> {
         return if (forceReload) {
             fetchAndCacheMilestones()
         } else {
-            val cachedMilestones = db.milestoneQueries.selectAll(
+            val cachedMilestones = dagashiDb.milestoneQueries.selectAll(
                 mapper = { id, title, body, path, _ ->
                     Milestone(
                         id,
@@ -33,16 +29,12 @@ class DagashiSDK(
         }
     }
 
-    suspend fun getIssue(path: String): List<Issue> {
-        return dagashiAPI.issues(path)
-    }
-
     private suspend fun fetchAndCacheMilestones(): List<Milestone> {
         return dagashiAPI.milestones().also { milestones ->
-            db.milestoneQueries.transaction {
-                db.milestoneQueries.deleteMilestones()
+            dagashiDb.milestoneQueries.transaction {
+                dagashiDb.milestoneQueries.deleteMilestones()
                 milestones.forEachIndexed { index, milestone ->
-                    db.milestoneQueries.insertMilestone(
+                    dagashiDb.milestoneQueries.insertMilestone(
                         id = milestone.id,
                         title = milestone.title,
                         body = milestone.body,

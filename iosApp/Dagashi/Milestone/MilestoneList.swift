@@ -9,7 +9,9 @@ import SwiftUI
 import shared
 
 struct MilestoneList: View {
-    @ObservedObject var viewModel: ViewModel = ViewModel()
+    @ObservedObject var viewModel: ViewModel = ViewModel(
+        milestoneRepository: DependencyContainer.shared.milestoneRepository
+    )
 
     var body: some View {
         NavigationView {
@@ -49,14 +51,16 @@ extension MilestoneList {
     
     class ViewModel: ObservableObject {
         @Published var state = State.loading
+        private let milestoneRepository: MilestoneRepository
 
-        init() {
+        init(milestoneRepository: MilestoneRepository) {
+            self.milestoneRepository = milestoneRepository
             self.loadMilestones(forceReload: false)
         }
 
         func loadMilestones(forceReload: Bool) {
             self.state = .loading
-            dagashiSDK.getMilestone(forceReload: forceReload, completionHandler: { milestoens, error in
+            self.milestoneRepository.getMilestone(forceReload: forceReload, completionHandler: { milestoens, error in
                 if let milestoens = milestoens {
                     self.state = .result(milestoens)
                 } else {

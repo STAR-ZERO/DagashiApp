@@ -14,7 +14,10 @@ struct IssueList: View {
     
     init(milestone: Milestone) {
         self.milestone = milestone
-        self.viewModel = ViewModel(milestone: milestone)
+        self.viewModel = ViewModel(
+            issueReposiotry: DependencyContainer.shared.issueRepository,
+            milestone: milestone
+        )
     }
 
     var body: some View {
@@ -51,16 +54,21 @@ extension IssueList {
     
     class ViewModel: ObservableObject {
         @Published var state = State.loading
+        private let issueRepository: IssueRepository
         private let milestone: Milestone
 
-        init(milestone: Milestone) {
+        init(
+            issueReposiotry: IssueRepository,
+            milestone: Milestone
+        ) {
+            self.issueRepository = issueReposiotry
             self.milestone = milestone
             self.loadIssues()
         }
 
         func loadIssues() {
             self.state = .loading
-            dagashiSDK.getIssue(path: milestone.path, completionHandler: { issues, error in
+            self.issueRepository.getIssues(path: milestone.path, completionHandler: { issues, error in
                 if let issues = issues {
                     self.state = .result(issues)
                 } else {
