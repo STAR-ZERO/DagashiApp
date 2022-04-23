@@ -10,6 +10,7 @@ import com.star_zero.dagashi.shared.db.DagashiDatabase
 import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
 import com.star_zero.dagashi.shared.db.DatabaseFactory
 import com.star_zero.dagashi.shared.local.LocalSettings
+import com.star_zero.dagashi.shared.repoitory.FavoriteIssueRepository
 import com.star_zero.dagashi.shared.repoitory.IssueRepository
 import com.star_zero.dagashi.shared.repoitory.MilestoneRepository
 import com.star_zero.dagashi.shared.repoitory.SettingRepository
@@ -69,6 +70,14 @@ abstract class CoreModule {
         @Provides
         fun provideIssueRepository(dagashiAPI: DagashiAPI): IssueRepository {
             return IssueRepository(dagashiAPI)
+        }
+
+        @Singleton
+        @Provides
+        fun provideFavoriteIssueRepository(
+            dagashiDb: DagashiDatabase
+        ): FavoriteIssueRepository {
+            return FavoriteIssueRepository(dagashiDb)
         }
 
         @Singleton

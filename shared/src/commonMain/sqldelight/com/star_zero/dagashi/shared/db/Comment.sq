@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS Comments (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    body TEXT NOT NULL,
+    author_name TEXT NOT NULL,
+    issue_url TEXT NOT NULL
+);
+
+insertComment:
+INSERT INTO Comments (body, author_name, issue_url)
+VALUES (?, ?, ?);
+
+selectByIssueUrl:
+SELECT
+    c.body,
+    a.name,
+    a.url,
+    a.avatar_url
+FROM Comments c
+INNER JOIN Authors a
+ON c.author_name = a.name
+WHERE c.issue_url = :issue_url;
+
+deleteCommentByIssueUrl:
+DELETE FROM Comments WHERE issue_url = ?;
+
+deleteComments:
+DELETE FROM Comments;

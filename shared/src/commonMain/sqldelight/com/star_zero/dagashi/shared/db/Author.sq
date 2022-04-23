@@ -1,0 +1,18 @@
+CREATE TABLE Authors (
+    name TEXT NOT NULL PRIMARY KEY,
+    url TEXT NOT NULL,
+    avatar_url TEXT NOT NULL
+);
+
+upsertAuthor {
+    UPDATE Authors
+    SET url = :url,
+        avatar_url = :avatar_url
+    WHERE name = :name;
+
+    INSERT OR IGNORE INTO Authors (name, url, avatar_url)
+    VALUES (:name, :url, :avatar_url);
+}
+
+deleteAuthors:
+DELETE FROM Authors;

@@ -1,0 +1,24 @@
+-- Junction table for FavoriteIssue and Lables
+CREATE TABLE IF NOT EXISTS IssueLabels (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    issue_url TEXT NOT NULL,
+    label_name TEXT NOT NULL
+);
+
+insertIssueLabel:
+INSERT INTO IssueLabels (issue_url, label_name)
+VALUES (?, ?);
+
+selectLablesByIssurUrl:
+SELECT
+    l.name,
+    l.color
+FROM IssueLabels i
+INNER JOIN Labels l ON i.label_name = l.name
+WHERE i.issue_url = :issue_url;
+
+deleteIssueLableByIssueUrl:
+DELETE FROM IssueLabels WHERE issue_url = ?;
+
+deleteIssueLabels:
+DELETE FROM IssueLabels;

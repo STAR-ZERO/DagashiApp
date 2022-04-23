@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.star_zero.dagashi.shared.model.Issue
+import com.star_zero.dagashi.shared.repoitory.FavoriteIssueRepository
 import com.star_zero.dagashi.shared.repoitory.IssueRepository
 import com.star_zero.dagashi.shared.repoitory.SettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class IssueViewModel @Inject constructor(
     private val issueRepository: IssueRepository,
+    private val favoriteIssueRepository: FavoriteIssueRepository,
     settingRepository: SettingRepository
 ) : ViewModel() {
 
@@ -49,5 +52,9 @@ class IssueViewModel @Inject constructor(
 
     fun refresh(path: String) {
         getIssues(path)
+    }
+
+    fun addFavorite(issue: Issue) {
+        // TODO
     }
 }

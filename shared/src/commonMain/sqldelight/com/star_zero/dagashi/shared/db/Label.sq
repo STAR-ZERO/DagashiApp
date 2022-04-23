@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS Labels (
+    name TEXT PRIMARY KEY,
+    color INTEGER NOT NULL
+);
+
+selectByNames:
+SELECT *
+FROM Labels
+WHERE name IN ?;
+
+upsertLabel {
+    UPDATE Labels
+    SET color = :color
+    WHERE name = :name;
+
+    INSERT OR IGNORE INTO Labels (name, color)
+    VALUES (:name, :color);
+}
+
+deleteLabels:
+DELETE FROM Labels;

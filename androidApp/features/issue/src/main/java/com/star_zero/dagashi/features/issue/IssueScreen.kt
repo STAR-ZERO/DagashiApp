@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +33,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -80,6 +82,9 @@ fun IssueScreen(
         onRefresh = {
             viewModel.refresh(path)
         },
+        onClickFavorite = { issue ->
+            viewModel.addFavorite(issue)
+        },
         navigateBack = {
             navigator.navigateBack()
         }
@@ -91,6 +96,7 @@ private fun IssueContainer(
     uiState: IssueUiState,
     title: String,
     onRefresh: () -> Unit,
+    onClickFavorite: (Issue) -> Unit,
     navigateBack: () -> Unit
 ) {
     Surface(color = MaterialTheme.colors.background) {
@@ -110,7 +116,8 @@ private fun IssueContainer(
             IssueContent(
                 uiState = uiState,
                 scaffoldState = scaffoldState,
-                onRefresh = onRefresh
+                onRefresh = onRefresh,
+                onClickFavorite = onClickFavorite
             )
         }
     }
@@ -139,7 +146,8 @@ private fun AppBar(
 private fun IssueContent(
     uiState: IssueUiState,
     scaffoldState: ScaffoldState,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onClickFavorite: (Issue) -> Unit
 ) {
     if (uiState.error && uiState.issues.isEmpty()) {
         ErrorRetry(
@@ -155,7 +163,7 @@ private fun IssueContent(
             if (uiState.issues.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize()) // dummy ui for SwipeRefresh
             } else {
-                IssueList(uiState)
+                IssueList(uiState, onClickFavorite)
             }
         }
 
@@ -169,16 +177,20 @@ private fun IssueContent(
 }
 
 @Composable
-private fun IssueList(uiState: IssueUiState) {
+private fun IssueList(uiState: IssueUiState, onClickFavorite: (Issue) -> Unit) {
     LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)) {
         items(uiState.issues, key = { it.url }) { issue ->
-            IssueCard(issue, uiState.isOpenLinkInApp)
+            IssueCard(issue, uiState.isOpenLinkInApp, onClickFavorite)
         }
     }
 }
 
 @Composable
-private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
+private fun IssueCard(
+    issue: Issue,
+    isOpenLinkInApp: Boolean,
+    onClickFavorite: (Issue) -> Unit
+) {
 
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
@@ -202,10 +214,25 @@ private fun IssueCard(issue: Issue, isOpenLinkInApp: Boolean) {
             modifier = Modifier.padding(8.dp)
         ) {
 
-            Text(
-                text = issue.title,
-                style = MaterialTheme.typography.subtitle1
-            )
+            Row(modifier = Modifier.fillMaxWidth()) {
+
+                Text(
+                    text = issue.title,
+                    style = MaterialTheme.typography.subtitle1,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                IconButton(
+                    onClick = { onClickFavorite(issue) },
+                    modifier = Modifier
+                        .size(32.dp)
+                        .align(Alignment.Top)
+                ) {
+                    Icon(imageVector = Icons.Filled.Star, contentDescription = null)
+                }
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -349,7 +376,7 @@ val previewIssue = Issue(
 @Composable
 private fun PreviewIssueCard() {
     DagashiAppTheme {
-        IssueCard(previewIssue, true)
+        IssueCard(previewIssue, true, onClickFavorite = {})
     }
 }
 
@@ -357,7 +384,7 @@ private fun PreviewIssueCard() {
 @Composable
 private fun PreviewIssueCardDark() {
     DagashiAppTheme(darkTheme = true) {
-        IssueCard(previewIssue, true)
+        IssueCard(previewIssue, true, onClickFavorite = {})
     }
 }
 // endregion

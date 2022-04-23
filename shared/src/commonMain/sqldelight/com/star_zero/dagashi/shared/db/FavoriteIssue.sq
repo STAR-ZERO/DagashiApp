@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS FavoriteIssues (
+    url TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL,
+    created_at INTEGER NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM FavoriteIssues
+ORDER BY created_at DESC;
+
+insertFavoriteIssue:
+INSERT INTO FavoriteIssues (url, title, body, created_at)
+VALUES (?, ?, ?, ?);
+
+deleteFavoriteIssue:
+DELETE FROM FavoriteIssues WHERE url = ?;
+
+deleteFavoriteIssues:
+DELETE FROM FavoriteIssues;
