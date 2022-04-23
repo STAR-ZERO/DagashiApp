@@ -9,6 +9,7 @@ androidx-lifecycle = "2.4.1"
 accompnist = "0.23.1"
 ktor = "1.6.8"
 compose-destinations = "1.5.0-beta"
+coroutines = { strictly = "1.6.0-native-mt" }
 
 [libraries]
 plugin-android = { module = "com.android.tools.build:gradle", version.ref = "android-build" }
@@ -46,8 +47,8 @@ coil-compose = "io.coil-kt:coil-compose:1.4.0"
 
 material = "com.google.android.material:material:1.5.0"
 
-coroutines-core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt"
-coroutines-android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
