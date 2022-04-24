@@ -17,7 +17,7 @@
       "matchPackagePatterns": [
         "^androidx"
       ],
-      "labels": [
+      "addLabels": [
         "jetpack"
       ]
     }
