@@ -9,7 +9,7 @@ androidx-lifecycle = "2.4.1"
 accompnist = "0.23.1"
 ktor = "1.6.8"
 compose-destinations = "1.5.0-beta"
-coroutines = { strictly = "1.6.0-native-mt" }
+coroutines = { strictly = "1.6.1-native-mt" }
 
 [libraries]
 plugin-android = { module = "com.android.tools.build:gradle", version.ref = "android-build" }
