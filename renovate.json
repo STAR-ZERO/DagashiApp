@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "labels": [
+    "renovate"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        "^org.jetbrains.kotlin",
+        "^com.google.devtools.ksp"
+      ],
+      "enabled": false
+    },
+    {
+      "matchPackagePatterns": [
+        "^androidx"
+      ],
+      "labels": [
+        "jetpack"
+      ]
+    }
+  ]
+}
