@@ -12,7 +12,7 @@
         "^com.google.devtools.ksp"
       ],
       "excludePackageNames": [
-        "org.jetbrains.kotlinx"
+        "^org.jetbrains.kotlinx"
       ],
       "enabled": false
     },
