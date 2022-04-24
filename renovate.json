@@ -11,7 +11,7 @@
         "^org.jetbrains.kotlin",
         "^com.google.devtools.ksp"
       ],
-      "excludePackageNames": [
+      "excludePackagePatterns": [
         "^org.jetbrains.kotlinx"
       ],
       "enabled": false
