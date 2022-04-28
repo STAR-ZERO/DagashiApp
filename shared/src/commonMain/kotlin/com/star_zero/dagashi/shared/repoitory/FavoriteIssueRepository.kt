@@ -5,18 +5,20 @@ import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
+import com.star_zero.dagashi.shared.model.Milestone
 import io.ktor.util.date.getTimeMillis
 
 class FavoriteIssueRepository(
     private val dagashiDb: DagashiDatabase
 ) {
-    fun addFavorite(issue: Issue) {
+    fun addFavorite(milestone: Milestone, issue: Issue) {
         with(dagashiDb) {
             transaction {
                 favoriteIssueQueries.insertFavoriteIssue(
                     url = issue.url,
                     title = issue.title,
                     body = issue.body,
+                    milestone_id = milestone.id,
                     created_at = getTimeMillis()
                 )
 
@@ -55,7 +57,7 @@ class FavoriteIssueRepository(
     fun getFavorites(): List<Issue> {
         return with(dagashiDb) {
             favoriteIssueQueries.selectAll(
-                mapper = { issueUrl: String, issueTitle: String, issueBody: String, _: Long ->
+                mapper = { issueUrl, issueTitle, issueBody, _, _: Long ->
                     // Comment
                     val comments = commentQueries.selectByIssueUrl(
                         issue_url = issueUrl,
