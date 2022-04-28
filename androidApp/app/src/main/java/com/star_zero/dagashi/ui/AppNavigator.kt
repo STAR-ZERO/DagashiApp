@@ -6,6 +6,7 @@ import com.star_zero.dagashi.features.issue.destinations.IssueScreenDestination
 import com.star_zero.dagashi.features.milestone.MilestoneNavigator
 import com.star_zero.dagashi.features.setting.SettingNavigator
 import com.star_zero.dagashi.features.setting.destinations.SettingScreenDestination
+import com.star_zero.dagashi.shared.model.Milestone
 
 class AppNavigator(
     private val navigator: DestinationsNavigator
@@ -19,12 +20,7 @@ class AppNavigator(
         navigator.navigate(SettingScreenDestination())
     }
 
-    override fun navigateMilestoneToIssue(path: String, title: String) {
-        navigator.navigate(
-            IssueScreenDestination(
-                path = path,
-                title = title
-            )
-        )
+    override fun navigateMilestoneToIssue(milestone: Milestone) {
+        navigator.navigate(IssueScreenDestination(milestone))
     }
 }

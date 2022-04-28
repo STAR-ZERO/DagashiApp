@@ -69,6 +69,12 @@ kotlin {
             iosArm64Test.dependsOn(this)
         }
     }
+
+    sourceSets {
+        all {
+            languageSettings.optIn("kotlin.RequiresOptIn")
+        }
+    }
 }
 
 android {

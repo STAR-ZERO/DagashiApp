@@ -62,25 +62,25 @@ import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
+import com.star_zero.dagashi.shared.model.Milestone
 
 @Destination(style = DestinationStyle.Runtime::class)
 @Composable
 fun IssueScreen(
     navigator: IssueNavigator,
-    path: String,
-    title: String
+    milestone: Milestone
 ) {
     val viewModel: IssueViewModel = hiltViewModel()
 
-    LaunchedEffect(path) {
-        viewModel.getIssues(path)
+    LaunchedEffect(milestone) {
+        viewModel.getIssues(milestone.path)
     }
 
     IssueContainer(
         uiState = viewModel.uiState,
-        title = title,
+        title = milestone.title,
         onRefresh = {
-            viewModel.refresh(path)
+            viewModel.refresh(milestone.path)
         },
         onClickFavorite = { issue ->
             viewModel.addFavorite(issue)

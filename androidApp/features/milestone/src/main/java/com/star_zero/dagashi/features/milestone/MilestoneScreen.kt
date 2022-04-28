@@ -57,10 +57,7 @@ fun MilestoneScreen(navigator: MilestoneNavigator) {
             viewModel.refresh()
         },
         navigateIssue = { milestone ->
-            navigator.navigateMilestoneToIssue(
-                path = milestone.path,
-                title = milestone.title
-            )
+            navigator.navigateMilestoneToIssue(milestone)
         },
         navigateSetting = {
             navigator.navigateMilestoneToSetting()
