@@ -116,7 +116,7 @@ private fun DeleteAllButton(
     if (isShowConfirmation) {
         AlertDialog(
             onDismissRequest = { isShowConfirmation = false },
-            text = {
+            title = {
                 Text(
                     text = stringResource(id = R.string.favorite_delete_all)
                 )
