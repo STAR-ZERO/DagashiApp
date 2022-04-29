@@ -1,16 +1,22 @@
 package com.star_zero.dagashi.shared.repoitory
 
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.star_zero.dagashi.shared.db.DagashiDatabase
 import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
+import com.star_zero.dagashi.shared.model.FavoriteIssue
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.shared.model.Milestone
 import io.ktor.util.date.getTimeMillis
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class FavoriteIssueRepository(
     private val dagashiDb: DagashiDatabase
 ) {
+
     fun addFavorite(milestone: Milestone, issue: Issue) {
         with(dagashiDb) {
             transaction {
@@ -52,6 +58,23 @@ class FavoriteIssueRepository(
                 }
             }
         }
+    }
+
+    fun flowFavoritesByMilestone(milestone: Milestone): Flow<List<FavoriteIssue>> {
+        return dagashiDb.favoriteIssueQueries.selectByMilestone(milestone_id = milestone.id)
+            .asFlow()
+            .mapToList()
+            .map { favoriteIssues ->
+                favoriteIssues.map { favoriteIssue ->
+                    FavoriteIssue(
+                        url = favoriteIssue.url,
+                        title = favoriteIssue.title,
+                        body = favoriteIssue.body,
+                        milestone_id = favoriteIssue.milestone_id,
+                        created_at = favoriteIssue.created_at
+                    )
+                }
+            }
     }
 
     fun getFavorites(): List<Issue> {

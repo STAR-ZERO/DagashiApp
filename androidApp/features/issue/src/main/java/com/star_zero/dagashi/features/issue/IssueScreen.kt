@@ -33,7 +33,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,7 +44,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
@@ -57,10 +56,7 @@ import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.star_zero.dagashi.core.CoreString
 import com.star_zero.dagashi.core.ui.components.ErrorRetry
 import com.star_zero.dagashi.core.ui.components.formatLinkedText
-import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
-import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
-import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.shared.model.Milestone
 
@@ -73,17 +69,17 @@ fun IssueScreen(
     val viewModel: IssueViewModel = hiltViewModel()
 
     LaunchedEffect(milestone) {
-        viewModel.getIssues(milestone.path)
+        viewModel.getIssues()
     }
 
     IssueContainer(
         uiState = viewModel.uiState,
         title = milestone.title,
         onRefresh = {
-            viewModel.refresh(milestone.path)
+            viewModel.getIssues()
         },
-        onClickFavorite = { issue ->
-            viewModel.addFavorite(issue)
+        onClickFavorite = { issueItem ->
+            viewModel.addFavorite(issueItem)
         },
         navigateBack = {
             navigator.navigateBack()
@@ -96,7 +92,7 @@ private fun IssueContainer(
     uiState: IssueUiState,
     title: String,
     onRefresh: () -> Unit,
-    onClickFavorite: (Issue) -> Unit,
+    onClickFavorite: (IssueItemUiState) -> Unit,
     navigateBack: () -> Unit
 ) {
     Surface(color = MaterialTheme.colors.background) {
@@ -147,7 +143,7 @@ private fun IssueContent(
     uiState: IssueUiState,
     scaffoldState: ScaffoldState,
     onRefresh: () -> Unit,
-    onClickFavorite: (Issue) -> Unit
+    onClickFavorite: (IssueItemUiState) -> Unit
 ) {
     if (uiState.error && uiState.issues.isEmpty()) {
         ErrorRetry(
@@ -177,20 +173,22 @@ private fun IssueContent(
 }
 
 @Composable
-private fun IssueList(uiState: IssueUiState, onClickFavorite: (Issue) -> Unit) {
+private fun IssueList(uiState: IssueUiState, onClickFavorite: (IssueItemUiState) -> Unit) {
     LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)) {
-        items(uiState.issues, key = { it.url }) { issue ->
-            IssueCard(issue, uiState.isOpenLinkInApp, onClickFavorite)
+        items(uiState.issues, key = { it.issue.url }) { issueItem ->
+            IssueCard(issueItem, uiState.isOpenLinkInApp, onClickFavorite)
         }
     }
 }
 
 @Composable
 private fun IssueCard(
-    issue: Issue,
+    issueItem: IssueItemUiState,
     isOpenLinkInApp: Boolean,
-    onClickFavorite: (Issue) -> Unit
+    onClickFavorite: (IssueItemUiState) -> Unit
 ) {
+
+    val issue = issueItem.issue
 
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
@@ -224,13 +222,24 @@ private fun IssueCard(
 
                 Spacer(modifier = Modifier.width(16.dp))
 
+                // Favorite button
                 IconButton(
-                    onClick = { onClickFavorite(issue) },
+                    onClick = { onClickFavorite(issueItem) },
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(24.dp)
                         .align(Alignment.Top)
                 ) {
-                    Icon(imageVector = Icons.Filled.Star, contentDescription = null)
+                    // TODO: Fix color
+                    val tint = if (issueItem.isFavorite) {
+                        Color.Yellow
+                    } else {
+                        Color.Gray
+                    }
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = null,
+                        tint = tint
+                    )
                 }
             }
 
@@ -348,43 +357,3 @@ private fun Comment(comment: Comment, modifier: Modifier = Modifier) {
         )
     }
 }
-
-// region Compose Preview
-val previewIssue = Issue(
-    "https://github.com/AndroidDagashi/AndroidDagashi/issues/1530",
-    "11 Weeks of Android: UI and Compose",
-    "https://android-developers.googleblog.com/2020/08/11-weeks-of-android-ui-and-compose.html\n\nSample Sample",
-    listOf(
-        Label(
-            "Kotlin",
-            "FFEC953C".toLong(radix = 16)
-        )
-    ),
-    listOf(
-        Comment(
-            "Comment",
-            Author(
-                "STAR_ZERO",
-                "url",
-                "https://avatars0.githubusercontent.com/u/376376?v=4"
-            )
-        )
-    )
-)
-
-@Preview("Issue card")
-@Composable
-private fun PreviewIssueCard() {
-    DagashiAppTheme {
-        IssueCard(previewIssue, true, onClickFavorite = {})
-    }
-}
-
-@Preview("Issue card dark theme")
-@Composable
-private fun PreviewIssueCardDark() {
-    DagashiAppTheme(darkTheme = true) {
-        IssueCard(previewIssue, true, onClickFavorite = {})
-    }
-}
-// endregion

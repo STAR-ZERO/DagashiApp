@@ -65,6 +65,7 @@ protobuf-java = { module = "com.google.protobuf:protobuf-javalite", version.ref 
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
 
 sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sqldelight" }
+sqldelight-coroutines = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-native = { module = "com.squareup.sqldelight:native-driver", version.ref = "sqldelight" }
 

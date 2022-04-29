@@ -27,6 +27,7 @@ kotlin {
                 implementation(libs.ktor.logging)
                 implementation(libs.kotlinx.serialization)
                 implementation(libs.sqldelight.runtime)
+                implementation(libs.sqldelight.coroutines)
                 implementation(libs.napier)
             }
         }

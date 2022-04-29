@@ -11,6 +11,12 @@ SELECT *
 FROM FavoriteIssues
 ORDER BY created_at DESC;
 
+selectByMilestone:
+SELECT *
+FROM FavoriteIssues
+WHERE milestone_id = ?
+ORDER BY created_at DESC;
+
 insertFavoriteIssue:
 INSERT INTO FavoriteIssues (url, title, body, milestone_id, created_at)
 VALUES (?, ?, ?, ?, ?);
