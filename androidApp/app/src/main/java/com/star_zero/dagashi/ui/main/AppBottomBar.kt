@@ -53,21 +53,26 @@ fun AppBottomBar(
                     BottomNavigationItem(
                         selected = selectedItem == index,
                         onClick = {
-                            navController.navigateTo(tab.destination) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                            if (index == selectedItem) {
+                                // re-select
+                                navController.popBackStack(tab.destination.route, false)
+                            } else {
+                                navController.navigateTo(tab.destination) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                                selectedItem = index
                             }
-                            selectedItem = index
                         },
                         icon = {
                             Icon(imageVector = tab.icon, contentDescription = label)
                         },
                         label = {
                             Text(text = label)
-                        }
+                        },
                     )
                 }
             }
