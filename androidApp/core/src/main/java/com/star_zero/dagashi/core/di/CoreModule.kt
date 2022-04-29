@@ -10,10 +10,6 @@ import com.star_zero.dagashi.shared.db.DagashiDatabase
 import com.star_zero.dagashi.shared.db.DatabaseDriverFactory
 import com.star_zero.dagashi.shared.db.DatabaseFactory
 import com.star_zero.dagashi.shared.local.LocalSettings
-import com.star_zero.dagashi.shared.repoitory.FavoriteIssueRepository
-import com.star_zero.dagashi.shared.repoitory.IssueRepository
-import com.star_zero.dagashi.shared.repoitory.MilestoneRepository
-import com.star_zero.dagashi.shared.repoitory.SettingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,66 +20,34 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class CoreModule {
+object CoreModule {
 
-    companion object {
-
-        @Singleton
-        @Provides
-        fun provideAppDispatchers(): AppDispatchers {
-            return object : AppDispatchers {
-                override val main = Dispatchers.Main
-                override val io = Dispatchers.IO
-                override val default = Dispatchers.Default
-            }
+    @Singleton
+    @Provides
+    fun provideAppDispatchers(): AppDispatchers {
+        return object : AppDispatchers {
+            override val main = Dispatchers.Main
+            override val io = Dispatchers.IO
+            override val default = Dispatchers.Default
         }
+    }
 
-        @Singleton
-        @Provides
-        fun provideDagashiAPI(appConfig: AppConfig): DagashiAPI {
-            return DagashiAPI.create(appConfig.debug)
-        }
+    @Singleton
+    @Provides
+    fun provideDagashiAPI(appConfig: AppConfig): DagashiAPI {
+        return DagashiAPI.create(appConfig.debug)
+    }
 
-        @Singleton
-        @Provides
-        fun provideDagashiDb(@ApplicationContext context: Context): DagashiDatabase {
-            val databaseDriverFactory = DatabaseDriverFactory(context)
-            return DatabaseFactory.createDatabase(databaseDriverFactory)
-        }
+    @Singleton
+    @Provides
+    fun provideDagashiDb(@ApplicationContext context: Context): DagashiDatabase {
+        val databaseDriverFactory = DatabaseDriverFactory(context)
+        return DatabaseFactory.createDatabase(databaseDriverFactory)
+    }
 
-        @Singleton
-        @Provides
-        fun provideLocalSettings(@ApplicationContext context: Context): LocalSettings {
-            return LocalSettingsDataSource.create(context)
-        }
-
-        @Singleton
-        @Provides
-        fun provideMilestoneRepository(
-            dagashiAPI: DagashiAPI,
-            dagashiDb: DagashiDatabase
-        ): MilestoneRepository {
-            return MilestoneRepository(dagashiAPI, dagashiDb)
-        }
-
-        @Singleton
-        @Provides
-        fun provideIssueRepository(dagashiAPI: DagashiAPI): IssueRepository {
-            return IssueRepository(dagashiAPI)
-        }
-
-        @Singleton
-        @Provides
-        fun provideFavoriteIssueRepository(
-            dagashiDb: DagashiDatabase
-        ): FavoriteIssueRepository {
-            return FavoriteIssueRepository(dagashiDb)
-        }
-
-        @Singleton
-        @Provides
-        fun provideSettingRepository(localSettings: LocalSettings): SettingRepository {
-            return SettingRepository(localSettings)
-        }
+    @Singleton
+    @Provides
+    fun provideLocalSettings(@ApplicationContext context: Context): LocalSettings {
+        return LocalSettingsDataSource.create(context)
     }
 }
