@@ -13,8 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -22,9 +20,6 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -109,18 +104,6 @@ private fun AppBar(
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.milestone_title))
-        },
-        actions = {
-            IconButton(onClick = {
-                navigateToFavorite()
-            }) {
-                Icon(Icons.Filled.Favorite, "Favorite")
-            }
-            IconButton(onClick = {
-                navigateToSetting()
-            }) {
-                Icon(Icons.Filled.Settings, "Settings")
-            }
         }
     )
 }

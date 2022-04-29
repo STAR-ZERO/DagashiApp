@@ -30,13 +30,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.star_zero.dagashi.core.CoreString
 import com.star_zero.dagashi.core.ui.components.IssueCard
 import com.star_zero.dagashi.core.usecase.OpenLinkUseCase
 import com.star_zero.dagashi.shared.model.Issue
 
-@Destination(style = DestinationStyle.Runtime::class)
+@Destination
 @Composable
 fun FavoriteScreen(
     navigator: FavoriteNavigator

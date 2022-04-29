@@ -9,16 +9,12 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.navigation.dependency
 import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
-import com.star_zero.dagashi.features.favorite.destinations.FavoriteScreenDestination
 import com.star_zero.dagashi.features.issue.destinations.IssueScreenDestination
 import com.star_zero.dagashi.features.milestone.destinations.MilestoneScreenDestination
-import com.star_zero.dagashi.features.setting.destinations.SettingScreenDestination
 import com.star_zero.dagashi.ui.AppNavigator
-import com.star_zero.dagashi.ui.FavoriteTransitions
 import com.star_zero.dagashi.ui.IssueTransitions
 import com.star_zero.dagashi.ui.MilestoneTransitions
 import com.star_zero.dagashi.ui.NavGraphs
-import com.star_zero.dagashi.ui.SettingTransitions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,19 +29,24 @@ class MainActivity : AppCompatActivity() {
         setContent {
             DagashiAppTheme {
                 val navHostEngine = rememberAnimatedNavHostEngine()
+                val navController = navHostEngine.rememberNavController()
 
-                MilestoneScreenDestination.style = MilestoneTransitions
-                IssueScreenDestination.style = IssueTransitions
-                FavoriteScreenDestination.style = FavoriteTransitions
-                SettingScreenDestination.style = SettingTransitions
+                AppBottomBar(
+                    navController = navController
+                ) {
 
-                DestinationsNavHost(
-                    navGraph = NavGraphs.root,
-                    engine = navHostEngine,
-                    dependenciesContainerBuilder = {
-                        dependency(AppNavigator(destinationsNavigator))
-                    }
-                )
+                    MilestoneScreenDestination.style = MilestoneTransitions
+                    IssueScreenDestination.style = IssueTransitions
+
+                    DestinationsNavHost(
+                        navGraph = NavGraphs.root,
+                        navController = navController,
+                        engine = navHostEngine,
+                        dependenciesContainerBuilder = {
+                            dependency(AppNavigator(destinationsNavigator))
+                        }
+                    )
+                }
             }
         }
     }
