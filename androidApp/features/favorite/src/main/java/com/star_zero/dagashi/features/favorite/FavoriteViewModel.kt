@@ -22,12 +22,23 @@ class FavoriteViewModel @Inject constructor(
         private set
 
     init {
-        getFavorites()
-
         viewModelScope.launch {
             uiState = uiState.copy(
                 isOpenLinkInApp = settingRepository.isOpenLinkInApp()
             )
+        }
+    }
+
+    fun getFavorites() {
+        viewModelScope.launch {
+            val favorites = favoriteIssueRepository.getFavorites().map { favoriteIssue ->
+                FavoriteItemUiState(
+                    issue = favoriteIssue.issue,
+                    milestoneId = favoriteIssue.milestoneId,
+                    isFavorite = true
+                )
+            }
+            uiState = uiState.copy(favorites = favorites)
         }
     }
 
@@ -51,19 +62,6 @@ class FavoriteViewModel @Inject constructor(
         viewModelScope.launch {
             favoriteIssueRepository.deleteAllFavorites()
             getFavorites()
-        }
-    }
-
-    private fun getFavorites() {
-        viewModelScope.launch {
-            val favorites = favoriteIssueRepository.getFavorites().map { favoriteIssue ->
-                FavoriteItemUiState(
-                    issue = favoriteIssue.issue,
-                    milestoneId = favoriteIssue.milestoneId,
-                    isFavorite = true
-                )
-            }
-            uiState = uiState.copy(favorites = favorites)
         }
     }
 }

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +47,10 @@ fun FavoriteScreen(
     val context = LocalContext.current
     val openLinkUseCase = remember(uriHandler, context) {
         OpenLinkUseCase(context, uriHandler)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.getFavorites()
     }
 
     FavoriteContainer(
