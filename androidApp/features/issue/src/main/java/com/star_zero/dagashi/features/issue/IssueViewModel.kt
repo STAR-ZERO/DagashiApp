@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.shared.repoitory.FavoriteIssueRepository
 import com.star_zero.dagashi.shared.repoitory.IssueRepository
@@ -39,6 +40,8 @@ class IssueViewModel @Inject constructor(
         private set
 
     init {
+        getIssues()
+
         viewModelScope.launch {
             uiState = uiState.copy(
                 isOpenLinkInApp = settingRepository.isOpenLinkInApp()
@@ -70,11 +73,11 @@ class IssueViewModel @Inject constructor(
         }
     }
 
-    fun addFavorite(issueItem: IssueItemUiState) {
-        if (issueItem.isFavorite) {
-            favoriteIssueRepository.deleteFavorite(issueItem.issue)
+    fun toggleFavorite(issue: Issue, isFavorite: Boolean) {
+        if (isFavorite) {
+            favoriteIssueRepository.deleteFavorite(issue)
         } else {
-            favoriteIssueRepository.addFavorite(milestone, issueItem.issue)
+            favoriteIssueRepository.addFavorite(milestone.id, issue)
         }
     }
 }

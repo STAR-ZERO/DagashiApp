@@ -58,9 +58,10 @@ kotlin {
 
 dependencies {
     implementation project(":androidApp:core")
-    implementation project(":androidApp:features:issue")
-    implementation project(":androidApp:features:setting")
     implementation project(":androidApp:features:milestone")
+    implementation project(":androidApp:features:issue")
+    implementation project(":androidApp:features:favorite")
+    implementation project(":androidApp:features:setting")
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler

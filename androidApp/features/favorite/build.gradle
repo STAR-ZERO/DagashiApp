@@ -48,7 +48,7 @@ kotlin {
 
 ksp {
     arg("compose-destinations.mode", "destinations")
-    arg("compose-destinations.moduleName", "issue")
+    arg("compose-destinations.moduleName", "favorite")
 }
 
 dependencies {

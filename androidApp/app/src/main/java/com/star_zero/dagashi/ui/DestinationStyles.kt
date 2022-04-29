@@ -10,6 +10,7 @@ import androidx.navigation.NavBackStackEntry
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.ramcosta.composedestinations.utils.destination
+import com.star_zero.dagashi.features.favorite.destinations.FavoriteScreenDestination
 import com.star_zero.dagashi.features.issue.destinations.IssueScreenDestination
 import com.star_zero.dagashi.features.milestone.destinations.MilestoneScreenDestination
 import com.star_zero.dagashi.features.setting.destinations.SettingScreenDestination
@@ -58,6 +59,15 @@ object MilestoneTransitions : DestinationStyle.Animated {
                     )
                 )
             }
+            FavoriteScreenDestination -> {
+                slideIntoContainer(
+                    AnimatedContentScope.SlideDirection.Down,
+                    animationSpec = tween(
+                        durationMillis = ANIMATION_DURATION,
+                        easing = LinearEasing
+                    )
+                )
+            }
             SettingScreenDestination -> {
                 slideIntoContainer(
                     AnimatedContentScope.SlideDirection.Down,
@@ -95,6 +105,40 @@ object IssueTransitions : DestinationStyle.Animated {
             MilestoneScreenDestination -> {
                 slideOutOfContainer(
                     AnimatedContentScope.SlideDirection.Right,
+                    animationSpec = tween(
+                        durationMillis = ANIMATION_DURATION,
+                        easing = LinearEasing
+                    )
+                )
+            }
+            else -> null
+        }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+object FavoriteTransitions : DestinationStyle.Animated {
+
+    override fun AnimatedContentScope<NavBackStackEntry>.enterTransition(): EnterTransition? {
+        return when (initialState.navDestination()) {
+            MilestoneScreenDestination -> {
+                slideIntoContainer(
+                    AnimatedContentScope.SlideDirection.Up,
+                    animationSpec = tween(
+                        durationMillis = ANIMATION_DURATION,
+                        easing = LinearEasing
+                    )
+                )
+            }
+            else -> null
+        }
+    }
+
+    override fun AnimatedContentScope<NavBackStackEntry>.popExitTransition(): ExitTransition? {
+        return when (targetState.navDestination()) {
+            MilestoneScreenDestination -> {
+                slideOutOfContainer(
+                    AnimatedContentScope.SlideDirection.Down,
                     animationSpec = tween(
                         durationMillis = ANIMATION_DURATION,
                         easing = LinearEasing

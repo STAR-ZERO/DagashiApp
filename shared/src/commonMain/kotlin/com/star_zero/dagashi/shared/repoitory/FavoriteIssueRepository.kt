@@ -16,15 +16,14 @@ import kotlinx.coroutines.flow.map
 class FavoriteIssueRepository(
     private val dagashiDb: DagashiDatabase
 ) {
-
-    fun addFavorite(milestone: Milestone, issue: Issue) {
+    fun addFavorite(milestoneId: String, issue: Issue) {
         with(dagashiDb) {
             transaction {
                 favoriteIssueQueries.insertFavoriteIssue(
                     url = issue.url,
                     title = issue.title,
                     body = issue.body,
-                    milestone_id = milestone.id,
+                    milestone_id = milestoneId,
                     created_at = getTimeMillis()
                 )
 
@@ -60,27 +59,19 @@ class FavoriteIssueRepository(
         }
     }
 
-    fun flowFavoritesByMilestone(milestone: Milestone): Flow<List<FavoriteIssue>> {
+    fun flowFavoriteUrlsByMilestone(milestone: Milestone): Flow<List<String>> {
         return dagashiDb.favoriteIssueQueries.selectByMilestone(milestone_id = milestone.id)
             .asFlow()
             .mapToList()
             .map { favoriteIssues ->
-                favoriteIssues.map { favoriteIssue ->
-                    FavoriteIssue(
-                        url = favoriteIssue.url,
-                        title = favoriteIssue.title,
-                        body = favoriteIssue.body,
-                        milestone_id = favoriteIssue.milestone_id,
-                        created_at = favoriteIssue.created_at
-                    )
-                }
+                favoriteIssues.map { it.url }
             }
     }
 
-    fun getFavorites(): List<Issue> {
+    fun getFavorites(): List<FavoriteIssue> {
         return with(dagashiDb) {
             favoriteIssueQueries.selectAll(
-                mapper = { issueUrl, issueTitle, issueBody, _, _: Long ->
+                mapper = { issueUrl, issueTitle, issueBody, milestoneId, createdAt ->
                     // Comment
                     val comments = commentQueries.selectByIssueUrl(
                         issue_url = issueUrl,
@@ -107,12 +98,16 @@ class FavoriteIssueRepository(
                         }
                     ).executeAsList()
 
-                    Issue(
-                        url = issueUrl,
-                        title = issueTitle,
-                        body = issueBody,
-                        labels = labels,
-                        comments = comments
+                    FavoriteIssue(
+                        issue = Issue(
+                            url = issueUrl,
+                            title = issueTitle,
+                            body = issueBody,
+                            labels = labels,
+                            comments = comments
+                        ),
+                        milestoneId = milestoneId,
+                        createdAt = createdAt
                     )
                 }
             ).executeAsList()

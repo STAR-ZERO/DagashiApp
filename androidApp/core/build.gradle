@@ -45,6 +45,8 @@ dependencies {
     api libs.androidx.compat
     api libs.material
 
+    implementation libs.androidx.browser
+
     api libs.coroutines.android
 
     api libs.androidx.lifecycle.viewmodel

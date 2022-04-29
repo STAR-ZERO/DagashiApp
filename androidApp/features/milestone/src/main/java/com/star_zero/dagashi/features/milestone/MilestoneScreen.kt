@@ -23,6 +23,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -59,6 +60,9 @@ fun MilestoneScreen(navigator: MilestoneNavigator) {
         navigateIssue = { milestone ->
             navigator.navigateMilestoneToIssue(milestone)
         },
+        navigateToFavorite = {
+            navigator.navigateMilestoneToFavorite()
+        },
         navigateSetting = {
             navigator.navigateMilestoneToSetting()
         }
@@ -70,6 +74,7 @@ private fun MilestoneContainer(
     uiState: MilestoneUiState,
     onRefresh: () -> Unit,
     navigateIssue: (Milestone) -> Unit,
+    navigateToFavorite: () -> Unit,
     navigateSetting: () -> Unit
 ) {
     Surface(color = MaterialTheme.colors.background) {
@@ -79,9 +84,8 @@ private fun MilestoneContainer(
             scaffoldState = scaffoldState,
             topBar = {
                 AppBar(
-                    navigateToSetting = {
-                        navigateSetting()
-                    }
+                    navigateToFavorite = navigateToFavorite,
+                    navigateToSetting = navigateSetting
                 )
             },
         ) {
@@ -98,12 +102,20 @@ private fun MilestoneContainer(
 }
 
 @Composable
-private fun AppBar(navigateToSetting: () -> Unit) {
+private fun AppBar(
+    navigateToFavorite: () -> Unit,
+    navigateToSetting: () -> Unit,
+) {
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.milestone_title))
         },
         actions = {
+            IconButton(onClick = {
+                navigateToFavorite()
+            }) {
+                Icon(Icons.Filled.Favorite, "Favorite")
+            }
             IconButton(onClick = {
                 navigateToSetting()
             }) {

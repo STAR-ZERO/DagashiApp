@@ -18,10 +18,10 @@ class GetIssueWithFavoriteUseCase(
     // Combine issue api response and favorite
     val issueItems: Flow<List<IssueItemUiState>> = combine(
         issueFlow,
-        favoriteIssueRepository.flowFavoritesByMilestone(milestone)
-    ) { issues, favorites ->
+        favoriteIssueRepository.flowFavoriteUrlsByMilestone(milestone)
+    ) { issues, favoriteUrls ->
         issues.map { issue ->
-            val isFavorite = favorites.any { it.url == issue.url }
+            val isFavorite = favoriteUrls.any { it == issue.url }
             IssueItemUiState(
                 issue = issue,
                 isFavorite = isFavorite
