@@ -1,10 +1,12 @@
 package com.star_zero.dagashi.core.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 
 private val DarkColorPalette = darkColors(
     primary = purple200,
@@ -28,7 +30,7 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun DagashiAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun DagashiAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
@@ -39,6 +41,9 @@ fun DagashiAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
         colors = colors,
         typography = typography,
         shapes = shapes,
-        content = content
-    )
+    ) {
+        CompositionLocalProvider(LocalContentAlpha provides 1f) {
+            content()
+        }
+    }
 }
