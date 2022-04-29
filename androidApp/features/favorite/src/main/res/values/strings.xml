@@ -2,4 +2,5 @@
 <resources>
     <string name="favorite_title">Favorite Issues</string>
     <string name="favorite_no_data">No Data</string>
+    <string name="favorite_delete_all">Delete all favorites?</string>
 </resources>
