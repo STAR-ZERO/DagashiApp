@@ -13,20 +13,15 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.ramcosta.composedestinations.navigation.navigateTo
-import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.star_zero.dagashi.R
-import com.star_zero.dagashi.features.favorite.destinations.FavoriteScreenDestination
-import com.star_zero.dagashi.features.milestone.destinations.MilestoneScreenDestination
-import com.star_zero.dagashi.features.setting.destinations.SettingScreenDestination
+import com.star_zero.dagashi.ui.NavGraphs
 
 @OptIn(
     ExperimentalAnimationApi::class,
@@ -37,34 +32,23 @@ fun AppBottomBar(
     navController: NavController,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    var selectedItem by remember { mutableStateOf(0) }
-
-    val tabs = listOf(
-        BottomTab.Home,
-        BottomTab.Favorite,
-        BottomTab.Setting,
-    )
-
     Scaffold(
         bottomBar = {
             BottomNavigation {
-                tabs.forEachIndexed { index, tab ->
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+
+                tabs.forEach { tab ->
                     val label = stringResource(id = tab.label)
                     BottomNavigationItem(
-                        selected = selectedItem == index,
+                        selected = currentDestination?.hierarchy?.any { it.route == tab.route } == true,
                         onClick = {
-                            if (index == selectedItem) {
-                                // re-select
-                                navController.popBackStack(tab.destination.route, false)
-                            } else {
-                                navController.navigateTo(tab.destination) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
+                            navController.navigate(tab.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
                                 }
-                                selectedItem = index
+                                launchSingleTop = true
+                                restoreState = true
                             }
                         },
                         icon = {
@@ -81,25 +65,32 @@ fun AppBottomBar(
     )
 }
 
+private val tabs = listOf(
+    BottomTab.Home,
+    BottomTab.Favorite,
+    BottomTab.Setting,
+)
+
+
 sealed class BottomTab(
-    val destination: DirectionDestinationSpec,
+    val route: String,
     val icon: ImageVector,
     val label: Int,
 ) {
     object Home : BottomTab(
-        destination = MilestoneScreenDestination,
+        route = NavGraphs.tabHome.route,
         icon = Icons.Filled.Home,
         label = R.string.tab_home
     )
 
     object Favorite : BottomTab(
-        destination = FavoriteScreenDestination,
+        route = NavGraphs.tabFavorite.route,
         icon = Icons.Filled.Favorite,
         label = R.string.tab_favorite
     )
 
     object Setting : BottomTab(
-        destination = SettingScreenDestination,
+        route = NavGraphs.tabSetting.route,
         icon = Icons.Filled.Settings,
         label = R.string.tab_setting
     )
