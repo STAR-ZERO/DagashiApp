@@ -18,6 +18,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -49,12 +51,14 @@ fun IssueScreen(
         OpenLinkUseCase(context, uriHandler)
     }
 
+    val uiState by viewModel.uiState.collectAsState(IssueUiState())
+
     IssueContainer(
-        uiState = viewModel.uiState,
+        uiState = uiState,
         title = milestone.title,
         onRefresh = viewModel::getIssues,
         onOpenLink = {
-            openLinkUseCase(it, viewModel.uiState.isOpenLinkInApp)
+            openLinkUseCase(it, uiState.isOpenLinkInApp)
         },
         onClickFavorite = viewModel::toggleFavorite,
         navigateBack = navigator::navigateBack

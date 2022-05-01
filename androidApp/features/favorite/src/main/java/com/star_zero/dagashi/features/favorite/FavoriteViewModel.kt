@@ -3,12 +3,14 @@ package com.star_zero.dagashi.features.favorite
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.repoitory.FavoriteIssueRepository
 import com.star_zero.dagashi.shared.repoitory.SettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,15 +20,12 @@ class FavoriteViewModel @Inject constructor(
     settingRepository: SettingRepository
 ) : ViewModel() {
 
-    var uiState by mutableStateOf(FavoriteUiState())
-        private set
+    private var _uiState by mutableStateOf(FavoriteUiState())
 
-    init {
-        viewModelScope.launch {
-            uiState = uiState.copy(
-                isOpenLinkInApp = settingRepository.isOpenLinkInApp()
-            )
-        }
+    val uiState = snapshotFlow {
+        _uiState
+    }.combine(settingRepository.flowOpenLinkInApp) { uiState, isOpenLinkInApp ->
+        uiState.copy(isOpenLinkInApp = isOpenLinkInApp)
     }
 
     fun getFavorites() {
@@ -38,7 +37,7 @@ class FavoriteViewModel @Inject constructor(
                     isFavorite = true
                 )
             }
-            uiState = uiState.copy(favorites = favorites)
+            _uiState = _uiState.copy(favorites = favorites)
         }
     }
 
@@ -50,12 +49,12 @@ class FavoriteViewModel @Inject constructor(
         }
 
         // Update ui state
-        val newFavorites = uiState.favorites.toMutableList()
+        val newFavorites = _uiState.favorites.toMutableList()
         val index = newFavorites.indexOfFirst { it.issue.url == issue.url }
         newFavorites[index] = newFavorites[index].copy(
             isFavorite = !isFavorite
         )
-        uiState = uiState.copy(favorites = newFavorites.toList())
+        _uiState = _uiState.copy(favorites = newFavorites.toList())
     }
 
     fun deleteAllFavorites() {

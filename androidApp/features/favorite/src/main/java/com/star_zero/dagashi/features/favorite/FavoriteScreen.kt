@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,10 +54,12 @@ fun FavoriteScreen(
         viewModel.getFavorites()
     }
 
+    val uiState by viewModel.uiState.collectAsState(FavoriteUiState())
+
     FavoriteContainer(
-        uiState = viewModel.uiState,
+        uiState = uiState,
         onOpenLink = {
-            openLinkUseCase(it, viewModel.uiState.isOpenLinkInApp)
+            openLinkUseCase(it, uiState.isOpenLinkInApp)
         },
         onClickFavorite = viewModel::toggleFavorite,
         onDeleteAll = viewModel::deleteAllFavorites,

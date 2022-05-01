@@ -3,6 +3,7 @@ package com.star_zero.dagashi.features.issue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,7 @@ import com.star_zero.dagashi.shared.repoitory.IssueRepository
 import com.star_zero.dagashi.shared.repoitory.SettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,39 +38,37 @@ class IssueViewModel @Inject constructor(
     private val issueItemUiState: Flow<List<IssueItemUiState>> =
         getIssueWithFavoriteUseCase.issueItems
 
-    var uiState by mutableStateOf(IssueUiState())
-        private set
+    private var _uiState by mutableStateOf(IssueUiState())
+
+    val uiState: Flow<IssueUiState> = combine(
+        snapshotFlow { _uiState },
+        getIssueWithFavoriteUseCase.issueItems,
+        settingRepository.flowOpenLinkInApp
+    ) { uiState, issueItems, isOpenLinkInApp ->
+        uiState.copy(
+            issues = issueItems,
+            isOpenLinkInApp = isOpenLinkInApp
+        )
+    }
 
     init {
         getIssues()
-
-        viewModelScope.launch {
-            uiState = uiState.copy(
-                isOpenLinkInApp = settingRepository.isOpenLinkInApp()
-            )
-
-            issueItemUiState.collect { issueItems ->
-                uiState = uiState.copy(
-                    issues = issueItems
-                )
-            }
-        }
     }
 
     fun getIssues() {
-        if (uiState.loading) {
+        if (_uiState.loading) {
             return
         }
 
         viewModelScope.launch {
             try {
-                uiState = uiState.copy(loading = true, error = false)
+                _uiState = _uiState.copy(loading = true, error = false)
                 getIssueWithFavoriteUseCase()
             } catch (e: Exception) {
                 e.printStackTrace()
-                uiState = uiState.copy(error = true)
+                _uiState = _uiState.copy(error = true)
             } finally {
-                uiState = uiState.copy(loading = false)
+                _uiState = _uiState.copy(loading = false)
             }
         }
     }
