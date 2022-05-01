@@ -13,12 +13,13 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.NavGraph
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.star_zero.dagashi.R
 import com.star_zero.dagashi.ui.NavGraphs
@@ -34,21 +35,30 @@ fun AppBottomBar(
 ) {
     Scaffold(
         bottomBar = {
-            BottomNavigation {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
 
-                tabs.forEach { tab ->
+            var selectedIndex by rememberSaveable { mutableStateOf(0) }
+
+            BottomNavigation {
+                tabs.forEachIndexed { index, tab ->
                     val label = stringResource(id = tab.label)
                     BottomNavigationItem(
-                        selected = currentDestination?.hierarchy?.any { it.route == tab.route } == true,
+                        selected = selectedIndex == index,
                         onClick = {
-                            navController.navigate(tab.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                            if (selectedIndex == index) {
+                                // re-select
+                                (navController.findDestination(tab.route) as? NavGraph)?.let {
+                                    // Pop up to the start destination of NavGraph
+                                    navController.popBackStack(it.startDestinationId, false)
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                            } else {
+                                navController.navigate(tab.route) {
+                                    popUpTo(navController.graph.id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                                selectedIndex = index
                             }
                         },
                         icon = {
