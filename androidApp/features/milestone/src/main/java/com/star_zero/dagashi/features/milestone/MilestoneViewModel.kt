@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.star_zero.dagashi.shared.repoitory.MilestoneRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,8 +30,13 @@ class MilestoneViewModel @Inject constructor(
                 val milestones = milestoneRepository.getMilestone(forceReload)
                 uiState = uiState.copy(milestones = milestones)
             } catch (e: Exception) {
-                e.printStackTrace()
-                uiState = uiState.copy(error = true)
+                Napier.e("Error get milestone", e)
+                uiState = if (uiState.milestones.isEmpty()) {
+                    uiState.copy(error = true)
+                } else {
+                    val newEvents = uiState.events + MilestoneEvent.ErrorGetMilestone
+                    uiState.copy(events = newEvents)
+                }
             } finally {
                 uiState = uiState.copy(loading = false)
             }
@@ -39,5 +45,10 @@ class MilestoneViewModel @Inject constructor(
 
     fun refresh() {
         getMilestones(true)
+    }
+
+    fun consumeEvents(event: MilestoneEvent) {
+        val newEvents = uiState.events.filterNot { it == event }
+        uiState = uiState.copy(events = newEvents)
     }
 }

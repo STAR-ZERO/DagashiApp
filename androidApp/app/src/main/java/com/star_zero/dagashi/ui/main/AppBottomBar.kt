@@ -1,6 +1,5 @@
 package com.star_zero.dagashi.ui.main
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -11,7 +10,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -20,20 +21,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.star_zero.dagashi.R
+import com.star_zero.dagashi.core.ui.composition.LocalBottomBarScaffoldState
 import com.star_zero.dagashi.ui.NavGraphs
 
-@OptIn(
-    ExperimentalAnimationApi::class,
-    ExperimentalMaterialNavigationApi::class
-)
 @Composable
 fun AppBottomBar(
     navController: NavController,
     content: @Composable (PaddingValues) -> Unit
 ) {
+    val scaffoldState = rememberScaffoldState()
+
     Scaffold(
+        scaffoldState = scaffoldState,
         bottomBar = {
 
             var selectedIndex by rememberSaveable { mutableStateOf(0) }
@@ -71,7 +71,11 @@ fun AppBottomBar(
                 }
             }
         },
-        content = content
+        content = {
+            CompositionLocalProvider(LocalBottomBarScaffoldState provides scaffoldState) {
+                content(it)
+            }
+        }
     )
 }
 
