@@ -7,7 +7,7 @@ protobuf = "3.20.1"
 androidx-compose = "1.1.1"
 androidx-lifecycle = "2.4.1"
 accompnist = "0.23.1"
-ktor = "1.6.8"
+ktor = "2.0.1"
 compose-destinations = "1.5.0-beta"
 coroutines = { strictly = "1.6.1-native-mt" }
 
