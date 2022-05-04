@@ -16,11 +16,9 @@ import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -35,6 +33,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.star_zero.dagashi.core.CoreString
 import com.star_zero.dagashi.core.ui.components.ErrorRetry
+import com.star_zero.dagashi.core.ui.composition.LocalBottomBarScaffoldState
 import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.shared.model.Milestone
 
@@ -55,11 +54,8 @@ fun MilestoneScreen(navigator: MilestoneNavigator) {
         navigateIssue = { milestone ->
             navigator.navigateMilestoneToIssue(milestone)
         },
-        navigateToFavorite = {
-            navigator.navigateMilestoneToFavorite()
-        },
-        navigateSetting = {
-            navigator.navigateMilestoneToSetting()
+        consumeEvent = { event ->
+            viewModel.consumeEvents(event)
         }
     )
 }
@@ -69,38 +65,29 @@ private fun MilestoneContainer(
     uiState: MilestoneUiState,
     onRefresh: () -> Unit,
     navigateIssue: (Milestone) -> Unit,
-    navigateToFavorite: () -> Unit,
-    navigateSetting: () -> Unit
+    consumeEvent: (MilestoneEvent) -> Unit
+
 ) {
     Surface(color = MaterialTheme.colors.background) {
-        val scaffoldState = rememberScaffoldState()
-
         Scaffold(
-            scaffoldState = scaffoldState,
             topBar = {
-                AppBar(
-                    navigateToFavorite = navigateToFavorite,
-                    navigateToSetting = navigateSetting
-                )
+                AppBar()
             },
         ) {
             MilestoneContent(
                 uiState = uiState,
-                scaffoldState = scaffoldState,
                 onRefresh = onRefresh,
                 navigateToIssue = { milestone ->
                     navigateIssue(milestone)
-                }
+                },
+                consumeEvent = consumeEvent
             )
         }
     }
 }
 
 @Composable
-private fun AppBar(
-    navigateToFavorite: () -> Unit,
-    navigateToSetting: () -> Unit,
-) {
+private fun AppBar() {
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.milestone_title))
@@ -111,11 +98,26 @@ private fun AppBar(
 @Composable
 private fun MilestoneContent(
     uiState: MilestoneUiState,
-    scaffoldState: ScaffoldState,
     onRefresh: () -> Unit,
     navigateToIssue: (Milestone) -> Unit,
+    consumeEvent: (MilestoneEvent) -> Unit
 ) {
-    if (uiState.error && uiState.milestones.isEmpty()) {
+
+    val bottomBarScaffoldState = LocalBottomBarScaffoldState.current
+
+    uiState.events.firstOrNull()?.let { event ->
+        when (event) {
+            is MilestoneEvent.ErrorGetMilestone -> {
+                val message = stringResource(id = CoreString.text_error)
+                LaunchedEffect(event) {
+                    bottomBarScaffoldState.snackbarHostState.showSnackbar(message)
+                    consumeEvent(event)
+                }
+            }
+        }
+    }
+
+    if (uiState.error) {
         ErrorRetry(
             onRetry = {
                 onRefresh()
@@ -130,13 +132,6 @@ private fun MilestoneContent(
                 Box(modifier = Modifier.fillMaxSize()) // dummy ui for SwipeRefresh
             } else {
                 MilestoneList(uiState.milestones, navigateToIssue)
-            }
-        }
-
-        if (uiState.error) {
-            val message = stringResource(id = CoreString.text_error)
-            LaunchedEffect(scaffoldState.snackbarHostState) {
-                scaffoldState.snackbarHostState.showSnackbar(message)
             }
         }
     }
