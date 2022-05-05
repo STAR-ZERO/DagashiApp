@@ -16,9 +16,11 @@ import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -33,7 +35,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.star_zero.dagashi.core.CoreString
 import com.star_zero.dagashi.core.ui.components.ErrorRetry
-import com.star_zero.dagashi.core.ui.composition.LocalBottomBarScaffoldState
 import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.shared.model.Milestone
 
@@ -55,7 +56,7 @@ fun MilestoneScreen(navigator: MilestoneNavigator) {
             navigator.navigateMilestoneToIssue(milestone)
         },
         consumeEvent = { event ->
-            viewModel.consumeEvents(event)
+            viewModel.consumeEvent(event)
         }
     )
 }
@@ -66,16 +67,19 @@ private fun MilestoneContainer(
     onRefresh: () -> Unit,
     navigateIssue: (Milestone) -> Unit,
     consumeEvent: (MilestoneEvent) -> Unit
-
 ) {
     Surface(color = MaterialTheme.colors.background) {
+        val scaffoldState = rememberScaffoldState()
+
         Scaffold(
+            scaffoldState = scaffoldState,
             topBar = {
                 AppBar()
             },
         ) {
             MilestoneContent(
                 uiState = uiState,
+                scaffoldState = scaffoldState,
                 onRefresh = onRefresh,
                 navigateToIssue = { milestone ->
                     navigateIssue(milestone)
@@ -98,19 +102,18 @@ private fun AppBar() {
 @Composable
 private fun MilestoneContent(
     uiState: MilestoneUiState,
+    scaffoldState: ScaffoldState,
     onRefresh: () -> Unit,
     navigateToIssue: (Milestone) -> Unit,
     consumeEvent: (MilestoneEvent) -> Unit
 ) {
 
-    val bottomBarScaffoldState = LocalBottomBarScaffoldState.current
-
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
             is MilestoneEvent.ErrorGetMilestone -> {
                 val message = stringResource(id = CoreString.text_error)
-                LaunchedEffect(event) {
-                    bottomBarScaffoldState.snackbarHostState.showSnackbar(message)
+                LaunchedEffect(scaffoldState.snackbarHostState) {
+                    scaffoldState.snackbarHostState.showSnackbar(message)
                     consumeEvent(event)
                 }
             }

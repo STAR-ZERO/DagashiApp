@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
                 AppBottomBar(
                     navController = navController
-                ) {
+                ) { innerPadding ->
 
                     MilestoneScreenDestination.style = MilestoneTransitions
                     IssueScreenDestination.style = IssueTransitions
@@ -44,7 +46,8 @@ class MainActivity : AppCompatActivity() {
                         engine = navHostEngine,
                         dependenciesContainerBuilder = {
                             dependency(AppNavigator(destinationsNavigator))
-                        }
+                        },
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
