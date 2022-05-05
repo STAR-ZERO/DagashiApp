@@ -9,14 +9,14 @@ plugins {
 kotlin {
     android()
 
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//    ).forEach {
-//        it.binaries.framework {
-//            baseName = "shared"
-//        }
-//    }
+    listOf(
+        iosX64(),
+        iosArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "shared"
+        }
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -50,25 +50,25 @@ kotlin {
                 implementation(libs.junit)
             }
         }
-//        val iosX64Main by getting
-//        val iosArm64Main by getting
-//        val iosMain by creating {
-//            dependsOn(commonMain)
-//            iosX64Main.dependsOn(this)
-//            iosArm64Main.dependsOn(this)
-//
-//            dependencies {
-//                implementation(libs.ktor.ios)
-//                implementation(libs.sqldelight.native)
-//            }
-//        }
-//        val iosX64Test by getting
-//        val iosArm64Test by getting
-//        val iosTest by creating {
-//            dependsOn(commonTest)
-//            iosX64Test.dependsOn(this)
-//            iosArm64Test.dependsOn(this)
-//        }
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+
+            dependencies {
+                implementation(libs.ktor.ios)
+                implementation(libs.sqldelight.native)
+            }
+        }
+        val iosX64Test by getting
+        val iosArm64Test by getting
+        val iosTest by creating {
+            dependsOn(commonTest)
+            iosX64Test.dependsOn(this)
+            iosArm64Test.dependsOn(this)
+        }
     }
 
     sourceSets {
