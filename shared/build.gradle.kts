@@ -9,20 +9,14 @@ plugins {
 kotlin {
     android()
 
-    iosX64().binaries.framework {
-        baseName = "shared"
+    listOf(
+        iosX64(),
+        iosArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "shared"
+        }
     }
-    iosArm64().binaries.framework {
-        baseName = "shared"
-    }
-//    listOf(
-//        iosX64(),
-//        iosArm64()
-//    ).forEach {
-//        it.binaries.framework {
-//            baseName = "shared"
-//        }
-//    }
 
     sourceSets {
         val commonMain by getting {
