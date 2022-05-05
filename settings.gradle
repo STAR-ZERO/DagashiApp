@@ -14,3 +14,4 @@ include ":androidApp:features:issue"
 include ":androidApp:features:setting"
 include ":androidApp:features:milestone"
 include ':androidApp:features:favorite'
+include ':androidApp:testutils'

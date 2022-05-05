@@ -18,7 +18,20 @@ class MilestoneViewModel @Inject constructor(
     var uiState by mutableStateOf(MilestoneUiState())
         private set
 
-    fun getMilestones(forceReload: Boolean) {
+    init {
+        getMilestones(false)
+    }
+
+    fun refresh() {
+        getMilestones(true)
+    }
+
+    fun consumeEvent(event: MilestoneEvent) {
+        val newEvents = uiState.events.filterNot { it == event }
+        uiState = uiState.copy(events = newEvents)
+    }
+
+    private fun getMilestones(forceReload: Boolean) {
         if (uiState.loading) {
             return
         }
@@ -41,14 +54,5 @@ class MilestoneViewModel @Inject constructor(
                 uiState = uiState.copy(loading = false)
             }
         }
-    }
-
-    fun refresh() {
-        getMilestones(true)
-    }
-
-    fun consumeEvent(event: MilestoneEvent) {
-        val newEvents = uiState.events.filterNot { it == event }
-        uiState = uiState.copy(events = newEvents)
     }
 }
