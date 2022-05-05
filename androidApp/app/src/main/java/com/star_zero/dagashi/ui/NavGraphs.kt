@@ -9,7 +9,7 @@ import com.star_zero.dagashi.features.milestone.destinations.MilestoneScreenDest
 import com.star_zero.dagashi.features.setting.destinations.SettingScreenDestination
 
 object NavGraphs {
-    val tabHome = object : NavGraphSpec {
+    val tabHome = object:NavGraphSpec {
         override val route: String = "tab_home"
         override val startRoute: Route = MilestoneScreenDestination
         override val destinationsByRoute: Map<String, DestinationSpec<*>> = listOf(
@@ -18,7 +18,7 @@ object NavGraphs {
         ).associateBy { it.route }
     }
 
-    val tabFavorite = object : NavGraphSpec {
+    val tabFavorite = object:NavGraphSpec {
         override val route: String = "tab_favorite"
         override val startRoute: Route = FavoriteScreenDestination
         override val destinationsByRoute: Map<String, DestinationSpec<*>> = listOf(

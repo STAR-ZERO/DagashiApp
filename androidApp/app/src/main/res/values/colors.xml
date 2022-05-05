@@ -7,4 +7,6 @@
     <color name="teal_700" tools:ignore="UnusedResources">#FF018786</color>
     <color name="black" tools:ignore="UnusedResources">#FF000000</color>
     <color name="white" tools:ignore="UnusedResources">#FFFFFFFF</color>
+
+    <color name="test">#FFFFFFFF</color>
 </resources>
