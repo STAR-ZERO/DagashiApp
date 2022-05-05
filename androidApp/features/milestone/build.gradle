@@ -59,7 +59,11 @@ dependencies {
 
     ksp libs.compose.destinations.ksp
 
+    testImplementation project(":androidApp:testutils")
     testImplementation libs.junit
+    testImplementation libs.truth
+    testImplementation libs.mockk
+    testImplementation libs.coroutines.test
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.espresso
 

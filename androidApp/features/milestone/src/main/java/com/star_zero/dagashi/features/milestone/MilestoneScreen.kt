@@ -43,10 +43,6 @@ import com.star_zero.dagashi.shared.model.Milestone
 fun MilestoneScreen(navigator: MilestoneNavigator) {
     val viewModel: MilestoneViewModel = hiltViewModel()
 
-    LaunchedEffect(Unit) {
-        viewModel.getMilestones(false)
-    }
-
     MilestoneContainer(
         uiState = viewModel.uiState,
         onRefresh = {
