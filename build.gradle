@@ -9,6 +9,8 @@ buildscript {
     }
 }
 
+def isCI = System.getenv("CI") != null
+
 subprojects {
     // ./gradlew dependencyUpdates -DoutputFormatter=html
     apply plugin: "com.github.ben-manes.versions"
@@ -20,6 +22,10 @@ subprojects {
         version = "0.45.2"
         android = true
         verbose = true
+        ignoreFailures = isCI
+        reporters {
+            reporter "checkstyle"
+        }
         filter {
             exclude { element ->
                 element.file.path.contains("/build/generated/")
