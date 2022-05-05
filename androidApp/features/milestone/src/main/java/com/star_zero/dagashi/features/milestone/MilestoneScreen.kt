@@ -55,6 +55,9 @@ fun MilestoneScreen(navigator: MilestoneNavigator) {
         navigateIssue = { milestone ->
             navigator.navigateMilestoneToIssue(milestone)
         },
+        consumeEvent = { event ->
+            viewModel.consumeEvent(event)
+        }
     )
 }
 
@@ -63,6 +66,7 @@ private fun MilestoneContainer(
     uiState: MilestoneUiState,
     onRefresh: () -> Unit,
     navigateIssue: (Milestone) -> Unit,
+    consumeEvent: (MilestoneEvent) -> Unit
 ) {
     Surface(color = MaterialTheme.colors.background) {
         val scaffoldState = rememberScaffoldState()
@@ -79,7 +83,8 @@ private fun MilestoneContainer(
                 onRefresh = onRefresh,
                 navigateToIssue = { milestone ->
                     navigateIssue(milestone)
-                }
+                },
+                consumeEvent = consumeEvent
             )
         }
     }
@@ -100,8 +105,22 @@ private fun MilestoneContent(
     scaffoldState: ScaffoldState,
     onRefresh: () -> Unit,
     navigateToIssue: (Milestone) -> Unit,
+    consumeEvent: (MilestoneEvent) -> Unit
 ) {
-    if (uiState.error && uiState.milestones.isEmpty()) {
+
+    uiState.events.firstOrNull()?.let { event ->
+        when (event) {
+            is MilestoneEvent.ErrorGetMilestone -> {
+                val message = stringResource(id = CoreString.text_error)
+                LaunchedEffect(scaffoldState.snackbarHostState) {
+                    scaffoldState.snackbarHostState.showSnackbar(message)
+                    consumeEvent(event)
+                }
+            }
+        }
+    }
+
+    if (uiState.error) {
         ErrorRetry(
             onRetry = {
                 onRefresh()
@@ -116,13 +135,6 @@ private fun MilestoneContent(
                 Box(modifier = Modifier.fillMaxSize()) // dummy ui for SwipeRefresh
             } else {
                 MilestoneList(uiState.milestones, navigateToIssue)
-            }
-        }
-
-        if (uiState.error) {
-            val message = stringResource(id = CoreString.text_error)
-            LaunchedEffect(scaffoldState.snackbarHostState) {
-                scaffoldState.snackbarHostState.showSnackbar(message)
             }
         }
     }

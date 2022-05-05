@@ -30,7 +30,13 @@ class MilestoneViewModel @Inject constructor(
                 uiState = uiState.copy(milestones = milestones)
             } catch (e: Exception) {
                 e.printStackTrace()
-                uiState = uiState.copy(error = true)
+                uiState = if (uiState.milestones.isEmpty()) {
+                    uiState.copy(error = true)
+                } else {
+                    // if data is not empty, show snackbar
+                    val newEvents = uiState.events + MilestoneEvent.ErrorGetMilestone
+                    uiState.copy(events = newEvents)
+                }
             } finally {
                 uiState = uiState.copy(loading = false)
             }
@@ -39,5 +45,10 @@ class MilestoneViewModel @Inject constructor(
 
     fun refresh() {
         getMilestones(true)
+    }
+
+    fun consumeEvent(event: MilestoneEvent) {
+        val newEvents = uiState.events.filterNot { it == event }
+        uiState = uiState.copy(events = newEvents)
     }
 }
