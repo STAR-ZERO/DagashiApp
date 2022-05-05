@@ -55,12 +55,6 @@ fun MilestoneScreen(navigator: MilestoneNavigator) {
         navigateIssue = { milestone ->
             navigator.navigateMilestoneToIssue(milestone)
         },
-        navigateToFavorite = {
-            navigator.navigateMilestoneToFavorite()
-        },
-        navigateSetting = {
-            navigator.navigateMilestoneToSetting()
-        }
     )
 }
 
@@ -69,8 +63,6 @@ private fun MilestoneContainer(
     uiState: MilestoneUiState,
     onRefresh: () -> Unit,
     navigateIssue: (Milestone) -> Unit,
-    navigateToFavorite: () -> Unit,
-    navigateSetting: () -> Unit
 ) {
     Surface(color = MaterialTheme.colors.background) {
         val scaffoldState = rememberScaffoldState()
@@ -78,10 +70,7 @@ private fun MilestoneContainer(
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
-                AppBar(
-                    navigateToFavorite = navigateToFavorite,
-                    navigateToSetting = navigateSetting
-                )
+                AppBar()
             },
         ) {
             MilestoneContent(
@@ -97,10 +86,7 @@ private fun MilestoneContainer(
 }
 
 @Composable
-private fun AppBar(
-    navigateToFavorite: () -> Unit,
-    navigateToSetting: () -> Unit,
-) {
+private fun AppBar() {
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.milestone_title))
