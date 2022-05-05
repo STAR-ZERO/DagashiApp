@@ -46,7 +46,7 @@ fun AppBottomBar(
                         onClick = {
                             if (selectedIndex == index) {
                                 // re-select
-                                (navController.findDestination(tab.route) as? NavGraph)?.let {
+                                (navController.graph.findNode(tab.route) as? NavGraph)?.let {
                                     // Pop up to the start destination of NavGraph
                                     navController.popBackStack(it.startDestinationId, false)
                                 }

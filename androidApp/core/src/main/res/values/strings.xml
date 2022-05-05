@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="ok" tools:ignore="UnusedResources">OK</string>
+    <string name="cancel" tools:ignore="UnusedResources">Cancel</string>
 
     <string name="text_error">An error has occurred.</string>
     <string name="button_retry">RETRY</string>

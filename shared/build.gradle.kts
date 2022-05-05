@@ -84,6 +84,9 @@ android {
         minSdk = AndroidConfigurations.MIN_SDK
         targetSdk = AndroidConfigurations.TARGET_SDK
     }
+    lint {
+        checkDependencies = true
+    }
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 }
 
