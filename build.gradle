@@ -32,6 +32,18 @@ subprojects {
             freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
         }
     }
+
+    // test task for CI
+    if (project.name != "shared") {
+        // TODO: Currently, kmm test is not working
+        afterEvaluate {
+            if (project.extensions.findByName("android") != null) {
+                project.tasks.register("testCI") {
+                    dependsOn "testDebugUnitTest"
+                }
+            }
+        }
+    }
 }
 
 task clean(type: Delete) {
