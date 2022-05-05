@@ -1,5 +1,6 @@
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // TODO: https://youtrack.jetbrains.com/issue/KT-51379/Build-fails-when-using-RepositoriesMode-FAIL-ON-PROJECT-REPOS-wi
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
