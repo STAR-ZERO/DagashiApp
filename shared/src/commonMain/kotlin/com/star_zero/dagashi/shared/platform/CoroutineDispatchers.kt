@@ -1,9 +1,8 @@
-package com.star_zero.dagashi.core
+package com.star_zero.dagashi.shared.platform
 
 import kotlinx.coroutines.CoroutineDispatcher
 
-interface AppDispatchers {
+expect object CoroutineDispatchers {
     val main: CoroutineDispatcher
     val io: CoroutineDispatcher
-    val default: CoroutineDispatcher
 }
