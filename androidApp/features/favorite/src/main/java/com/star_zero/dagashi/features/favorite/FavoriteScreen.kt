@@ -15,7 +15,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,9 +38,7 @@ import com.star_zero.dagashi.shared.model.Issue
 
 @Destination
 @Composable
-fun FavoriteScreen(
-    navigator: FavoriteNavigator
-) {
+fun FavoriteScreen() {
     val viewModel: FavoriteViewModel = hiltViewModel()
 
     val uriHandler = LocalUriHandler.current
@@ -63,7 +60,6 @@ fun FavoriteScreen(
         },
         onClickFavorite = viewModel::toggleFavorite,
         onDeleteAll = viewModel::deleteAllFavorites,
-        onClickBack = navigator::navigateBack
     )
 }
 
@@ -73,14 +69,12 @@ private fun FavoriteContainer(
     onOpenLink: (String) -> Unit,
     onClickFavorite: (Issue, String, Boolean) -> Unit,
     onDeleteAll: () -> Unit,
-    onClickBack: () -> Unit
 ) {
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
             topBar = {
                 AppBar(
                     onDeleteAll = onDeleteAll,
-                    onClickBack = onClickBack
                 )
             }
         ) {
@@ -96,16 +90,10 @@ private fun FavoriteContainer(
 @Composable
 private fun AppBar(
     onDeleteAll: () -> Unit,
-    onClickBack: () -> Unit
 ) {
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.favorite_title))
-        },
-        navigationIcon = {
-            IconButton(onClick = onClickBack) {
-                Icon(Icons.Filled.ArrowBack, "Back")
-            }
         },
         actions = {
             DeleteAllButton(
