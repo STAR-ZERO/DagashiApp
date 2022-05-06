@@ -62,7 +62,7 @@ jobs:
       - name: Run lint
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: lintDebug
+          arguments: lint
       - name: Run Dnager
         run: bundle exec danger
         env:
