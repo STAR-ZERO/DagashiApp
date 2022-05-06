@@ -1,5 +1,8 @@
 package com.star_zero.dagashi.shared.model
 
+import com.star_zero.dagashi.shared.platform.ComposeImmutable
+
+@ComposeImmutable
 data class Issue(
     val url: String,
     val title: String,

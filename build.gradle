@@ -36,6 +36,22 @@ subprojects {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
             freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+
+            // Compose metrics report
+            // https://github.com/androidx/androidx/blob/androidx-main/compose/compiler/design/compiler-metrics.md
+            // ./gradlew --rerun-tasks -Pdagashiapp.enableComposeCompilerReports=true androidApp:app:assembleRelease
+            if (project.findProperty("dagashiapp.enableComposeCompilerReports") == "true") {
+                freeCompilerArgs += [
+                        "-P",
+                        "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                                project.buildDir.absolutePath + "/compose_metrics"
+                ]
+                freeCompilerArgs += [
+                        "-P",
+                        "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                                project.buildDir.absolutePath + "/compose_metrics"
+                ]
+            }
         }
     }
 
