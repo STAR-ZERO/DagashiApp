@@ -9,15 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Checkbox
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,9 +28,7 @@ import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 
 @Destination
 @Composable
-fun SettingScreen(
-    navigator: SettingNavigator
-) {
+fun SettingScreen() {
     val viewModel: SettingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState(SettingUiState())
 
@@ -43,9 +37,6 @@ fun SettingScreen(
         updateOpenLinkInApp = {
             viewModel.updateOpenLinkInApp(it)
         },
-        navigateBack = {
-            navigator.navigateBack()
-        }
     )
 }
 
@@ -53,16 +44,11 @@ fun SettingScreen(
 private fun SettingContainer(
     uiState: SettingUiState,
     updateOpenLinkInApp: (Boolean) -> Unit,
-    navigateBack: () -> Unit
 ) {
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
             topBar = {
-                AppBar(
-                    navigateBack = {
-                        navigateBack()
-                    }
-                )
+                AppBar()
             }
         ) {
             SettingContent(uiState, updateOpenLinkInApp)
@@ -71,18 +57,11 @@ private fun SettingContainer(
 }
 
 @Composable
-private fun AppBar(navigateBack: () -> Unit) {
+private fun AppBar() {
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.setting_title))
         },
-        navigationIcon = {
-            IconButton(onClick = {
-                navigateBack()
-            }) {
-                Icon(Icons.Filled.ArrowBack, "Back")
-            }
-        }
     )
 }
 
