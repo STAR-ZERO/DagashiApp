@@ -41,6 +41,7 @@ kotlin {
             dependencies {
                 implementation(libs.ktor.android)
                 implementation(libs.sqldelight.android)
+                implementation(libs.androidx.compose.runtime)
             }
         }
         val androidTest by getting {
