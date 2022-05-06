@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.navigation.dependency
 import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.features.issue.destinations.IssueScreenDestination
@@ -30,7 +29,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DagashiAppTheme {
-                val navHostEngine = rememberAnimatedNavHostEngine()
+                val navHostEngine = rememberCustomAnimatedNavHostEngine()
                 val navController = navHostEngine.rememberNavController()
 
                 AppBottomBar(
