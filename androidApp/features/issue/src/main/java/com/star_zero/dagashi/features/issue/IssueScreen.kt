@@ -3,6 +3,7 @@ package com.star_zero.dagashi.features.issue
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -87,13 +88,14 @@ private fun IssueContainer(
                     }
                 )
             }
-        ) {
+        ) { innerPadding ->
             IssueContent(
                 uiState = uiState,
                 scaffoldState = scaffoldState,
                 onRefresh = onRefresh,
                 onOpenLink = onOpenLink,
                 onClickFavorite = onClickFavorite,
+                modifier = Modifier.padding(innerPadding)
             )
         }
     }
@@ -124,18 +126,21 @@ private fun IssueContent(
     scaffoldState: ScaffoldState,
     onRefresh: () -> Unit,
     onOpenLink: (String) -> Unit,
-    onClickFavorite: (Issue, Boolean) -> Unit
+    onClickFavorite: (Issue, Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     if (uiState.error && uiState.issues.isEmpty()) {
         ErrorRetry(
             onRetry = {
                 onRefresh()
-            }
+            },
+            modifier = modifier
         )
     } else {
         SwipeRefresh(
             state = rememberSwipeRefreshState(uiState.loading),
-            onRefresh = { onRefresh() }
+            onRefresh = { onRefresh() },
+            modifier = modifier
         ) {
             if (uiState.issues.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize()) // dummy ui for SwipeRefresh
