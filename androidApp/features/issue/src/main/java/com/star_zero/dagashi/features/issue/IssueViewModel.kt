@@ -74,10 +74,12 @@ class IssueViewModel @Inject constructor(
     }
 
     fun toggleFavorite(issue: Issue, isFavorite: Boolean) {
-        if (isFavorite) {
-            favoriteIssueRepository.deleteFavorite(issue)
-        } else {
-            favoriteIssueRepository.addFavorite(milestone.id, issue)
+        viewModelScope.launch {
+            if (isFavorite) {
+                favoriteIssueRepository.deleteFavorite(issue)
+            } else {
+                favoriteIssueRepository.addFavorite(milestone.id, issue)
+            }
         }
     }
 }

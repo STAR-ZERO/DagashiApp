@@ -42,19 +42,21 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun toggleFavorite(issue: Issue, milestoneId: String, isFavorite: Boolean) {
-        if (isFavorite) {
-            favoriteIssueRepository.deleteFavorite(issue)
-        } else {
-            favoriteIssueRepository.addFavorite(milestoneId, issue)
-        }
+        viewModelScope.launch {
+            if (isFavorite) {
+                favoriteIssueRepository.deleteFavorite(issue)
+            } else {
+                favoriteIssueRepository.addFavorite(milestoneId, issue)
+            }
 
-        // Update ui state
-        val newFavorites = _uiState.favorites.toMutableList()
-        val index = newFavorites.indexOfFirst { it.issue.url == issue.url }
-        newFavorites[index] = newFavorites[index].copy(
-            isFavorite = !isFavorite
-        )
-        _uiState = _uiState.copy(favorites = newFavorites.toList())
+            // Update ui state
+            val newFavorites = _uiState.favorites.toMutableList()
+            val index = newFavorites.indexOfFirst { it.issue.url == issue.url }
+            newFavorites[index] = newFavorites[index].copy(
+                isFavorite = !isFavorite
+            )
+            _uiState = _uiState.copy(favorites = newFavorites.toList())
+        }
     }
 
     fun deleteAllFavorites() {

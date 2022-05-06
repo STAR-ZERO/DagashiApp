@@ -9,14 +9,18 @@ import com.star_zero.dagashi.shared.model.FavoriteIssue
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.shared.model.Milestone
+import com.star_zero.dagashi.shared.platform.CoroutineDispatchers
 import io.ktor.util.date.getTimeMillis
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class FavoriteIssueRepository(
-    private val dagashiDb: DagashiDatabase
+    private val dagashiDb: DagashiDatabase,
+    private val ioDispatcher: CoroutineDispatcher = CoroutineDispatchers.io
 ) {
-    fun addFavorite(milestoneId: String, issue: Issue) {
+    suspend fun addFavorite(milestoneId: String, issue: Issue) = withContext(ioDispatcher) {
         with(dagashiDb) {
             transaction {
                 favoriteIssueQueries.insertFavoriteIssue(
@@ -68,8 +72,8 @@ class FavoriteIssueRepository(
             }
     }
 
-    fun getFavorites(): List<FavoriteIssue> {
-        return with(dagashiDb) {
+    suspend fun getFavorites(): List<FavoriteIssue> = withContext(ioDispatcher) {
+        with(dagashiDb) {
             favoriteIssueQueries.selectAll(
                 mapper = { issueUrl, issueTitle, issueBody, milestoneId, createdAt ->
                     // Comment
@@ -114,7 +118,7 @@ class FavoriteIssueRepository(
         }
     }
 
-    fun deleteFavorite(issue: Issue) {
+    suspend fun deleteFavorite(issue: Issue) = withContext(ioDispatcher) {
         with(dagashiDb) {
             transaction {
                 favoriteIssueQueries.deleteFavoriteIssue(issue.url)
@@ -124,7 +128,7 @@ class FavoriteIssueRepository(
         }
     }
 
-    fun deleteAllFavorites() {
+    suspend fun deleteAllFavorites() = withContext(ioDispatcher) {
         with(dagashiDb) {
             transaction {
                 favoriteIssueQueries.deleteFavoriteIssues()
