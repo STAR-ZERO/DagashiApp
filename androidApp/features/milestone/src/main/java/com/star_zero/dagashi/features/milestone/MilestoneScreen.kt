@@ -72,7 +72,7 @@ private fun MilestoneContainer(
             topBar = {
                 AppBar()
             },
-        ) {
+        ) { innerPadding ->
             MilestoneContent(
                 uiState = uiState,
                 scaffoldState = scaffoldState,
@@ -80,7 +80,8 @@ private fun MilestoneContainer(
                 navigateToIssue = { milestone ->
                     navigateIssue(milestone)
                 },
-                consumeEvent = consumeEvent
+                consumeEvent = consumeEvent,
+                modifier = Modifier.padding(innerPadding)
             )
         }
     }
@@ -101,7 +102,8 @@ private fun MilestoneContent(
     scaffoldState: ScaffoldState,
     onRefresh: () -> Unit,
     navigateToIssue: (Milestone) -> Unit,
-    consumeEvent: (MilestoneEvent) -> Unit
+    consumeEvent: (MilestoneEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     uiState.events.firstOrNull()?.let { event ->
@@ -120,12 +122,14 @@ private fun MilestoneContent(
         ErrorRetry(
             onRetry = {
                 onRefresh()
-            }
+            },
+            modifier = modifier
         )
     } else {
         SwipeRefresh(
             state = rememberSwipeRefreshState(uiState.loading),
-            onRefresh = { onRefresh() }
+            onRefresh = { onRefresh() },
+            modifier = modifier
         ) {
             if (uiState.milestones.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize()) // dummy ui for SwipeRefresh

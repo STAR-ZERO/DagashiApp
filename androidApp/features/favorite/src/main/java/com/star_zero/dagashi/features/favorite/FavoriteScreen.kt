@@ -3,6 +3,7 @@ package com.star_zero.dagashi.features.favorite
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.AlertDialog
@@ -83,11 +84,12 @@ private fun FavoriteContainer(
                     onClickBack = onClickBack
                 )
             }
-        ) {
+        ) { innerPadding ->
             FavoriteContent(
                 uiState = uiState,
                 onOpenLink = onOpenLink,
-                onClickFavorite = onClickFavorite
+                onClickFavorite = onClickFavorite,
+                modifier = Modifier.padding(innerPadding)
             )
         }
     }
@@ -157,10 +159,11 @@ private fun FavoriteContent(
     uiState: FavoriteUiState,
     onOpenLink: (String) -> Unit,
     onClickFavorite: (Issue, String, Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     if (uiState.favorites.isEmpty()) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -169,7 +172,10 @@ private fun FavoriteContent(
             )
         }
     } else {
-        LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)) {
+        LazyColumn(
+            contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
+            modifier = modifier
+        ) {
             items(uiState.favorites, key = { it.issue.url }) { favoriteItem ->
                 IssueCard(
                     issue = favoriteItem.issue,

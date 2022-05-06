@@ -64,8 +64,12 @@ private fun SettingContainer(
                     }
                 )
             }
-        ) {
-            SettingContent(uiState, updateOpenLinkInApp)
+        ) { innerPadding ->
+            SettingContent(
+                uiState = uiState,
+                updateOpenLinkInApp = updateOpenLinkInApp,
+                modifier = Modifier.padding(innerPadding)
+            )
         }
     }
 }
@@ -89,9 +93,12 @@ private fun AppBar(navigateBack: () -> Unit) {
 @Composable
 private fun SettingContent(
     uiState: SettingUiState,
-    updateOpenLinkInApp: (Boolean) -> Unit
+    updateOpenLinkInApp: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = modifier
+    ) {
         item {
             OpenLinkSetting(
                 isOpenLinkInApp = uiState.isOpenLinkInApp,

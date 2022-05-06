@@ -16,9 +16,12 @@ import androidx.compose.ui.unit.dp
 import com.star_zero.dagashi.core.R
 
 @Composable
-fun ErrorRetry(onRetry: () -> Unit) {
+fun ErrorRetry(
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight()
+        modifier = modifier.fillMaxWidth().fillMaxHeight()
     ) {
         Column(
             modifier = Modifier.align(Alignment.Center),
