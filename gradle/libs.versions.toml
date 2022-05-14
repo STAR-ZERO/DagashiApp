@@ -1,7 +1,7 @@
 [versions]
 android-build = "7.4.0-alpha02"
 kotlin = "1.6.20"
-hilt = "2.41"
+hilt = "2.42"
 sqldelight = "1.5.3"
 protobuf = "3.20.1"
 androidx-compose = "1.2.0-alpha08"
