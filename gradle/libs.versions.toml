@@ -70,7 +70,7 @@ sqldelight-coroutines = { module = "com.squareup.sqldelight:coroutines-extension
 sqldelight-android = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-native = { module = "com.squareup.sqldelight:native-driver", version.ref = "sqldelight" }
 
-napier = "io.github.aakira:napier:2.4.0"
+napier = "io.github.aakira:napier:2.5.0"
 
 # debug
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose" }
