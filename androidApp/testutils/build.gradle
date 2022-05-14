@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace "com.star_zero.dagashi.testutils"
     compileSdk AndroidConfigurations.COMPILE_SDK
 
     defaultConfig {

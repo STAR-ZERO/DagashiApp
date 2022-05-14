@@ -93,6 +93,7 @@ kotlin {
 }
 
 android {
+    namespace = "com.star_zero.dagashi.shared"
     compileSdk = AndroidConfigurations.COMPILE_SDK
     defaultConfig {
         minSdk = AndroidConfigurations.MIN_SDK
