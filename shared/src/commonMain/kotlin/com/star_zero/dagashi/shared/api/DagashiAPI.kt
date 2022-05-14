@@ -9,6 +9,7 @@ import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.shared.platform.CoroutineDispatchers
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.get
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -20,8 +21,8 @@ class DagashiAPI(
 
     @Throws(Exception::class)
     suspend fun milestones(): List<Milestone> = withContext(ioDispatcher) {
-        val milestoneRoot = client.get<MilestoneRootEntity>("$ENDPOINT/api/index.json")
-        milestoneRoot.milestones.nodes.map {
+        val entity: MilestoneRootEntity = client.get("$ENDPOINT/api/index.json").body()
+        entity.milestones.nodes.map {
             Milestone(
                 it.id,
                 it.title,
@@ -33,8 +34,8 @@ class DagashiAPI(
 
     @Throws(Exception::class)
     suspend fun issues(path: String): List<Issue> = withContext(ioDispatcher) {
-        val issueRoot = client.get<IssueRootEntity>("$ENDPOINT/api/issue/$path.json")
-        issueRoot.issues.nodes.map { issueNode ->
+        val entity: IssueRootEntity = client.get("$ENDPOINT/api/issue/$path.json").body()
+        entity.issues.nodes.map { issueNode ->
             Issue(
                 issueNode.url,
                 issueNode.title,
