@@ -23,6 +23,7 @@ kotlin {
             dependencies {
                 implementation(libs.coroutines.core)
                 implementation(libs.ktor.core)
+                implementation(libs.ktor.content.negotiation)
                 implementation(libs.ktor.serialization)
                 implementation(libs.ktor.logging)
                 implementation(libs.kotlinx.serialization)
@@ -72,9 +73,21 @@ kotlin {
         }
     }
 
+    val ignoreSourceSets = listOf(
+        "androidAndroidTestRelease",
+        "androidTestFixtures",
+        "androidTestFixturesDebug",
+        "androidTestFixturesRelease"
+    )
+
     sourceSets {
         all {
             languageSettings.optIn("kotlin.RequiresOptIn")
+
+            // ignore unused source sets
+            if (ignoreSourceSets.contains(name)) {
+                remove(this)
+            }
         }
     }
 }
