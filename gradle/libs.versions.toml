@@ -20,7 +20,7 @@ plugin-protobuf = "com.google.protobuf:protobuf-gradle-plugin:0.8.18"
 plugin-sqldelight = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqldelight" }
 plugin-gradle-version = "com.github.ben-manes:gradle-versions-plugin:0.42.0"
 plugin-ksp = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:1.6.20-1.0.5"
-plugin-ktlint = "org.jlleitschuh.gradle:ktlint-gradle:10.2.1"
+plugin-ktlint = "org.jlleitschuh.gradle:ktlint-gradle:10.3.0"
 
 androidx-core = "androidx.core:core-ktx:1.7.0"
 androidx-compat = "androidx.appcompat:appcompat:1.4.1"
