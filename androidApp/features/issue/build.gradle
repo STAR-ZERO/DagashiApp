@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    namespace "com.star_zero.dagashi.features.issue"
     compileSdk AndroidConfigurations.COMPILE_SDK
 
     defaultConfig {
