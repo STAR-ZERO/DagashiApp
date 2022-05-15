@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,10 +30,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.google.accompanist.flowlayout.FlowRow
+import com.star_zero.dagashi.core.R
 import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
@@ -68,13 +71,21 @@ fun IssueCard(
                     onClick = { onClickFavorite(issue, isFavorite) },
                     modifier = Modifier
                         .size(24.dp)
-                        .align(Alignment.Top)
+                        .align(Alignment.Top),
                 ) {
-                    // TODO: Color
-                    Icon(
-                        imageVector = Icons.Filled.Favorite,
-                        contentDescription = null,
-                    )
+                    if (isFavorite) {
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            contentDescription = null,
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.FavoriteBorder,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            contentDescription = null,
+                        )
+                    }
                 }
             }
 
@@ -130,7 +141,7 @@ fun IssueCard(
                 }
             ) {
                 Text(
-                    text = "GITHUB"
+                    text = stringResource(R.string.button_github)
                 )
             }
         }

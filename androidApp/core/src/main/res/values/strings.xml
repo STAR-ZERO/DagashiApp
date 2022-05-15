@@ -5,4 +5,6 @@
 
     <string name="text_error">An error has occurred.</string>
     <string name="button_retry">RETRY</string>
+
+    <string name="button_github">GITHUB</string>
 </resources>

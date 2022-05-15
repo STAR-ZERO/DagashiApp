@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.dependency
@@ -27,6 +29,8 @@ class MainActivity : ComponentActivity() {
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
             DagashiAppTheme {
                 val navHostEngine = rememberCustomAnimatedNavHostEngine()
@@ -46,7 +50,9 @@ class MainActivity : ComponentActivity() {
                         dependenciesContainerBuilder = {
                             dependency(AppNavigator(destinationsNavigator))
                         },
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier
+                            .statusBarsPadding()
+                            .padding(innerPadding)
                     )
                 }
             }

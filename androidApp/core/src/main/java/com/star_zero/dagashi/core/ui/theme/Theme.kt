@@ -2,20 +2,15 @@ package com.star_zero.dagashi.core.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import com.google.android.material.color.ColorRoles
-import com.google.android.material.color.MaterialColors
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.ViewCompat
 
 // Generate by: https://material-foundation.github.io/material-theme-builder/#/custom
 private val LightThemeColors = lightColorScheme(
@@ -75,78 +70,28 @@ private val DarkThemeColors = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
 )
 
-data class CustomColor(
-    val name: String,
-    val color: Color,
-    val harmonized: Boolean,
-    var roles: ColorRoles
-)
-
-data class ExtendedColors(val colors: List<CustomColor>)
-
-fun setupErrorColors(colorScheme: ColorScheme, isLight: Boolean): ColorScheme {
-    val harmonizedError = MaterialColors.harmonize(error.toArgb(), colorScheme.primary.toArgb())
-    val roles = MaterialColors.getColorRoles(harmonizedError, isLight)
-    //returns a colorScheme with newly harmonized error colors
-    return colorScheme.copy(
-        error = Color(roles.accent),
-        onError = Color(roles.onAccent),
-        errorContainer = Color(roles.accentContainer),
-        onErrorContainer = Color(roles.onAccentContainer)
-    )
-}
-
-val initializeExtended = ExtendedColors(
-    listOf(
-    )
-)
-
-fun setupCustomColors(
-    colorScheme: ColorScheme,
-    isLight: Boolean
-): ExtendedColors {
-    initializeExtended.colors.forEach { customColor ->
-        // Retrieve record
-        val shouldHarmonize = customColor.harmonized
-        // Blend or not
-        if (shouldHarmonize) {
-            val blendedColor =
-                MaterialColors.harmonize(customColor.color.toArgb(), colorScheme.primary.toArgb())
-            customColor.roles = MaterialColors.getColorRoles(blendedColor, isLight)
-        } else {
-            customColor.roles = MaterialColors.getColorRoles(customColor.color.toArgb(), isLight)
-        }
-    }
-    return initializeExtended
-}
-
-val LocalExtendedColors = staticCompositionLocalOf {
-    initializeExtended
-}
-
 @Composable
 fun DagashiAppTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
     isDynamic: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val dynamicColor = isDynamic && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-    val colors = if (dynamicColor) {
+    val colorScheme = if (dynamicColor) {
         val context = LocalContext.current
-        if (useDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        if (isDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
     } else {
-        if (useDarkTheme) DarkThemeColors else LightThemeColors
+        if (isDarkTheme) DarkThemeColors else LightThemeColors
     }
-    val colorsWithHarmonizedError = setupErrorColors(colors, !useDarkTheme)
-    val extendedColors = setupCustomColors(colors, !useDarkTheme)
-    CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
-        MaterialTheme(
-            colorScheme = colorsWithHarmonizedError,
-            typography = AppTypography,
-            content = content
-        )
-    }
-}
 
-object Extended {
+    val view = LocalView.current
+    if (!view.isInEditMode) { // Check if the function is running in design view of Android Studio
+        ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = !isDarkTheme
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = AppTypography,
+        content = content
+    )
 }
