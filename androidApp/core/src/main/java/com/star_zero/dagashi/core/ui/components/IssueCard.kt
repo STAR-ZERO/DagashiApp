@@ -1,6 +1,5 @@
 package com.star_zero.dagashi.core.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,9 +29,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.google.accompanist.flowlayout.FlowRow
 import com.star_zero.dagashi.core.R
@@ -177,13 +178,11 @@ private fun Comment(comment: Comment, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row(modifier = Modifier.padding(vertical = 8.dp)) {
 
-            Image(
-                painter = rememberImagePainter(
-                    data = comment.author.avatarUrl,
-                    builder = {
-                        transformations(CircleCropTransformation())
-                    }
-                ),
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(comment.author.avatarUrl)
+                    .transformations(CircleCropTransformation())
+                    .build(),
                 contentDescription = comment.author.name,
                 modifier = Modifier.size(24.dp)
             )
