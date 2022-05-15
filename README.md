@@ -21,7 +21,8 @@ Unofficial [Android Dagashi](https://androiddagashi.github.io/) Android / iOS ap
 - Dagger Hilt
 - Coroutines
 - DataStore
-- LiveData / ViewModel
+- ViewModel
+- Material 3
 - etc...
 
 ## License
