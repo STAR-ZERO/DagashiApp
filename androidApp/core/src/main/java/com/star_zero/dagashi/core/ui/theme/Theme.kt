@@ -76,8 +76,7 @@ fun DagashiAppTheme(
     isDynamic: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val dynamicColor = isDynamic && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-    val colorScheme = if (dynamicColor) {
+    val colorScheme = if (isDynamic && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val context = LocalContext.current
         if (isDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
     } else {
