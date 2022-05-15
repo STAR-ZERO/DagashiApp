@@ -47,7 +47,10 @@ dependencies {
 
     api libs.androidx.core
     api libs.androidx.compat
+
     api libs.material
+    api libs.material3
+    api libs.material3.window.size
 
     implementation libs.androidx.browser
 

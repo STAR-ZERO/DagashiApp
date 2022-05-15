@@ -13,32 +13,34 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Card
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.google.accompanist.flowlayout.FlowRow
+import com.star_zero.dagashi.core.R
 import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IssueCard(
     issue: Issue,
@@ -47,11 +49,9 @@ fun IssueCard(
     onClickFavorite: (Issue, Boolean) -> Unit
 ) {
 
-    Card(
+    ElevatedCard(
         modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth(),
-        elevation = 4.dp,
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
@@ -60,7 +60,7 @@ fun IssueCard(
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = issue.title,
-                    style = MaterialTheme.typography.subtitle1,
+                    style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.weight(1f)
                 )
 
@@ -71,17 +71,18 @@ fun IssueCard(
                     onClick = { onClickFavorite(issue, isFavorite) },
                     modifier = Modifier
                         .size(24.dp)
-                        .align(Alignment.Top)
+                        .align(Alignment.Top),
                 ) {
-
-                    val alpha = if (isFavorite) {
-                        ContentAlpha.high
-                    } else {
-                        ContentAlpha.disabled
-                    }
-                    CompositionLocalProvider(LocalContentAlpha provides alpha) {
+                    if (isFavorite) {
                         Icon(
                             imageVector = Icons.Filled.Favorite,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            contentDescription = null,
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.FavoriteBorder,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             contentDescription = null,
                         )
                     }
@@ -95,13 +96,15 @@ fun IssueCard(
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
-            val linkColor = MaterialTheme.colors.primary
+            val linkColor = MaterialTheme.colorScheme.primary
 
             val linkedText = remember(issue.body) { formatLinkedText(issue.body, linkColor) }
 
             ClickableText(
                 text = linkedText,
-                style = MaterialTheme.typography.caption.copy(color = LocalContentColor.current),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = LocalContentColor.current
+                ),
                 onClick = { position ->
                     val annotation = linkedText.getStringAnnotations(
                         start = position,
@@ -117,7 +120,7 @@ fun IssueCard(
             if (issue.comments.isNotEmpty()) {
                 Divider(
                     modifier = Modifier.padding(vertical = 8.dp),
-                    color = MaterialTheme.colors.onSurface.copy(alpha = 0.2F),
+                    color = MaterialTheme.colorScheme.tertiary,
                     thickness = 1.dp,
                 )
             }
@@ -131,15 +134,14 @@ fun IssueCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            TextButton(
+            FilledTonalButton(
                 modifier = Modifier.align(Alignment.End),
                 onClick = {
                     onOpenLink(issue.url)
                 }
             ) {
                 Text(
-                    text = "GITHUB",
-                    style = MaterialTheme.typography.caption,
+                    text = stringResource(R.string.button_github)
                 )
             }
         }
@@ -162,7 +164,7 @@ private fun IssueLabels(labels: List<Label>) {
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     text = label.name,
-                    style = MaterialTheme.typography.overline,
+                    style = MaterialTheme.typography.labelMedium,
                     color = Color.White
                 )
             }
@@ -190,15 +192,15 @@ private fun Comment(comment: Comment, modifier: Modifier = Modifier) {
 
             Text(
                 text = comment.author.name,
-                style = MaterialTheme.typography.caption,
-                color = MaterialTheme.colors.primary,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
         }
 
         Text(
             text = comment.body,
-            style = MaterialTheme.typography.caption
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }

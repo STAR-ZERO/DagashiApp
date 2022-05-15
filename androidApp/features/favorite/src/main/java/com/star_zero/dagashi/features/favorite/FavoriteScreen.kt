@@ -1,5 +1,6 @@
 package com.star_zero.dagashi.features.favorite
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,16 +8,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -64,6 +66,7 @@ fun FavoriteScreen() {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FavoriteContainer(
     uiState: FavoriteUiState,
@@ -71,7 +74,7 @@ private fun FavoriteContainer(
     onClickFavorite: (Issue, String, Boolean) -> Unit,
     onDeleteAll: () -> Unit,
 ) {
-    Surface(color = MaterialTheme.colors.background) {
+    Surface {
         Scaffold(
             topBar = {
                 AppBar(
@@ -93,7 +96,7 @@ private fun FavoriteContainer(
 private fun AppBar(
     onDeleteAll: () -> Unit,
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
             Text(text = stringResource(id = R.string.favorite_title))
         },
@@ -156,12 +159,13 @@ private fun FavoriteContent(
         ) {
             Text(
                 text = stringResource(id = R.string.favorite_no_data),
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.titleMedium
             )
         }
     } else {
         LazyColumn(
-            contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = modifier
         ) {
             items(uiState.favorites, key = { it.issue.url }) { favoriteItem ->

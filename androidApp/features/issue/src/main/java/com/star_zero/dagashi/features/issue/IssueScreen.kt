@@ -1,22 +1,23 @@
 package com.star_zero.dagashi.features.issue
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallTopAppBar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,6 +35,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.star_zero.dagashi.core.CoreString
 import com.star_zero.dagashi.core.ui.components.ErrorRetry
+import com.star_zero.dagashi.core.ui.components.IssueCard
 import com.star_zero.dagashi.core.usecase.OpenLinkUseCase
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Milestone
@@ -66,6 +68,7 @@ fun IssueScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun IssueContainer(
     uiState: IssueUiState,
@@ -75,11 +78,11 @@ private fun IssueContainer(
     onClickFavorite: (Issue, Boolean) -> Unit,
     navigateBack: () -> Unit
 ) {
-    Surface(color = MaterialTheme.colors.background) {
-        val scaffoldState = rememberScaffoldState()
+    Surface {
+        val snacbarHostState = remember { SnackbarHostState() }
 
         Scaffold(
-            scaffoldState = scaffoldState,
+            snackbarHost = { SnackbarHost(snacbarHostState) },
             topBar = {
                 AppBar(
                     title = title,
@@ -91,7 +94,7 @@ private fun IssueContainer(
         ) { innerPadding ->
             IssueContent(
                 uiState = uiState,
-                scaffoldState = scaffoldState,
+                snackbarHostState = snacbarHostState,
                 onRefresh = onRefresh,
                 onOpenLink = onOpenLink,
                 onClickFavorite = onClickFavorite,
@@ -106,7 +109,7 @@ private fun AppBar(
     title: String,
     navigateBack: () -> Unit
 ) {
-    TopAppBar(
+    SmallTopAppBar(
         title = {
             Text(text = title)
         },
@@ -123,7 +126,7 @@ private fun AppBar(
 @Composable
 private fun IssueContent(
     uiState: IssueUiState,
-    scaffoldState: ScaffoldState,
+    snackbarHostState: SnackbarHostState,
     onRefresh: () -> Unit,
     onOpenLink: (String) -> Unit,
     onClickFavorite: (Issue, Boolean) -> Unit,
@@ -155,8 +158,8 @@ private fun IssueContent(
 
         if (uiState.error) {
             val message = stringResource(id = CoreString.text_error)
-            LaunchedEffect(scaffoldState.snackbarHostState) {
-                scaffoldState.snackbarHostState.showSnackbar(message)
+            LaunchedEffect(snackbarHostState) {
+                snackbarHostState.showSnackbar(message)
             }
         }
     }
@@ -168,9 +171,12 @@ private fun IssueList(
     onOpenLink: (String) -> Unit,
     onClickFavorite: (Issue, Boolean) -> Unit,
 ) {
-    LazyColumn(contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp)) {
+    LazyColumn(
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         items(uiState.issues, key = { it.issue.url }) { issueItem ->
-            com.star_zero.dagashi.core.ui.components.IssueCard(
+            IssueCard(
                 issue = issueItem.issue,
                 isFavorite = issueItem.isFavorite,
                 onOpenLink = onOpenLink,

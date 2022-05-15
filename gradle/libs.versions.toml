@@ -10,6 +10,7 @@ accompnist = "0.24.7-alpha"
 ktor = "2.0.1"
 compose-destinations = "1.5.0-beta"
 coroutines = "1.6.1-native-mt"
+material3 = "1.0.0-alpha11"
 
 [libraries]
 plugin-android = { module = "com.android.tools.build:gradle", version.ref = "android-build" }
@@ -47,6 +48,8 @@ compose-destinations-ksp = { module = "io.github.raamcosta.compose-destinations:
 coil-compose = "io.coil-kt:coil-compose:1.4.0"
 
 material = "com.google.android.material:material:1.6.0"
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+material3-window-size = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3" }
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
