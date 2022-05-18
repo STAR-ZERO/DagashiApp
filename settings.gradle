@@ -1,3 +1,18 @@
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id.startsWith("com.google.protobuf")) {
+                useModule("com.google.protobuf:protobuf-gradle-plugin:${requested.version}")
+            }
+        }
+    }
+}
+
 dependencyResolutionManagement {
     // TODO: https://youtrack.jetbrains.com/issue/KT-51379/Build-fails-when-using-RepositoriesMode-FAIL-ON-PROJECT-REPOS-wi
     repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)

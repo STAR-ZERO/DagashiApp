@@ -1,9 +1,9 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
-    id("kotlin-parcelize")
-    id("kotlinx-serialization")
-    id("com.squareup.sqldelight")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.lib)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
