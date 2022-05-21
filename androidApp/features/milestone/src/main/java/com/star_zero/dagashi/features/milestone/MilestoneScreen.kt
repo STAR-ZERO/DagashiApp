@@ -6,12 +6,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -64,17 +70,17 @@ private fun MilestoneContainer(
     consumeEvent: (MilestoneEvent) -> Unit
 ) {
     Surface {
-        val snacbarHostState = remember { SnackbarHostState() }
+        val snackbarHostState = remember { SnackbarHostState() }
 
         Scaffold(
-            snackbarHost = { SnackbarHost(snacbarHostState) },
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             topBar = {
                 AppBar()
             },
         ) { innerPadding ->
             MilestoneContent(
                 uiState = uiState,
-                snackbarHostState = snacbarHostState,
+                snackbarHostState = snackbarHostState,
                 onRefresh = onRefresh,
                 navigateToIssue = { milestone ->
                     navigateIssue(milestone)
@@ -91,7 +97,10 @@ private fun AppBar() {
     CenterAlignedTopAppBar(
         title = {
             Text(text = stringResource(id = R.string.milestone_title))
-        }
+        },
+        modifier = Modifier.windowInsetsPadding(
+            WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+        )
     )
 }
 
@@ -141,9 +150,11 @@ private fun MilestoneContent(
 
 @Composable
 private fun MilestoneList(milestones: List<Milestone>, navigateToIssue: (Milestone) -> Unit) {
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(320.dp),
         contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(milestones, key = { it.id }) { milestone ->
             MilestoneCard(milestone, navigateToIssue)

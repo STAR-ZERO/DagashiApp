@@ -9,8 +9,8 @@ import com.star_zero.dagashi.features.milestone.destinations.MilestoneScreenDest
 import com.star_zero.dagashi.features.setting.destinations.SettingScreenDestination
 
 object NavGraphs {
-    val tabHome = object : NavGraphSpec {
-        override val route: String = "tab_home"
+    val topHome = object : NavGraphSpec {
+        override val route: String = "top_home"
         override val startRoute: Route = MilestoneScreenDestination
         override val destinationsByRoute: Map<String, DestinationSpec<*>> = listOf(
             MilestoneScreenDestination,
@@ -18,16 +18,16 @@ object NavGraphs {
         ).associateBy { it.route }
     }
 
-    val tabFavorite = object : NavGraphSpec {
-        override val route: String = "tab_favorite"
+    val topFavorite = object : NavGraphSpec {
+        override val route: String = "top_favorite"
         override val startRoute: Route = FavoriteScreenDestination
         override val destinationsByRoute: Map<String, DestinationSpec<*>> = listOf(
             FavoriteScreenDestination,
         ).associateBy { it.route }
     }
 
-    val tabSetting = object : NavGraphSpec {
-        override val route: String = "tab_setting"
+    val topSetting = object : NavGraphSpec {
+        override val route: String = "top_setting"
         override val startRoute: Route = SettingScreenDestination
         override val destinationsByRoute: Map<String, DestinationSpec<*>> = listOf(
             SettingScreenDestination,
@@ -36,12 +36,12 @@ object NavGraphs {
 
     val root = object : NavGraphSpec {
         override val route: String = "root"
-        override val startRoute: Route = tabHome
+        override val startRoute: Route = topHome
         override val destinationsByRoute: Map<String, DestinationSpec<*>> = emptyMap()
         override val nestedNavGraphs: List<NavGraphSpec> = listOf(
-            tabHome,
-            tabFavorite,
-            tabSetting
+            topHome,
+            topFavorite,
+            topSetting
         )
     }
 }
