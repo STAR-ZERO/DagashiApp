@@ -61,11 +61,11 @@ kotlin {
 }
 
 dependencies {
-    implementation project(":androidApp:core")
-    implementation project(":androidApp:features:milestone")
-    implementation project(":androidApp:features:issue")
-    implementation project(":androidApp:features:favorite")
-    implementation project(":androidApp:features:setting")
+    implementation projects.androidApp.core
+    implementation projects.androidApp.features.milestone
+    implementation projects.androidApp.features.issue
+    implementation projects.androidApp.features.favorite
+    implementation projects.androidApp.features.setting
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler

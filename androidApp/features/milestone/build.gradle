@@ -56,14 +56,14 @@ ksp {
 }
 
 dependencies {
-    implementation project(":androidApp:core")
+    implementation projects.androidApp.core
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler
 
     ksp libs.compose.destinations.ksp
 
-    testImplementation project(":androidApp:testutils")
+    testImplementation projects.androidApp.testutils
     testImplementation libs.junit
     testImplementation libs.truth
     testImplementation libs.mockk
