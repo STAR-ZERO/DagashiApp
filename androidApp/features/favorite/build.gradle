@@ -56,7 +56,7 @@ ksp {
 }
 
 dependencies {
-    implementation project(":androidApp:core")
+    implementation projects.androidApp.core
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler
