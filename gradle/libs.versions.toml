@@ -10,7 +10,7 @@ accompnist = "0.24.7-alpha"
 ktor = "2.0.1"
 compose-destinations = "1.5.0-beta"
 coroutines = "1.6.1-native-mt"
-material3 = "1.0.0-alpha11"
+material3 = "1.0.0-alpha12"
 
 [libraries]
 androidx-core = "androidx.core:core-ktx:1.7.0"
