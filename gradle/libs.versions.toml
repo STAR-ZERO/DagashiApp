@@ -35,7 +35,7 @@ accompanist-navigation-animation = { module = "com.google.accompanist:accompanis
 compose-destinations-core = { module = "io.github.raamcosta.compose-destinations:animations-core", version.ref = "compose-destinations" }
 compose-destinations-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "compose-destinations" }
 
-coil-compose = "io.coil-kt:coil-compose:2.0.0"
+coil-compose = "io.coil-kt:coil-compose:2.1.0"
 
 material = "com.google.android.material:material:1.6.0"
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
