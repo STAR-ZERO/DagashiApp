@@ -21,8 +21,14 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+        benchmark {
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro", "benchmark-rules.pro"
+            matchingFallbacks = ['release']
+            debuggable false
         }
     }
 
@@ -69,6 +75,8 @@ dependencies {
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler
+
+    implementation libs.profileinstaller
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.app) apply false
     alias(libs.plugins.android.lib) apply false
+    alias(libs.plugins.android.test) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.kotlin.kapt) apply false
@@ -61,8 +62,9 @@ subprojects {
     }
 
     // test task for CI
-    if (project.name != "shared") {
-        // TODO: Currently, kmm test is not working
+    // TODO: Currently, kmm test is not working
+    // TODO: Find more smart way
+    if (project.name != "shared" && project.name != "macrobenchmark") {
         afterEvaluate {
             if (project.extensions.findByName("android") != null) {
                 project.tasks.register("testCI") {
