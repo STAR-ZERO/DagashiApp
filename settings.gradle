@@ -33,3 +33,4 @@ include ":androidApp:features:setting"
 include ":androidApp:features:milestone"
 include ':androidApp:features:favorite'
 include ':androidApp:testutils'
+include ':androidApp:macrobenchmark'

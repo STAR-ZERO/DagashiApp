@@ -1,0 +1,49 @@
+plugins {
+    alias(libs.plugins.android.test)
+    alias(libs.plugins.kotlin.android)
+}
+
+android {
+    namespace 'com.star_zero.dagashi.macrobenchmark'
+    compileSdk AndroidConfigurations.COMPILE_SDK
+
+    defaultConfig {
+        minSdk AndroidConfigurations.MIN_SDK
+        targetSdk AndroidConfigurations.TARGET_SDK
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildTypes {
+        benchmark {
+            debuggable = true
+            signingConfig = debug.signingConfig
+            matchingFallbacks = ["release"]
+        }
+    }
+
+    targetProjectPath = ":androidApp:app"
+    experimentalProperties["android.experimental.self-instrumenting"] = true
+}
+
+dependencies {
+    implementation libs.androidx.junit
+    implementation libs.espresso
+    implementation libs.uiautomator
+    implementation libs.benchmark.macro.junit4
+}
+
+androidComponents {
+    beforeVariants(selector().all()) {
+        enabled = buildType == "benchmark"
+    }
+}
