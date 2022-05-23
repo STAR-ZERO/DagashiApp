@@ -1,0 +1,67 @@
+name: Update baseline profile
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  baseline-profile:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: gradle
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: AVD cache
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          target: default
+          force-avd-creation: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: Generate baseline profile
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          target: default
+          force-avd-creation: false
+          script: |
+            adb root
+            adb uninstall com.star_zero.dagashi || true
+            adb uninstall com.star_zero.dagashi.macrobenchmark || true
+            ./gradlew :androidApp:macrobenchmark::connectedCheck -P android.testInstrumentationRunnerArguments.class=com.star_zero.dagashi.macrobenchmark.BaselineProfileGenerator
+            adb pull "/sdcard/Android/media/com.star_zero.dagashi.macrobenchmark/additional_test_output/BaselineProfileGenerator_startup-baseline-prof.txt"
+            mv BaselineProfileGenerator_startup-baseline-prof.txt androidApp/app/src/main/baseline-prof.txt
+
+      - name: Push baseline profile
+        run: |
+          if ! git diff --exit-code --quiet "androidApp/app/src/main/baseline-prof.txt"
+          then
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add androidApp/app/src/main/baseline-prof.txt
+            git commit -m "[skip ci] Update baseline profile"
+            git push
+          fi
