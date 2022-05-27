@@ -22509,6 +22509,7 @@ HSPLio/ktor/client/statement/HttpResponsePipeline;->access$getReceive$cp()Lio/kt
 HSPLio/ktor/client/statement/HttpResponsePipeline;->access$getTransform$cp()Lio/ktor/util/pipeline/PipelinePhase;
 HSPLio/ktor/client/statement/HttpResponsePipeline;->getDevelopmentMode()Z
 HSPLio/ktor/client/statement/HttpStatement$cleanup$1;-><init>(Lio/ktor/client/statement/HttpStatement;Lkotlin/coroutines/Continuation;)V
+HSPLio/ktor/client/statement/HttpStatement$cleanup$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
 HSPLio/ktor/client/statement/HttpStatement$execute$1;-><init>(Lio/ktor/client/statement/HttpStatement;Lkotlin/coroutines/Continuation;)V
 HSPLio/ktor/client/statement/HttpStatement$execute$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
 HSPLio/ktor/client/statement/HttpStatement$execute$4;-><init>(Lkotlin/coroutines/Continuation;)V
