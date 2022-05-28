@@ -211,7 +211,8 @@ private fun PreviewMilestoneScreen() {
             ),
             onRefresh = {},
             navigateIssue = {},
-            consumeEvent = {})
+            consumeEvent = {}
+        )
     }
 }
 
@@ -225,6 +226,7 @@ private fun PreviewMilestoneScreenError() {
             ),
             onRefresh = {},
             navigateIssue = {},
-            consumeEvent = {})
+            consumeEvent = {}
+        )
     }
 }
