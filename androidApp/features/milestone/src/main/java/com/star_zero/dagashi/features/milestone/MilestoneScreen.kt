@@ -44,10 +44,10 @@ import com.star_zero.dagashi.shared.model.Milestone
 
 @Destination(style = DestinationStyle.Runtime::class)
 @Composable
-fun MilestoneScreen(navigator: MilestoneNavigator) {
+fun MilestoneRoute(navigator: MilestoneNavigator) {
     val viewModel: MilestoneViewModel = hiltViewModel()
 
-    MilestoneContainer(
+    MilestoneScreen(
         uiState = viewModel.uiState,
         onRefresh = {
             viewModel.refresh()
@@ -63,7 +63,7 @@ fun MilestoneScreen(navigator: MilestoneNavigator) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MilestoneContainer(
+private fun MilestoneScreen(
     uiState: MilestoneUiState,
     onRefresh: () -> Unit,
     navigateIssue: (Milestone) -> Unit,

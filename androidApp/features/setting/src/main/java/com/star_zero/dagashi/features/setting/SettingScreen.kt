@@ -36,11 +36,11 @@ import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination
 @Composable
-fun SettingScreen(windowSizeClass: WindowSizeClass) {
+fun SettingRoute(windowSizeClass: WindowSizeClass) {
     val viewModel: SettingViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState(SettingUiState())
 
-    SettingContainer(
+    SettingScreen(
         uiState = uiState,
         windowSizeClass = windowSizeClass,
         updateOpenLinkInApp = {
@@ -51,7 +51,7 @@ fun SettingScreen(windowSizeClass: WindowSizeClass) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SettingContainer(
+private fun SettingScreen(
     uiState: SettingUiState,
     windowSizeClass: WindowSizeClass,
     updateOpenLinkInApp: (Boolean) -> Unit,

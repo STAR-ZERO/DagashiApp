@@ -3,34 +3,34 @@ package com.star_zero.dagashi.ui
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.spec.NavGraphSpec
 import com.ramcosta.composedestinations.spec.Route
-import com.star_zero.dagashi.features.favorite.destinations.FavoriteScreenDestination
-import com.star_zero.dagashi.features.issue.destinations.IssueScreenDestination
-import com.star_zero.dagashi.features.milestone.destinations.MilestoneScreenDestination
-import com.star_zero.dagashi.features.setting.destinations.SettingScreenDestination
+import com.star_zero.dagashi.features.favorite.destinations.FavoriteRouteDestination
+import com.star_zero.dagashi.features.issue.destinations.IssueRouteDestination
+import com.star_zero.dagashi.features.milestone.destinations.MilestoneRouteDestination
+import com.star_zero.dagashi.features.setting.destinations.SettingRouteDestination
 
 object NavGraphs {
     val topHome = object : NavGraphSpec {
         override val route: String = "top_home"
-        override val startRoute: Route = MilestoneScreenDestination
+        override val startRoute: Route = MilestoneRouteDestination
         override val destinationsByRoute: Map<String, DestinationSpec<*>> = listOf(
-            MilestoneScreenDestination,
-            IssueScreenDestination,
+            MilestoneRouteDestination,
+            IssueRouteDestination,
         ).associateBy { it.route }
     }
 
     val topFavorite = object : NavGraphSpec {
         override val route: String = "top_favorite"
-        override val startRoute: Route = FavoriteScreenDestination
+        override val startRoute: Route = FavoriteRouteDestination
         override val destinationsByRoute: Map<String, DestinationSpec<*>> = listOf(
-            FavoriteScreenDestination,
+            FavoriteRouteDestination,
         ).associateBy { it.route }
     }
 
     val topSetting = object : NavGraphSpec {
         override val route: String = "top_setting"
-        override val startRoute: Route = SettingScreenDestination
+        override val startRoute: Route = SettingRouteDestination
         override val destinationsByRoute: Map<String, DestinationSpec<*>> = listOf(
-            SettingScreenDestination,
+            SettingRouteDestination,
         ).associateBy { it.route }
     }
 

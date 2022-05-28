@@ -47,7 +47,7 @@ import com.star_zero.dagashi.shared.model.Issue
 
 @Destination
 @Composable
-fun FavoriteScreen() {
+fun FavoriteRoute() {
     val viewModel: FavoriteViewModel = hiltViewModel()
 
     val uriHandler = LocalUriHandler.current
@@ -62,7 +62,7 @@ fun FavoriteScreen() {
 
     val uiState by viewModel.uiState.collectAsState(FavoriteUiState())
 
-    FavoriteContainer(
+    FavoriteScreen(
         uiState = uiState,
         onOpenLink = {
             openLinkUseCase(it, uiState.isOpenLinkInApp)
@@ -74,7 +74,7 @@ fun FavoriteScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun FavoriteContainer(
+private fun FavoriteScreen(
     uiState: FavoriteUiState,
     onOpenLink: (String) -> Unit,
     onClickFavorite: (Issue, String, Boolean) -> Unit,

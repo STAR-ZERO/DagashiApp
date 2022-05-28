@@ -10,8 +10,8 @@ import androidx.navigation.NavBackStackEntry
 import com.ramcosta.composedestinations.spec.DestinationSpec
 import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.ramcosta.composedestinations.utils.destination
-import com.star_zero.dagashi.features.issue.destinations.IssueScreenDestination
-import com.star_zero.dagashi.features.milestone.destinations.MilestoneScreenDestination
+import com.star_zero.dagashi.features.issue.destinations.IssueRouteDestination
+import com.star_zero.dagashi.features.milestone.destinations.MilestoneRouteDestination
 
 private const val ANIMATION_DURATION = 300
 
@@ -24,7 +24,7 @@ object MilestoneTransitions : DestinationStyle.Animated {
 
     override fun AnimatedContentScope<NavBackStackEntry>.exitTransition(): ExitTransition? {
         return when (targetState.destination(NavGraphs.root)) {
-            IssueScreenDestination -> {
+            IssueRouteDestination -> {
                 slideOutOfContainer(
                     AnimatedContentScope.SlideDirection.Left,
                     animationSpec = tween(
@@ -39,7 +39,7 @@ object MilestoneTransitions : DestinationStyle.Animated {
 
     override fun AnimatedContentScope<NavBackStackEntry>.popEnterTransition(): EnterTransition? {
         return when (initialState.navDestination()) {
-            IssueScreenDestination -> {
+            IssueRouteDestination -> {
                 slideIntoContainer(
                     AnimatedContentScope.SlideDirection.Right,
                     animationSpec = tween(
@@ -58,7 +58,7 @@ object IssueTransitions : DestinationStyle.Animated {
 
     override fun AnimatedContentScope<NavBackStackEntry>.enterTransition(): EnterTransition? {
         return when (initialState.navDestination()) {
-            MilestoneScreenDestination -> {
+            MilestoneRouteDestination -> {
                 slideIntoContainer(
                     AnimatedContentScope.SlideDirection.Left,
                     animationSpec = tween(
@@ -73,7 +73,7 @@ object IssueTransitions : DestinationStyle.Animated {
 
     override fun AnimatedContentScope<NavBackStackEntry>.popExitTransition(): ExitTransition? {
         return when (targetState.navDestination()) {
-            MilestoneScreenDestination -> {
+            MilestoneRouteDestination -> {
                 slideOutOfContainer(
                     AnimatedContentScope.SlideDirection.Right,
                     animationSpec = tween(

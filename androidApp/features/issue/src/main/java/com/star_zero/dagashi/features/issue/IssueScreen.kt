@@ -48,7 +48,7 @@ import com.star_zero.dagashi.shared.model.Milestone
 
 @Destination(style = DestinationStyle.Runtime::class)
 @Composable
-fun IssueScreen(
+fun IssueRoute(
     navigator: IssueNavigator,
     milestone: Milestone
 ) {
@@ -62,7 +62,7 @@ fun IssueScreen(
 
     val uiState by viewModel.uiState.collectAsState(IssueUiState())
 
-    IssueContainer(
+    IssueScreen(
         uiState = uiState,
         title = milestone.title,
         onRefresh = viewModel::getIssues,
@@ -76,7 +76,7 @@ fun IssueScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun IssueContainer(
+private fun IssueScreen(
     uiState: IssueUiState,
     title: String,
     onRefresh: () -> Unit,

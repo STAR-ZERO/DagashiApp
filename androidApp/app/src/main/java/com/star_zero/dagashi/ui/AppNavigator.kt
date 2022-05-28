@@ -2,7 +2,7 @@ package com.star_zero.dagashi.ui
 
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.star_zero.dagashi.features.issue.IssueNavigator
-import com.star_zero.dagashi.features.issue.destinations.IssueScreenDestination
+import com.star_zero.dagashi.features.issue.destinations.IssueRouteDestination
 import com.star_zero.dagashi.features.milestone.MilestoneNavigator
 import com.star_zero.dagashi.shared.model.Milestone
 
@@ -15,6 +15,6 @@ class AppNavigator(
     }
 
     override fun navigateMilestoneToIssue(milestone: Milestone) {
-        navigator.navigate(IssueScreenDestination(milestone))
+        navigator.navigate(IssueRouteDestination(milestone))
     }
 }

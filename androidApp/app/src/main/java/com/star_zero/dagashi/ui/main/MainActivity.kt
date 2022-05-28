@@ -31,8 +31,8 @@ import com.google.accompanist.navigation.material.ExperimentalMaterialNavigation
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.dependency
 import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
-import com.star_zero.dagashi.features.issue.destinations.IssueScreenDestination
-import com.star_zero.dagashi.features.milestone.destinations.MilestoneScreenDestination
+import com.star_zero.dagashi.features.issue.destinations.IssueRouteDestination
+import com.star_zero.dagashi.features.milestone.destinations.MilestoneRouteDestination
 import com.star_zero.dagashi.ui.AppNavigator
 import com.star_zero.dagashi.ui.IssueTransitions
 import com.star_zero.dagashi.ui.MilestoneTransitions
@@ -75,8 +75,8 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { padding ->
-                    MilestoneScreenDestination.style = MilestoneTransitions
-                    IssueScreenDestination.style = IssueTransitions
+                    MilestoneRouteDestination.style = MilestoneTransitions
+                    IssueRouteDestination.style = IssueTransitions
 
                     Row(
                         modifier = Modifier
