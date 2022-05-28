@@ -40,15 +40,20 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.star_zero.dagashi.core.CoreString
+import com.star_zero.dagashi.core.tools.DagashiPreview
 import com.star_zero.dagashi.core.ui.components.ErrorRetry
 import com.star_zero.dagashi.core.ui.components.IssueCard
+import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.core.usecase.OpenLinkUseCase
+import com.star_zero.dagashi.shared.model.Author
+import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
+import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.shared.model.Milestone
 
 @Destination(style = DestinationStyle.Runtime::class)
 @Composable
-fun IssueScreen(
+fun IssueRoute(
     navigator: IssueNavigator,
     milestone: Milestone
 ) {
@@ -62,7 +67,7 @@ fun IssueScreen(
 
     val uiState by viewModel.uiState.collectAsState(IssueUiState())
 
-    IssueContainer(
+    IssueScreen(
         uiState = uiState,
         title = milestone.title,
         onRefresh = viewModel::getIssues,
@@ -76,7 +81,7 @@ fun IssueScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun IssueContainer(
+private fun IssueScreen(
     uiState: IssueUiState,
     title: String,
     onRefresh: () -> Unit,
@@ -194,5 +199,62 @@ private fun IssueList(
                 onClickFavorite = onClickFavorite
             )
         }
+    }
+}
+
+@DagashiPreview
+@Composable
+private fun PreviewIssueScreen() {
+    val issues = (1..10).map {
+        IssueItemUiState(
+            issue = Issue(
+                url = "url/$it",
+                title = "Title $it",
+                body = "Body Body\nBody Body",
+                labels = listOf(
+                    Label("label", 0xFF006b75)
+                ),
+                comments = listOf(
+                    Comment(
+                        body = "Comment",
+                        author = Author(
+                            name = "author",
+                            url = "comment/url",
+                            avatarUrl = ""
+                        )
+                    )
+                )
+            ),
+            isFavorite = it % 2 == 0
+        )
+    }
+    DagashiAppTheme {
+        IssueScreen(
+            uiState = IssueUiState(
+                issues = issues,
+            ),
+            title = "Title",
+            onRefresh = {},
+            onOpenLink = {},
+            onClickFavorite = { _, _ -> },
+            navigateBack = {}
+        )
+    }
+}
+
+@DagashiPreview
+@Composable
+private fun PreviewIssueScreenError() {
+    DagashiAppTheme {
+        IssueScreen(
+            uiState = IssueUiState(
+                error = true
+            ),
+            title = "Title",
+            onRefresh = {},
+            onOpenLink = {},
+            onClickFavorite = { _, _ -> },
+            navigateBack = {}
+        )
     }
 }
