@@ -1,9 +1,6 @@
 name: Update baseline profile
 
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
   baseline-profile:
