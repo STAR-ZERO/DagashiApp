@@ -41,9 +41,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.star_zero.dagashi.core.CoreString
+import com.star_zero.dagashi.core.tools.DagashiPreview
 import com.star_zero.dagashi.core.ui.components.IssueCard
+import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.core.usecase.OpenLinkUseCase
+import com.star_zero.dagashi.shared.model.Author
+import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
+import com.star_zero.dagashi.shared.model.Label
 
 @Destination
 @Composable
@@ -194,5 +199,59 @@ private fun FavoriteContent(
                 )
             }
         }
+    }
+}
+
+@DagashiPreview
+@Composable
+private fun PreviewFavoriteScreen() {
+
+    val favorites = (1..5).map {
+        FavoriteItemUiState(
+            issue = Issue(
+                url = "url/$it",
+                title = "Title $it",
+                body = "Body Body\nBody Body",
+                labels = listOf(
+                    Label("label", 0xFF006b75)
+                ),
+                comments = listOf(
+                    Comment(
+                        body = "Comment",
+                        author = Author(
+                            name = "author",
+                            url = "comment/url",
+                            avatarUrl = ""
+                        )
+                    )
+                )
+            ),
+            milestoneId = "milestone-$it",
+            isFavorite = true
+        )
+    }
+
+    DagashiAppTheme {
+        FavoriteScreen(
+            uiState = FavoriteUiState(
+                favorites = favorites
+            ),
+            onOpenLink = {},
+            onClickFavorite = { _, _, _ -> },
+            onDeleteAll = {}
+        )
+    }
+}
+
+@DagashiPreview
+@Composable
+private fun PreviewFavoriteScreenNoData() {
+    DagashiAppTheme {
+        FavoriteScreen(
+            uiState = FavoriteUiState(),
+            onOpenLink = {},
+            onClickFavorite = { _, _, _ -> },
+            onDeleteAll = {}
+        )
     }
 }

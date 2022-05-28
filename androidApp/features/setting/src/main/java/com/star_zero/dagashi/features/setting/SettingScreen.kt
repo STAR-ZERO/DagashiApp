@@ -33,6 +33,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
+import com.star_zero.dagashi.core.tools.DagashiPreview
+import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 
 @Destination
 @Composable
@@ -42,7 +44,7 @@ fun SettingRoute(windowSizeClass: WindowSizeClass) {
 
     SettingScreen(
         uiState = uiState,
-        windowSizeClass = windowSizeClass,
+        windowWidthSizeClass = windowSizeClass.widthSizeClass,
         updateOpenLinkInApp = {
             viewModel.updateOpenLinkInApp(it)
         },
@@ -53,7 +55,7 @@ fun SettingRoute(windowSizeClass: WindowSizeClass) {
 @Composable
 private fun SettingScreen(
     uiState: SettingUiState,
-    windowSizeClass: WindowSizeClass,
+    windowWidthSizeClass: WindowWidthSizeClass,
     updateOpenLinkInApp: (Boolean) -> Unit,
 ) {
     Surface {
@@ -64,7 +66,7 @@ private fun SettingScreen(
         ) { innerPadding ->
             SettingContent(
                 uiState = uiState,
-                windowSizeClass = windowSizeClass,
+                windowWidthSizeClass = windowWidthSizeClass,
                 updateOpenLinkInApp = updateOpenLinkInApp,
                 modifier = Modifier.padding(innerPadding)
             )
@@ -87,11 +89,11 @@ private fun AppBar() {
 @Composable
 private fun SettingContent(
     uiState: SettingUiState,
-    windowSizeClass: WindowSizeClass,
+    windowWidthSizeClass: WindowWidthSizeClass,
     updateOpenLinkInApp: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val contentPadding = if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+    val contentPadding = if (windowWidthSizeClass == WindowWidthSizeClass.Compact) {
         PaddingValues(16.dp)
     } else {
         PaddingValues(vertical = 16.dp, horizontal = 64.dp)
@@ -142,6 +144,18 @@ private fun OpenLinkSetting(isOpenLinkInApp: Boolean, updateOpenLinkInApp: (Bool
             checked = isOpenLinkInApp,
             onCheckedChange = updateOpenLinkInApp,
             modifier = Modifier.align(Alignment.CenterVertically)
+        )
+    }
+}
+
+@DagashiPreview
+@Composable
+private fun PreviewSettingScreen() {
+    DagashiAppTheme {
+        SettingScreen(
+            uiState = SettingUiState(),
+            windowWidthSizeClass = WindowWidthSizeClass.Compact,
+            updateOpenLinkInApp = {}
         )
     }
 }

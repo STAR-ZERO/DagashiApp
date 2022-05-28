@@ -39,7 +39,9 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.star_zero.dagashi.core.CoreString
+import com.star_zero.dagashi.core.tools.DagashiPreview
 import com.star_zero.dagashi.core.ui.components.ErrorRetry
+import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.shared.model.Milestone
 
 @Destination(style = DestinationStyle.Runtime::class)
@@ -187,5 +189,42 @@ private fun MilestoneCard(milestone: Milestone, navigateToIssue: (Milestone) -> 
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
+    }
+}
+
+@DagashiPreview
+@Composable
+private fun PreviewMilestoneScreen() {
+    val milestones = (1..10).map {
+        Milestone(
+            id = "$it",
+            title = "Title $it",
+            body = "Body Body",
+            path = "path/$it"
+        )
+    }
+
+    DagashiAppTheme {
+        MilestoneScreen(
+            uiState = MilestoneUiState(
+                milestones = milestones
+            ),
+            onRefresh = {},
+            navigateIssue = {},
+            consumeEvent = {})
+    }
+}
+
+@DagashiPreview
+@Composable
+private fun PreviewMilestoneScreenError() {
+    DagashiAppTheme {
+        MilestoneScreen(
+            uiState = MilestoneUiState(
+                error = true
+            ),
+            onRefresh = {},
+            navigateIssue = {},
+            consumeEvent = {})
     }
 }
