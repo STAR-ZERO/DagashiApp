@@ -1,6 +1,8 @@
 DagashiApp
 ===
 
+[![CI](https://github.com/STAR-ZERO/DagashiApp/actions/workflows/ci.yml/badge.svg)](https://github.com/STAR-ZERO/DagashiApp/actions/workflows/ci.yml)
+
 Unofficial [Android Dagashi](https://androiddagashi.github.io/) Android / iOS app.
 
 ## Screenshots
