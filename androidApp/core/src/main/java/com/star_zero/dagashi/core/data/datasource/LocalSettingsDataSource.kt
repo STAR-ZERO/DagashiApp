@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.star_zero.dagashi.core.data.datasource.datastore.Settings
+import com.star_zero.dagashi.core.data.datasource.datastore.Settings.DarkTheme
 import com.star_zero.dagashi.core.data.datasource.datastore.SettingsSerializer
 import com.star_zero.dagashi.shared.local.LocalSettings
+import com.star_zero.dagashi.shared.model.DarkThemeType
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -18,7 +20,7 @@ class LocalSettingsDataSource(
     private val dataStore: DataStore<Settings>
 ) : LocalSettings {
 
-    override val flowOpenLinkInApp: Flow<Boolean> = dataStore.data
+    private val flowDataStore = dataStore.data
         .catch { e ->
             if (e is IOException) {
                 Napier.e("Error setting data store", e)
@@ -26,9 +28,11 @@ class LocalSettingsDataSource(
             } else {
                 throw e
             }
-        }.map {
-            it.openLinkInApp
-        }.distinctUntilChanged()
+        }
+
+    override val flowOpenLinkInApp: Flow<Boolean> = flowDataStore.map {
+        it.openLinkInApp
+    }.distinctUntilChanged()
 
     override suspend fun isOpenLinkInApp(): Boolean {
         return dataStore.data.first().openLinkInApp
@@ -40,6 +44,16 @@ class LocalSettingsDataSource(
         }
     }
 
+    override val flowDarkTheme: Flow<DarkThemeType> = flowDataStore.map {
+        it.darkTheme.toType()
+    }
+
+    override suspend fun updateDarkTheme(type: DarkThemeType) {
+        dataStore.updateData { settings ->
+            settings.toBuilder().setDarkTheme(type.toDataStore()).build()
+        }
+    }
+
     companion object {
         private val Context.settingsDataStore: DataStore<Settings> by dataStore(
             fileName = "settings.pb",
@@ -48,6 +62,23 @@ class LocalSettingsDataSource(
 
         fun create(context: Context): LocalSettings {
             return LocalSettingsDataSource(context.settingsDataStore)
+        }
+    }
+
+    private fun DarkTheme.toType(): DarkThemeType {
+        return when (this) {
+            DarkTheme.DEVICE -> DarkThemeType.DEVICE
+            DarkTheme.ON -> DarkThemeType.ON
+            DarkTheme.OFF -> DarkThemeType.OFF
+            else -> throw RuntimeException("Unknown value: $this")
+        }
+    }
+
+    private fun DarkThemeType.toDataStore(): DarkTheme {
+        return when (this) {
+            DarkThemeType.DEVICE  -> DarkTheme.DEVICE
+            DarkThemeType.ON  -> DarkTheme.ON
+            DarkThemeType.OFF  -> DarkTheme.OFF
         }
     }
 }
