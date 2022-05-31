@@ -37,7 +37,7 @@ compose-destinations-ksp = { module = "io.github.raamcosta.compose-destinations:
 
 coil-compose = "io.coil-kt:coil-compose:2.1.0"
 
-material = "com.google.android.material:material:1.6.0"
+material = "com.google.android.material:material:1.6.1"
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 material3-window-size = { module = "androidx.compose.material3:material3-window-size-class", version.ref = "material3" }
 
