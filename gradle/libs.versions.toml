@@ -85,7 +85,7 @@ kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version
 
 # benchmark / baseline profiles
 profileinstaller = "androidx.profileinstaller:profileinstaller:1.2.0-beta02"
-benchmark-macro-junit4 = "androidx.benchmark:benchmark-macro-junit4:1.1.0-rc02"
+benchmark-macro-junit4 = "androidx.benchmark:benchmark-macro-junit4:1.1.0-rc03"
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-build" }
