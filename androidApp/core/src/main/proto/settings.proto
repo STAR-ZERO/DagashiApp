@@ -5,4 +5,10 @@ option java_multiple_files = true;
 
 message Settings {
   bool open_link_in_app = 1;
+  enum DarkTheme {
+    DEVICE = 0;
+    ON = 1;
+    OFF = 2;
+  }
+  DarkTheme dark_theme = 2;
 }

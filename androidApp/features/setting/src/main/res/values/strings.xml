@@ -2,4 +2,8 @@
 <resources>
     <string name="setting_title">Setting</string>
     <string name="setting_open_link">Open web links in this App</string>
+    <string name="setting_dark_theme">Dark theme</string>
+    <string name="setting_dark_theme_option_device">Use device setting</string>
+    <string name="setting_dark_theme_option_on">ON</string>
+    <string name="setting_dark_theme_option_off">OFF</string>
 </resources>

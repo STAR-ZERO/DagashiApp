@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.star_zero.dagashi.shared.model.DarkThemeType
 import com.star_zero.dagashi.shared.repoitory.SettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,15 +20,26 @@ class SettingViewModel @Inject constructor(
 
     private var _uiState by mutableStateOf(SettingUiState())
 
-    val uiState: Flow<SettingUiState> = snapshotFlow {
-        _uiState
-    }.combine(settingRepository.flowOpenLinkInApp) { uiState, isOpenLinkInApp ->
-        uiState.copy(isOpenLinkInApp = isOpenLinkInApp)
+    val uiState = combine(
+        snapshotFlow { _uiState },
+        settingRepository.flowOpenLinkInApp,
+        settingRepository.flowDarkTheme
+    ) { uiState, isOpenLinkInApp, darkTheme ->
+        uiState.copy(
+            isOpenLinkInApp = isOpenLinkInApp,
+            darkThemeType = darkTheme
+        )
     }
 
     fun updateOpenLinkInApp(enabled: Boolean) {
         viewModelScope.launch {
             settingRepository.updateOpenLinkInApp(enabled)
+        }
+    }
+
+    fun updateDarkTheme(type: DarkThemeType) {
+        viewModelScope.launch {
+            settingRepository.updateDarkTheme(type)
         }
     }
 }
