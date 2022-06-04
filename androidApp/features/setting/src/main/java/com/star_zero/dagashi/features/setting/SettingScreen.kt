@@ -211,7 +211,7 @@ private fun DarkThemeSetting(
         DarkThemeOptionDialog(
             darkThemeType = darkThemeType,
             updateDarkTheme = updateDarkTheme,
-            onDismiss = { openDialog = false}
+            onDismiss = { openDialog = false }
         )
     }
 }

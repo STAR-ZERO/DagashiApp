@@ -76,9 +76,9 @@ class LocalSettingsDataSource(
 
     private fun DarkThemeType.toDataStore(): DarkTheme {
         return when (this) {
-            DarkThemeType.DEVICE  -> DarkTheme.DEVICE
-            DarkThemeType.ON  -> DarkTheme.ON
-            DarkThemeType.OFF  -> DarkTheme.OFF
+            DarkThemeType.DEVICE -> DarkTheme.DEVICE
+            DarkThemeType.ON -> DarkTheme.ON
+            DarkThemeType.OFF -> DarkTheme.OFF
         }
     }
 }
