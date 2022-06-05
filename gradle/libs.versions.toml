@@ -84,7 +84,7 @@ kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotatio
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 
 # benchmark / baseline profiles
-profileinstaller = "androidx.profileinstaller:profileinstaller:1.2.0-beta02"
+profileinstaller = "androidx.profileinstaller:profileinstaller:1.2.0-beta03"
 benchmark-macro-junit4 = "androidx.benchmark:benchmark-macro-junit4:1.1.0-rc03"
 
 [plugins]
