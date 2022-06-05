@@ -13,7 +13,7 @@ coroutines = "1.6.1-native-mt"
 material3 = "1.0.0-alpha13"
 
 [libraries]
-androidx-core = "androidx.core:core-ktx:1.7.0"
+androidx-core = "androidx.core:core-ktx:1.8.0"
 androidx-compat = "androidx.appcompat:appcompat:1.4.2"
 androidx-datastore = "androidx.datastore:datastore:1.0.0"
 androidx-browser = "androidx.browser:browser:1.4.0"
