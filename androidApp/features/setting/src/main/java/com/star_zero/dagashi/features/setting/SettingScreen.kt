@@ -147,7 +147,7 @@ private fun SettingContent(
         if (uiState.isSupportDynamic) {
             item {
                 DynamicThemeSetting(
-                    enableDynamicTheme = uiState.dynamicTheme,
+                    enableDynamicTheme = uiState.isDynamicThemeEnabled,
                     updateDynamicTheme = updateDynamicTheme,
                     contentPadding = itemContentPadding
                 )

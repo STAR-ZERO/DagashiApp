@@ -1,16 +1,16 @@
 package com.star_zero.dagashi.shared.local
 
 import com.star_zero.dagashi.shared.model.DarkThemeType
+import com.star_zero.dagashi.shared.model.Setting
 import kotlinx.coroutines.flow.Flow
 
 interface LocalSettings {
-    val flowOpenLinkInApp: Flow<Boolean>
+    val settingFlow: Flow<Setting>
+
     suspend fun isOpenLinkInApp(): Boolean
     suspend fun updateOpenLinkInApp(enabled: Boolean)
 
-    val flowDarkTheme: Flow<DarkThemeType>
-    suspend fun updateDarkTheme(type: DarkThemeType)
+    suspend fun updateDarkThemeType(type: DarkThemeType)
 
-    val flowDynamicTheme: Flow<Boolean>
-    suspend fun updateDynamicTheme(enable: Boolean)
+    suspend fun updateDynamicThemeEnabled(enabled: Boolean)
 }

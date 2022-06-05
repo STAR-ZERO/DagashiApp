@@ -61,8 +61,8 @@ class MainActivity : ComponentActivity() {
 
             val windowSizeClass = calculateWindowSizeClass(activity = this)
 
-            val darkTheme by viewModel.flowDarkTheme.collectAsState(initial = DarkThemeType.DEVICE)
-            val isDynamic by viewModel.flowDynamicTheme.collectAsState(initial = true)
+            val darkTheme by viewModel.darkThemeFlow.collectAsState(initial = DarkThemeType.DEVICE)
+            val isDynamic by viewModel.dynamicThemeEnabledFlow.collectAsState(initial = true)
 
             val isDarkTheme = when (darkTheme) {
                 DarkThemeType.DEVICE -> isSystemInDarkTheme()

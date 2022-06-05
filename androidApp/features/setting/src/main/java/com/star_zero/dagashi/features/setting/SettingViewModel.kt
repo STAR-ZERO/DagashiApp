@@ -22,14 +22,12 @@ class SettingViewModel @Inject constructor(
 
     val uiState = combine(
         snapshotFlow { _uiState },
-        settingRepository.flowOpenLinkInApp,
-        settingRepository.flowDarkTheme,
-        settingRepository.flowDynamicTheme
-    ) { uiState, isOpenLinkInApp, darkThemeType, dynamicTheme ->
+        settingRepository.settingFlow,
+    ) { uiState, setting ->
         uiState.copy(
-            isOpenLinkInApp = isOpenLinkInApp,
-            darkThemeType = darkThemeType,
-            dynamicTheme = dynamicTheme
+            isOpenLinkInApp = setting.isOpenLinkInApp,
+            darkThemeType = setting.darkThemeType,
+            isDynamicThemeEnabled = setting.isDynamicThemeEnabled
         )
     }
 
@@ -41,13 +39,13 @@ class SettingViewModel @Inject constructor(
 
     fun updateDarkTheme(type: DarkThemeType) {
         viewModelScope.launch {
-            settingRepository.updateDarkTheme(type)
+            settingRepository.updateDarkThemeType(type)
         }
     }
 
     fun updateDynamicTheme(enabled: Boolean) {
         viewModelScope.launch {
-            settingRepository.updateDynamicTheme(enabled)
+            settingRepository.updateDynamicThemeEnabled(enabled)
         }
     }
 }
