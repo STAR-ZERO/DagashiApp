@@ -62,6 +62,7 @@ class MainActivity : ComponentActivity() {
             val windowSizeClass = calculateWindowSizeClass(activity = this)
 
             val darkTheme by viewModel.flowDarkTheme.collectAsState(initial = DarkThemeType.DEVICE)
+            val isDynamic by viewModel.flowDynamicTheme.collectAsState(initial = true)
 
             val isDarkTheme = when (darkTheme) {
                 DarkThemeType.DEVICE -> isSystemInDarkTheme()
@@ -70,7 +71,8 @@ class MainActivity : ComponentActivity() {
             }
 
             DagashiAppTheme(
-                isDarkTheme = isDarkTheme
+                isDarkTheme = isDarkTheme,
+                isDynamic = isDynamic
             ) {
                 val navHostEngine = rememberCustomAnimatedNavHostEngine()
                 val navController = navHostEngine.rememberNavController()

@@ -11,6 +11,8 @@ class SettingRepository(
 
     val flowDarkTheme: Flow<DarkThemeType> = localSettings.flowDarkTheme
 
+    val flowDynamicTheme: Flow<Boolean> = localSettings.flowDynamicTheme
+
     suspend fun isOpenLinkInApp(): Boolean {
         return localSettings.isOpenLinkInApp()
     }
@@ -21,5 +23,9 @@ class SettingRepository(
 
     suspend fun updateDarkTheme(darkThemeSetting: DarkThemeType) {
         localSettings.updateDarkTheme(darkThemeSetting)
+    }
+
+    suspend fun updateDynamicTheme(enabled: Boolean) {
+        localSettings.updateDynamicTheme(enabled)
     }
 }

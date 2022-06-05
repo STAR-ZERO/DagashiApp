@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/wrappers.proto";
 
 option java_package = "com.star_zero.dagashi.core.data.datasource.datastore";
 option java_multiple_files = true;
@@ -11,4 +12,5 @@ message Settings {
     OFF = 2;
   }
   DarkTheme dark_theme = 2;
+  google.protobuf.BoolValue dynamic_theme = 3;
 }

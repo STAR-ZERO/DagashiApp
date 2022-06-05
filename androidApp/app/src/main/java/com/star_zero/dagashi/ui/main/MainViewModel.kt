@@ -10,4 +10,5 @@ class MainViewModel @Inject constructor(
     settingRepository: SettingRepository
 ) : ViewModel() {
     val flowDarkTheme = settingRepository.flowDarkTheme
+    val flowDynamicTheme = settingRepository.flowDynamicTheme
 }

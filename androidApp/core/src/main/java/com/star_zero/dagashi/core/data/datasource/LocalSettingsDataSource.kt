@@ -3,6 +3,7 @@ package com.star_zero.dagashi.core.data.datasource
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import com.google.protobuf.BoolValue
 import com.star_zero.dagashi.core.data.datasource.datastore.Settings
 import com.star_zero.dagashi.core.data.datasource.datastore.Settings.DarkTheme
 import com.star_zero.dagashi.core.data.datasource.datastore.SettingsSerializer
@@ -51,6 +52,20 @@ class LocalSettingsDataSource(
     override suspend fun updateDarkTheme(type: DarkThemeType) {
         dataStore.updateData { settings ->
             settings.toBuilder().setDarkTheme(type.toDataStore()).build()
+        }
+    }
+
+    override val flowDynamicTheme: Flow<Boolean> = flowDataStore.map {
+        if (!it.hasDynamicTheme()) {
+            true // default true
+        } else {
+            it.dynamicTheme.value
+        }
+    }.distinctUntilChanged()
+
+    override suspend fun updateDynamicTheme(enable: Boolean) {
+        dataStore.updateData { settings ->
+            settings.toBuilder().setDynamicTheme(BoolValue.of(enable)).build()
         }
     }
 

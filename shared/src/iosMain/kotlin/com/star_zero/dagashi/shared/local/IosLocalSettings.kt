@@ -24,4 +24,11 @@ class IosLocalSettings : LocalSettings {
     override suspend fun updateDarkTheme(type: DarkThemeType) {
         TODO("Not yet implemented")
     }
+
+    override val flowDynamicTheme: Flow<Boolean>
+        get() = flow { }
+
+    override suspend fun updateDynamicTheme(enable: Boolean) {
+        TODO("Not yet implemented")
+    }
 }
