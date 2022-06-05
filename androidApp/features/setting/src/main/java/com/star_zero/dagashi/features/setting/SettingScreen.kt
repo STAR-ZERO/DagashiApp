@@ -61,6 +61,9 @@ fun SettingRoute(windowSizeClass: WindowSizeClass) {
         },
         updateDarkTheme = {
             viewModel.updateDarkTheme(it)
+        },
+        updateDynamicTheme = {
+            viewModel.updateDynamicTheme(it)
         }
     )
 }
@@ -72,6 +75,7 @@ private fun SettingScreen(
     windowWidthSizeClass: WindowWidthSizeClass,
     updateOpenLinkInApp: (Boolean) -> Unit,
     updateDarkTheme: (DarkThemeType) -> Unit,
+    updateDynamicTheme: (Boolean) -> Unit,
 ) {
     Surface {
         Scaffold(
@@ -84,6 +88,7 @@ private fun SettingScreen(
                 windowWidthSizeClass = windowWidthSizeClass,
                 updateOpenLinkInApp = updateOpenLinkInApp,
                 updateDarkTheme = updateDarkTheme,
+                updateDynamicTheme = updateDynamicTheme,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -108,6 +113,7 @@ private fun SettingContent(
     windowWidthSizeClass: WindowWidthSizeClass,
     updateOpenLinkInApp: (Boolean) -> Unit,
     updateDarkTheme: (DarkThemeType) -> Unit,
+    updateDynamicTheme: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val itemContentPadding = if (windowWidthSizeClass == WindowWidthSizeClass.Compact) {
@@ -136,6 +142,16 @@ private fun SettingContent(
                 updateDarkTheme = updateDarkTheme,
                 contentPadding = itemContentPadding,
             )
+        }
+
+        if (uiState.isSupportDynamic) {
+            item {
+                DynamicThemeSetting(
+                    enableDynamicTheme = uiState.dynamicTheme,
+                    updateDynamicTheme = updateDynamicTheme,
+                    contentPadding = itemContentPadding
+                )
+            }
         }
     }
 }
@@ -174,7 +190,6 @@ private fun OpenLinkSetting(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DarkThemeSetting(
     darkThemeType: DarkThemeType,
@@ -279,6 +294,40 @@ private fun DarkThemeOptionDialog(
     )
 }
 
+@Composable
+private fun DynamicThemeSetting(
+    enableDynamicTheme: Boolean,
+    updateDynamicTheme: (Boolean) -> Unit,
+    contentPadding: PaddingValues
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .heightIn(min = 80.dp)
+            .fillMaxWidth()
+            .selectable(
+                selected = enableDynamicTheme,
+                onClick = { updateDynamicTheme(!enableDynamicTheme) },
+                role = Role.Switch
+            )
+            .padding(contentPadding)
+    ) {
+        Text(
+            text = stringResource(id = R.string.setting_dynamic_theme),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f)
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Switch(
+            checked = enableDynamicTheme,
+            onCheckedChange = null,
+            modifier = Modifier.align(Alignment.CenterVertically)
+        )
+    }
+}
+
 @DagashiPreview
 @Composable
 private fun PreviewSettingScreen() {
@@ -287,7 +336,8 @@ private fun PreviewSettingScreen() {
             uiState = SettingUiState(),
             windowWidthSizeClass = WindowWidthSizeClass.Compact,
             updateOpenLinkInApp = {},
-            updateDarkTheme = {}
+            updateDarkTheme = {},
+            updateDynamicTheme = {}
         )
     }
 }
