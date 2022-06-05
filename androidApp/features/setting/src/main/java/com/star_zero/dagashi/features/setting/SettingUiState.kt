@@ -12,7 +12,7 @@ data class SettingUiState constructor(
     val isSupportDynamic: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S,
     val isOpenLinkInApp: Boolean = false,
     val darkThemeType: DarkThemeType = DarkThemeType.DEVICE,
-    val dynamicTheme: Boolean = false,
+    val isDynamicThemeEnabled: Boolean = false,
 )
 
 data class DarkThemeOption(

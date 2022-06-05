@@ -9,10 +9,9 @@ import com.star_zero.dagashi.core.data.datasource.datastore.Settings.DarkTheme
 import com.star_zero.dagashi.core.data.datasource.datastore.SettingsSerializer
 import com.star_zero.dagashi.shared.local.LocalSettings
 import com.star_zero.dagashi.shared.model.DarkThemeType
+import com.star_zero.dagashi.shared.model.Setting
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
@@ -21,19 +20,20 @@ class LocalSettingsDataSource(
     private val dataStore: DataStore<Settings>
 ) : LocalSettings {
 
-    private val flowDataStore = dataStore.data
+    override val settingFlow = dataStore.data
+        .map {
+            it.toModel()
+        }
         .catch { e ->
             if (e is IOException) {
                 Napier.e("Error setting data store", e)
-                emit(Settings.getDefaultInstance())
+                emit(
+                    Settings.getDefaultInstance().toModel()
+                )
             } else {
                 throw e
             }
         }
-
-    override val flowOpenLinkInApp: Flow<Boolean> = flowDataStore.map {
-        it.openLinkInApp
-    }.distinctUntilChanged()
 
     override suspend fun isOpenLinkInApp(): Boolean {
         return dataStore.data.first().openLinkInApp
@@ -45,27 +45,15 @@ class LocalSettingsDataSource(
         }
     }
 
-    override val flowDarkTheme: Flow<DarkThemeType> = flowDataStore.map {
-        it.darkTheme.toType()
-    }
-
-    override suspend fun updateDarkTheme(type: DarkThemeType) {
+    override suspend fun updateDarkThemeType(type: DarkThemeType) {
         dataStore.updateData { settings ->
             settings.toBuilder().setDarkTheme(type.toDataStore()).build()
         }
     }
 
-    override val flowDynamicTheme: Flow<Boolean> = flowDataStore.map {
-        if (!it.hasDynamicTheme()) {
-            true // default true
-        } else {
-            it.dynamicTheme.value
-        }
-    }.distinctUntilChanged()
-
-    override suspend fun updateDynamicTheme(enable: Boolean) {
+    override suspend fun updateDynamicThemeEnabled(enabled: Boolean) {
         dataStore.updateData { settings ->
-            settings.toBuilder().setDynamicTheme(BoolValue.of(enable)).build()
+            settings.toBuilder().setDynamicTheme(BoolValue.of(enabled)).build()
         }
     }
 
@@ -95,5 +83,17 @@ class LocalSettingsDataSource(
             DarkThemeType.ON -> DarkTheme.ON
             DarkThemeType.OFF -> DarkTheme.OFF
         }
+    }
+
+    private fun Settings.toModel(): Setting {
+        return Setting(
+            isOpenLinkInApp = openLinkInApp,
+            darkThemeType = darkTheme.toType(),
+            isDynamicThemeEnabled = if (hasDynamicTheme()) {
+                dynamicTheme.value
+            } else {
+                true
+            }
+        )
     }
 }

@@ -35,19 +35,16 @@ class IssueViewModel @Inject constructor(
         milestone
     )
 
-    private val issueItemUiState: Flow<List<IssueItemUiState>> =
-        getIssueWithFavoriteUseCase.issueItems
-
     private var _uiState by mutableStateOf(IssueUiState())
 
     val uiState: Flow<IssueUiState> = combine(
         snapshotFlow { _uiState },
         getIssueWithFavoriteUseCase.issueItems,
-        settingRepository.flowOpenLinkInApp
-    ) { uiState, issueItems, isOpenLinkInApp ->
+        settingRepository.settingFlow
+    ) { uiState, issueItems, setting ->
         uiState.copy(
             issues = issueItems,
-            isOpenLinkInApp = isOpenLinkInApp
+            isOpenLinkInApp = setting.isOpenLinkInApp
         )
     }
 

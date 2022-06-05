@@ -24,8 +24,8 @@ class FavoriteViewModel @Inject constructor(
 
     val uiState = snapshotFlow {
         _uiState
-    }.combine(settingRepository.flowOpenLinkInApp) { uiState, isOpenLinkInApp ->
-        uiState.copy(isOpenLinkInApp = isOpenLinkInApp)
+    }.combine(settingRepository.settingFlow) { uiState, setting ->
+        uiState.copy(isOpenLinkInApp = setting.isOpenLinkInApp)
     }
 
     fun getFavorites() {
