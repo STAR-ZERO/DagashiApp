@@ -1,5 +1,5 @@
 [versions]
-android-build = "7.4.0-alpha02"
+android-build = "7.4.0-alpha03"
 kotlin = "1.6.21"
 hilt = "2.42"
 sqldelight = "1.5.3"
