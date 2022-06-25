@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import com.ramcosta.composedestinations.navigation.dependency
 import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.features.issue.destinations.IssueRouteDestination
@@ -74,7 +75,7 @@ class MainActivity : ComponentActivity() {
                 isDarkTheme = isDarkTheme,
                 isDynamic = isDynamic
             ) {
-                val navHostEngine = rememberCustomAnimatedNavHostEngine()
+                val navHostEngine = rememberAnimatedNavHostEngine()
                 val navController = navHostEngine.rememberNavController()
 
                 var selectedIndex by rememberSaveable { mutableStateOf(0) }
