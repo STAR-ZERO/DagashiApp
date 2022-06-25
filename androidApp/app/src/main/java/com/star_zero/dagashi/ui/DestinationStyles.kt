@@ -15,15 +15,11 @@ import com.star_zero.dagashi.features.milestone.destinations.MilestoneRouteDesti
 
 private const val ANIMATION_DURATION = 300
 
-private fun NavBackStackEntry.navDestination(): DestinationSpec<*>? {
-    return destination(NavGraphs.root)
-}
-
 @OptIn(ExperimentalAnimationApi::class)
 object MilestoneTransitions : DestinationStyle.Animated {
 
     override fun AnimatedContentScope<NavBackStackEntry>.exitTransition(): ExitTransition? {
-        return when (targetState.destination(NavGraphs.root)) {
+        return when (targetState.destination()) {
             IssueRouteDestination -> {
                 slideOutOfContainer(
                     AnimatedContentScope.SlideDirection.Left,
@@ -38,7 +34,7 @@ object MilestoneTransitions : DestinationStyle.Animated {
     }
 
     override fun AnimatedContentScope<NavBackStackEntry>.popEnterTransition(): EnterTransition? {
-        return when (initialState.navDestination()) {
+        return when (initialState.destination()) {
             IssueRouteDestination -> {
                 slideIntoContainer(
                     AnimatedContentScope.SlideDirection.Right,
@@ -57,7 +53,7 @@ object MilestoneTransitions : DestinationStyle.Animated {
 object IssueTransitions : DestinationStyle.Animated {
 
     override fun AnimatedContentScope<NavBackStackEntry>.enterTransition(): EnterTransition? {
-        return when (initialState.navDestination()) {
+        return when (initialState.destination()) {
             MilestoneRouteDestination -> {
                 slideIntoContainer(
                     AnimatedContentScope.SlideDirection.Left,
@@ -72,7 +68,7 @@ object IssueTransitions : DestinationStyle.Animated {
     }
 
     override fun AnimatedContentScope<NavBackStackEntry>.popExitTransition(): ExitTransition? {
-        return when (targetState.navDestination()) {
+        return when (targetState.destination()) {
             MilestoneRouteDestination -> {
                 slideOutOfContainer(
                     AnimatedContentScope.SlideDirection.Right,
