@@ -1,10 +1,11 @@
 [versions]
 android-build = "7.4.0-alpha07"
-kotlin = "1.6.21"
+kotlin = "1.7.0"
 hilt = "2.42"
 sqldelight = "1.5.3"
 protobuf = "3.21.1"
 androidx-compose = "1.2.0-rc03"
+androidx-compose-compiler = "1.2.0"
 androidx-lifecycle = "2.4.1"
 accompnist = "0.24.7-alpha"
 ktor = "2.0.2"
@@ -96,7 +97,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kotlin-ksp = { id = "com.google.devtools.ksp", version = "1.6.21-1.0.6" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version = "1.7.0-1.0.6" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
 protobuf = { id = "com.google.protobuf", version = "0.8.18" }
