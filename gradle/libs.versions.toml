@@ -95,7 +95,7 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
-protobuf = { id = "com.google.protobuf", version = "0.8.18" }
+protobuf = { id = "com.google.protobuf", version = "0.8.19" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "10.3.0" }
 gradle-version = { id = "com.github.ben-manes.versions", version = "0.42.0" }
 
