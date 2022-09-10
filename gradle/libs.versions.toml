@@ -9,7 +9,7 @@ androidx-compose-compiler = "1.2.0"
 androidx-lifecycle = "2.5.0"
 accompnist = "0.24.7-alpha"
 ktor = "2.0.2"
-coroutines = "1.6.1-native-mt"
+coroutines = "1.6.3-native-mt"
 material3 = "1.0.0-alpha14"
 
 [libraries]
