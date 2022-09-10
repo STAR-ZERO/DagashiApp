@@ -9,7 +9,7 @@ import com.star_zero.dagashi.shared.model.FavoriteIssue
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.shared.platform.CoroutineDispatchers
-import io.ktor.util.date.*
+import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
