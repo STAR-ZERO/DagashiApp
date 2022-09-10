@@ -8,7 +8,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.star_zero.dagashi.shared.model.Issue
-import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.shared.repoitory.FavoriteIssueRepository
 import com.star_zero.dagashi.shared.repoitory.IssueRepository
 import com.star_zero.dagashi.shared.repoitory.SettingRepository
@@ -27,15 +26,18 @@ class IssueViewModel @Inject constructor(
 ) : ViewModel() {
 
     // from screen args
-    private val milestone: Milestone = savedStateHandle.get("milestone")!!
+    private val milestoneId: String = savedStateHandle[IssueNavDestination.ARG_MILESTONE_ID]!!
+    private val milestonePath: String = savedStateHandle[IssueNavDestination.ARG_MILESTONE_PATH]!!
+    private val milestoneTitle: String = savedStateHandle[IssueNavDestination.ARG_MILESTONE_TITLE]!!
 
     private val getIssueWithFavoriteUseCase = GetIssueWithFavoriteUseCase(
         issueRepository,
         favoriteIssueRepository,
-        milestone
+        milestoneId,
+        milestonePath
     )
 
-    private var _uiState by mutableStateOf(IssueUiState())
+    private var _uiState by mutableStateOf(IssueUiState(milestoneTitle = milestoneTitle))
 
     val uiState: Flow<IssueUiState> = combine(
         snapshotFlow { _uiState },
@@ -75,7 +77,7 @@ class IssueViewModel @Inject constructor(
             if (isFavorite) {
                 favoriteIssueRepository.deleteFavorite(issue)
             } else {
-                favoriteIssueRepository.addFavorite(milestone.id, issue)
+                favoriteIssueRepository.addFavorite(milestoneId, issue)
             }
         }
     }

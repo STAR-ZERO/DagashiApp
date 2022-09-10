@@ -37,8 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.spec.DestinationStyle
 import com.star_zero.dagashi.core.CoreString
 import com.star_zero.dagashi.core.tools.DagashiPreview
 import com.star_zero.dagashi.core.ui.components.ErrorRetry
@@ -49,13 +47,10 @@ import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
-import com.star_zero.dagashi.shared.model.Milestone
 
-@Destination(style = DestinationStyle.Runtime::class)
 @Composable
 fun IssueRoute(
-    navigator: IssueNavigator,
-    milestone: Milestone
+    navigateBack: () -> Unit
 ) {
     val viewModel: IssueViewModel = hiltViewModel()
 
@@ -69,13 +64,12 @@ fun IssueRoute(
 
     IssueScreen(
         uiState = uiState,
-        title = milestone.title,
         onRefresh = viewModel::getIssues,
         onOpenLink = {
             openLinkUseCase(it, uiState.isOpenLinkInApp)
         },
         onClickFavorite = viewModel::toggleFavorite,
-        navigateBack = navigator::navigateBack
+        navigateBack = navigateBack
     )
 }
 
@@ -83,7 +77,6 @@ fun IssueRoute(
 @Composable
 private fun IssueScreen(
     uiState: IssueUiState,
-    title: String,
     onRefresh: () -> Unit,
     onOpenLink: (String) -> Unit,
     onClickFavorite: (Issue, Boolean) -> Unit,
@@ -96,7 +89,7 @@ private fun IssueScreen(
             snackbarHost = { SnackbarHost(snacbarHostState) },
             topBar = {
                 AppBar(
-                    title = title,
+                    title = uiState.milestoneTitle,
                     navigateBack = {
                         navigateBack()
                     }
@@ -233,7 +226,6 @@ private fun PreviewIssueScreen() {
             uiState = IssueUiState(
                 issues = issues,
             ),
-            title = "Title",
             onRefresh = {},
             onOpenLink = {},
             onClickFavorite = { _, _ -> },
@@ -250,7 +242,6 @@ private fun PreviewIssueScreenError() {
             uiState = IssueUiState(
                 error = true
             ),
-            title = "Title",
             onRefresh = {},
             onOpenLink = {},
             onClickFavorite = { _, _ -> },

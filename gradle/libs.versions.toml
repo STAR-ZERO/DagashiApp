@@ -9,7 +9,6 @@ androidx-compose-compiler = "1.2.0"
 androidx-lifecycle = "2.5.0"
 accompnist = "0.24.7-alpha"
 ktor = "2.0.2"
-compose-destinations = "1.6.12-beta"
 coroutines = "1.6.1-native-mt"
 material3 = "1.0.0-alpha14"
 
@@ -32,9 +31,6 @@ androidx-compose-nvaigation-hilt = "androidx.hilt:hilt-navigation-compose:1.0.0"
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompnist" }
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompnist" }
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompnist" }
-
-compose-destinations-core = { module = "io.github.raamcosta.compose-destinations:animations-core", version.ref = "compose-destinations" }
-compose-destinations-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "compose-destinations" }
 
 coil-compose = "io.coil-kt:coil-compose:2.1.0"
 
@@ -97,7 +93,6 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kotlin-ksp = { id = "com.google.devtools.ksp", version = "1.7.0-1.0.6" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 sqldelight = { id = "com.squareup.sqldelight", version.ref = "sqldelight" }
 protobuf = { id = "com.google.protobuf", version = "0.8.18" }
@@ -116,5 +111,4 @@ androidx-compose = [
     "accompanist-swiperefresh",
     "accompanist-navigation-animation",
     "coil-compose",
-    "compose-destinations-core"
 ]
