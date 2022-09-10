@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.lib)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -50,18 +49,11 @@ kotlin {
     }
 }
 
-ksp {
-    arg("compose-destinations.mode", "destinations")
-    arg("compose-destinations.moduleName", "milestone")
-}
-
 dependencies {
     implementation projects.androidApp.core
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler
-
-    ksp libs.compose.destinations.ksp
 
     testImplementation projects.androidApp.testutils
     testImplementation libs.junit

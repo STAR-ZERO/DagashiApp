@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
@@ -30,18 +29,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
-import com.ramcosta.composedestinations.navigation.dependency
+import androidx.navigation.compose.rememberNavController
 import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
-import com.star_zero.dagashi.features.issue.destinations.IssueRouteDestination
-import com.star_zero.dagashi.features.milestone.destinations.MilestoneRouteDestination
 import com.star_zero.dagashi.shared.model.DarkThemeType
-import com.star_zero.dagashi.ui.AppNavigator
-import com.star_zero.dagashi.ui.IssueTransitions
-import com.star_zero.dagashi.ui.MilestoneTransitions
-import com.star_zero.dagashi.ui.NavGraphs
+import com.star_zero.dagashi.ui.navigation.AppBottomBar
+import com.star_zero.dagashi.ui.navigation.AppNavRail
+import com.star_zero.dagashi.ui.navigation.DagashiNavHost
+import com.star_zero.dagashi.ui.navigation.TopLevelNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,9 +44,9 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     @OptIn(
-        ExperimentalAnimationApi::class,
-        ExperimentalMaterialNavigationApi::class, ExperimentalMaterial3Api::class,
-        ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalLayoutApi::class
+        ExperimentalMaterial3WindowSizeClassApi::class,
+        ExperimentalLayoutApi::class,
+        ExperimentalMaterial3Api::class
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,8 +69,7 @@ class MainActivity : ComponentActivity() {
                 isDarkTheme = isDarkTheme,
                 isDynamic = isDynamic
             ) {
-                val navHostEngine = rememberAnimatedNavHostEngine()
-                val navController = navHostEngine.rememberNavController()
+                val navController = rememberNavController()
 
                 var selectedIndex by rememberSaveable { mutableStateOf(0) }
                 val topLevelNavigation = remember(navController) {
@@ -94,9 +87,6 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { padding ->
-                    MilestoneRouteDestination.style = MilestoneTransitions
-                    IssueRouteDestination.style = IssueTransitions
-
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
@@ -115,14 +105,9 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        DestinationsNavHost(
-                            navGraph = NavGraphs.root,
+                        DagashiNavHost(
                             navController = navController,
-                            engine = navHostEngine,
-                            dependenciesContainerBuilder = {
-                                dependency(AppNavigator(destinationsNavigator))
-                                dependency(windowSizeClass)
-                            },
+                            windowSizeClass = windowSizeClass,
                             modifier = Modifier
                                 .padding(padding)
                                 .consumedWindowInsets(padding)

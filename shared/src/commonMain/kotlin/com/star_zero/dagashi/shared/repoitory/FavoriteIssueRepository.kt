@@ -8,7 +8,6 @@ import com.star_zero.dagashi.shared.model.Comment
 import com.star_zero.dagashi.shared.model.FavoriteIssue
 import com.star_zero.dagashi.shared.model.Issue
 import com.star_zero.dagashi.shared.model.Label
-import com.star_zero.dagashi.shared.model.Milestone
 import com.star_zero.dagashi.shared.platform.CoroutineDispatchers
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.CoroutineDispatcher
@@ -63,8 +62,8 @@ class FavoriteIssueRepository(
         }
     }
 
-    fun flowFavoriteUrlsByMilestone(milestone: Milestone): Flow<List<String>> {
-        return dagashiDb.favoriteIssueQueries.selectByMilestone(milestone_id = milestone.id)
+    fun flowFavoriteUrlsByMilestone(milestoneId: String): Flow<List<String>> {
+        return dagashiDb.favoriteIssueQueries.selectByMilestone(milestoneId)
             .asFlow()
             .mapToList()
             .map { favoriteIssues ->

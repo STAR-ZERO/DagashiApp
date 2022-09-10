@@ -41,13 +41,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ramcosta.composedestinations.annotation.Destination
 import com.star_zero.dagashi.core.CoreString
 import com.star_zero.dagashi.core.tools.DagashiPreview
 import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.shared.model.DarkThemeType
 
-@Destination
 @Composable
 fun SettingRoute(windowSizeClass: WindowSizeClass) {
     val viewModel: SettingViewModel = hiltViewModel()
@@ -56,15 +54,9 @@ fun SettingRoute(windowSizeClass: WindowSizeClass) {
     SettingScreen(
         uiState = uiState,
         windowWidthSizeClass = windowSizeClass.widthSizeClass,
-        updateOpenLinkInApp = {
-            viewModel.updateOpenLinkInApp(it)
-        },
-        updateDarkTheme = {
-            viewModel.updateDarkTheme(it)
-        },
-        updateDynamicTheme = {
-            viewModel.updateDynamicTheme(it)
-        }
+        updateOpenLinkInApp = viewModel::updateOpenLinkInApp,
+        updateDarkTheme = viewModel::updateDarkTheme,
+        updateDynamicTheme = viewModel::updateDynamicTheme
     )
 }
 

@@ -1,4 +1,4 @@
-package com.star_zero.dagashi.ui.main
+package com.star_zero.dagashi.ui.navigation
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -25,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import com.star_zero.dagashi.R
-import com.star_zero.dagashi.ui.NavGraphs
+import com.star_zero.dagashi.features.favorite.FavoriteNavDestination
+import com.star_zero.dagashi.features.milestone.MilestoneNavDestination
+import com.star_zero.dagashi.features.setting.SettingNavDestination
 
 @Composable
 fun AppBottomBar(
@@ -112,17 +114,17 @@ enum class TopLevelDestination(
     val label: Int,
 ) {
     Home(
-        route = NavGraphs.topHome.route,
+        route = MilestoneNavDestination.route,
         icon = Icons.Filled.Home,
         label = R.string.top_home
     ),
     Favorite(
-        route = NavGraphs.topFavorite.route,
+        route = FavoriteNavDestination.route,
         icon = Icons.Filled.Favorite,
         label = R.string.top_favorite
     ),
     Setting(
-        route = NavGraphs.topSetting.route,
+        route = SettingNavDestination.route,
         icon = Icons.Filled.Settings,
         label = R.string.top_setting
     )
