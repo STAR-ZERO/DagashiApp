@@ -24,6 +24,8 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
+includeBuild("build-logic")
+
 rootProject.name = "DagashiApp"
 include ":shared"
 include ":androidApp:app"

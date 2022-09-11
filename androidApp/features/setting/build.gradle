@@ -1,52 +1,10 @@
 plugins {
-    alias(libs.plugins.android.lib)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    id("com.star_zero.dagashi.build.library.compose")
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
     namespace "com.star_zero.dagashi.features.setting"
-    compileSdk AndroidConfigurations.COMPILE_SDK
-
-    defaultConfig {
-        minSdk AndroidConfigurations.MIN_SDK
-        targetSdk AndroidConfigurations.TARGET_SDK
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.androidx.compose.compiler.get()
-    }
-    packagingOptions {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    lintOptions {
-        checkDependencies true
-    }
-}
-
-kotlin {
-    sourceSets {
-        debug {
-            kotlin.srcDir("build/generated/ksp/debug/kotlin")
-        }
-        release {
-            kotlin.srcDir("build/generated/ksp/release/kotlin")
-        }
-    }
 }
 
 dependencies {

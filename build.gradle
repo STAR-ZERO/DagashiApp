@@ -1,27 +1,27 @@
-plugins {
-    alias(libs.plugins.android.app) apply false
-    alias(libs.plugins.android.lib) apply false
-    alias(libs.plugins.android.test) apply false
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.multiplatform) apply false
-    alias(libs.plugins.kotlin.kapt) apply false
-    alias(libs.plugins.kotlin.parcelize) apply false
-    alias(libs.plugins.kotlin.serialization) apply false
-    alias(libs.plugins.hilt) apply false
-    alias(libs.plugins.sqldelight) apply false
-    alias(libs.plugins.protobuf) apply false
-    alias(libs.plugins.ktlint) apply false
-    alias(libs.plugins.gradle.version) apply false
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath(libs.android.gradle)
+        classpath(libs.kotlin.gradle)
+        classpath(libs.kotlinx.serialization.gradle)
+        classpath(libs.hilt.gradle)
+        classpath(libs.ktlint.gradle)
+        classpath(libs.protobuf.gradle)
+        classpath(libs.sqldelight.gradle)
+    }
 }
 
 def isCI = System.getenv("CI") != null
 
 subprojects {
-    // ./gradlew dependencyUpdates -DoutputFormatter=html
-    apply plugin: libs.plugins.gradle.version.get().getPluginId()
     // ./gradlew ktlintCheck
     // ./gradlew ktlintFormat
-    apply plugin: libs.plugins.ktlint.get().getPluginId()
+    apply plugin: "org.jlleitschuh.gradle.ktlint"
 
     ktlint {
         version = "0.45.2"
