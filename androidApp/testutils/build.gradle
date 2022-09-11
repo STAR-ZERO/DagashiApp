@@ -1,29 +1,9 @@
 plugins {
-    alias(libs.plugins.android.lib)
-    alias(libs.plugins.kotlin.android)
+    id("com.star_zero.dagashi.build.library")
 }
 
 android {
     namespace "com.star_zero.dagashi.testutils"
-    compileSdk AndroidConfigurations.COMPILE_SDK
-
-    defaultConfig {
-        minSdk AndroidConfigurations.MIN_SDK
-        targetSdk AndroidConfigurations.TARGET_SDK
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-    lintOptions {
-        checkDependencies true
-    }
 }
 
 dependencies {

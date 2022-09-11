@@ -1,43 +1,12 @@
 plugins {
-    alias(libs.plugins.android.lib)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.protobuf)
+    id("com.star_zero.dagashi.build.library.compose")
+    id("org.jetbrains.kotlin.kapt")
+    id("com.google.dagger.hilt.android")
+    id("com.google.protobuf")
 }
 
 android {
     namespace "com.star_zero.dagashi.core"
-    compileSdk AndroidConfigurations.COMPILE_SDK
-
-    defaultConfig {
-        minSdk AndroidConfigurations.MIN_SDK
-        targetSdk AndroidConfigurations.TARGET_SDK
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.androidx.compose.compiler.get()
-    }
-    packagingOptions {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    lint {
-        checkDependencies true
-    }
 }
 
 dependencies {

@@ -1,9 +1,8 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.lib)
-    alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.sqldelight)
+    id("com.star_zero.dagashi.build.shared")
+    id("org.jetbrains.kotlin.plugin.parcelize")
+    id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.squareup.sqldelight")
 }
 
 kotlin {
@@ -94,15 +93,6 @@ kotlin {
 
 android {
     namespace = "com.star_zero.dagashi.shared"
-    compileSdk = AndroidConfigurations.COMPILE_SDK
-    defaultConfig {
-        minSdk = AndroidConfigurations.MIN_SDK
-        targetSdk = AndroidConfigurations.TARGET_SDK
-    }
-    lint {
-        checkDependencies = true
-    }
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 }
 
 sqldelight {

@@ -1,27 +1,28 @@
 plugins {
-    alias(libs.plugins.android.test)
-    alias(libs.plugins.kotlin.android)
+    id("com.star_zero.dagashi.build.test")
+//    id("com.android.test")
+//    id("org.jetbrains.kotlin.android")
 }
 
 android {
     namespace 'com.star_zero.dagashi.macrobenchmark'
-    compileSdk AndroidConfigurations.COMPILE_SDK
-
-    defaultConfig {
-        minSdk AndroidConfigurations.MIN_SDK
-        targetSdk AndroidConfigurations.TARGET_SDK
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+//    compileSdk AndroidConfigurations.COMPILE_SDK
+//
+//    defaultConfig {
+//        minSdk AndroidConfigurations.MIN_SDK
+//        targetSdk AndroidConfigurations.TARGET_SDK
+//
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//    }
+//
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_1_8
+//        targetCompatibility = JavaVersion.VERSION_1_8
+//    }
+//
+//    kotlinOptions {
+//        jvmTarget = "1.8"
+//    }
 
     buildTypes {
         benchmark {
