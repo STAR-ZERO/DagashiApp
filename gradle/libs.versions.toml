@@ -24,7 +24,7 @@ protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", versi
 sqldelight-gradle = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqldelight" }
 
 androidx-core = "androidx.core:core-ktx:1.9.0"
-androidx-compat = "androidx.appcompat:appcompat:1.4.2"
+androidx-compat = "androidx.appcompat:appcompat:1.5.1"
 androidx-datastore = "androidx.datastore:datastore:1.0.0"
 androidx-browser = "androidx.browser:browser:1.4.0"
 
