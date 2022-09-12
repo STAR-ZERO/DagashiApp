@@ -42,7 +42,7 @@ accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayo
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompnist" }
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompnist" }
 
-coil-compose = "io.coil-kt:coil-compose:2.1.0"
+coil-compose = "io.coil-kt:coil-compose:2.2.1"
 
 material = "com.google.android.material:material:1.6.1"
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
