@@ -87,6 +87,7 @@ private fun SettingScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppBar() {
     CenterAlignedTopAppBar(

@@ -101,6 +101,7 @@ private fun FavoriteScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppBar(
     onDeleteAll: () -> Unit,
