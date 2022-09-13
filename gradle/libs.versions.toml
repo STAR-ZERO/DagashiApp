@@ -11,7 +11,7 @@ accompnist = "0.25.1"
 ktor = "2.0.2"
 coroutines = "1.6.3-native-mt"
 material3 = "1.0.0-beta02"
-desugar-jdk = "1.1.5"
+desugar-jdk = "1.2.2"
 
 [libraries]
 # Gradle plugin classpath
