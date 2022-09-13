@@ -19,7 +19,7 @@ android-gradle = { module = "com.android.tools.build:gradle", version.ref = "and
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinx-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version = "10.3.0" }
+ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version = "11.0.0" }
 protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version = "0.8.19" }
 sqldelight-gradle = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqldelight" }
 
