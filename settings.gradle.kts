@@ -27,12 +27,12 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 includeBuild("build-logic")
 
 rootProject.name = "DagashiApp"
-include ":shared"
-include ":androidApp:app"
-include ":androidApp:core"
-include ":androidApp:features:issue"
-include ":androidApp:features:setting"
-include ":androidApp:features:milestone"
-include ':androidApp:features:favorite'
-include ':androidApp:testutils'
-include ':androidApp:macrobenchmark'
+include(":shared")
+include(":androidApp:app")
+include(":androidApp:core")
+include(":androidApp:features:issue")
+include(":androidApp:features:setting")
+include(":androidApp:features:milestone")
+include(":androidApp:features:favorite")
+include(":androidApp:testutils")
+include(":androidApp:macrobenchmark")
