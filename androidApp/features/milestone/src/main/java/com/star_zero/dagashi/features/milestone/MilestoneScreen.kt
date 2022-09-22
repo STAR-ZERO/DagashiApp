@@ -15,9 +15,8 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,14 +43,18 @@ import com.star_zero.dagashi.core.ui.theme.DagashiAppTheme
 import com.star_zero.dagashi.shared.model.Milestone
 
 @Composable
-fun MilestoneRoute(navigateIssue: (Milestone) -> Unit) {
+fun MilestoneRoute(
+    navigateIssue: (Milestone) -> Unit,
+    selectedMilestone: Milestone? = null // for 2 Pane Layout
+) {
     val viewModel: MilestoneViewModel = hiltViewModel()
 
     MilestoneScreen(
         uiState = viewModel.uiState,
+        selectedMilestone = selectedMilestone,
         onRefresh = viewModel::refresh,
         navigateIssue = navigateIssue,
-        consumeEvent = viewModel::consumeEvent
+        consumeEvent = viewModel::consumeEvent,
     )
 }
 
@@ -58,9 +62,10 @@ fun MilestoneRoute(navigateIssue: (Milestone) -> Unit) {
 @Composable
 private fun MilestoneScreen(
     uiState: MilestoneUiState,
+    selectedMilestone: Milestone?,
     onRefresh: () -> Unit,
     navigateIssue: (Milestone) -> Unit,
-    consumeEvent: (MilestoneEvent) -> Unit
+    consumeEvent: (MilestoneEvent) -> Unit,
 ) {
     Surface {
         val snackbarHostState = remember { SnackbarHostState() }
@@ -79,7 +84,8 @@ private fun MilestoneScreen(
                     navigateIssue(milestone)
                 },
                 consumeEvent = consumeEvent,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
+                selectedMilestone = selectedMilestone
             )
         }
     }
@@ -105,7 +111,8 @@ private fun MilestoneContent(
     onRefresh: () -> Unit,
     navigateToIssue: (Milestone) -> Unit,
     consumeEvent: (MilestoneEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedMilestone: Milestone?,
 ) {
 
     uiState.events.firstOrNull()?.let { event ->
@@ -136,29 +143,34 @@ private fun MilestoneContent(
             if (uiState.milestones.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize()) // dummy ui for SwipeRefresh
             } else {
-                MilestoneList(uiState.milestones, navigateToIssue)
+                MilestoneList(uiState.milestones, navigateToIssue, selectedMilestone)
             }
         }
     }
 }
 
 @Composable
-private fun MilestoneList(milestones: List<Milestone>, navigateToIssue: (Milestone) -> Unit) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(320.dp),
+private fun MilestoneList(
+    milestones: List<Milestone>,
+    navigateToIssue: (Milestone) -> Unit,
+    selectedMilestone: Milestone?
+) {
+    LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(milestones, key = { it.id }) { milestone ->
-            MilestoneCard(milestone, navigateToIssue)
+            MilestoneCard(milestone, navigateToIssue, selectedMilestone)
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MilestoneCard(milestone: Milestone, navigateToIssue: (Milestone) -> Unit) {
+private fun MilestoneCard(
+    milestone: Milestone,
+    navigateToIssue: (Milestone) -> Unit,
+    selectedMilestone: Milestone?,
+) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -166,8 +178,20 @@ private fun MilestoneCard(milestone: Milestone, navigateToIssue: (Milestone) -> 
                 navigateToIssue(milestone)
             }),
     ) {
+        val selectedColor = MaterialTheme.colorScheme.primaryContainer
         Column(
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(
+                    if (selectedMilestone?.id == milestone.id) {
+                        Modifier.drawBehind {
+                            drawRect(selectedColor)
+                        }
+                    } else {
+                        Modifier
+                    }
+                )
+                .padding(8.dp)
         ) {
             Text(
                 text = milestone.title,
@@ -201,6 +225,7 @@ private fun PreviewMilestoneScreen() {
             uiState = MilestoneUiState(
                 milestones = milestones
             ),
+            selectedMilestone = milestones[1],
             onRefresh = {},
             navigateIssue = {},
             consumeEvent = {}
@@ -216,6 +241,7 @@ private fun PreviewMilestoneScreenError() {
             uiState = MilestoneUiState(
                 error = true
             ),
+            selectedMilestone = null,
             onRefresh = {},
             navigateIssue = {},
             consumeEvent = {}

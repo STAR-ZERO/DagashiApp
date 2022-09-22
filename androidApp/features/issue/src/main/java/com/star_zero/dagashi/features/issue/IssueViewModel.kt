@@ -29,6 +29,7 @@ class IssueViewModel @Inject constructor(
     private val milestoneId: String = savedStateHandle[IssueNavDestination.ARG_MILESTONE_ID]!!
     private val milestonePath: String = savedStateHandle[IssueNavDestination.ARG_MILESTONE_PATH]!!
     private val milestoneTitle: String = savedStateHandle[IssueNavDestination.ARG_MILESTONE_TITLE]!!
+    private val isTwoPane: Boolean = savedStateHandle[IssueNavDestination.ARG_MILESTONE_TWO_PANE]!!
 
     private val getIssueWithFavoriteUseCase = GetIssueWithFavoriteUseCase(
         issueRepository,
@@ -37,7 +38,12 @@ class IssueViewModel @Inject constructor(
         milestonePath
     )
 
-    private var _uiState by mutableStateOf(IssueUiState(milestoneTitle = milestoneTitle))
+    private var _uiState by mutableStateOf(
+        IssueUiState(
+            milestoneTitle = milestoneTitle,
+            isTwoPane = isTwoPane
+        )
+    )
 
     val uiState: Flow<IssueUiState> = combine(
         snapshotFlow { _uiState },
