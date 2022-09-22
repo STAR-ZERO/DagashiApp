@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -89,7 +89,7 @@ private fun IssueScreen(
             snackbarHost = { SnackbarHost(snacbarHostState) },
             topBar = {
                 AppBar(
-                    title = uiState.milestoneTitle,
+                    uiState = uiState,
                     navigateBack = {
                         navigateBack()
                     }
@@ -111,24 +111,36 @@ private fun IssueScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppBar(
-    title: String,
+    uiState: IssueUiState,
     navigateBack: () -> Unit
 ) {
-    TopAppBar(
-        title = {
-            Text(text = title)
-        },
-        navigationIcon = {
-            IconButton(onClick = {
-                navigateBack()
-            }) {
-                Icon(Icons.Filled.ArrowBack, "Back")
-            }
-        },
-        modifier = Modifier.windowInsetsPadding(
-            WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+    if (uiState.isTwoPane) {
+        // 2 Pane Layout
+        CenterAlignedTopAppBar(
+            title = {
+                Text(text = uiState.milestoneTitle)
+            },
+            modifier = Modifier.windowInsetsPadding(
+                WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+            )
         )
-    )
+    } else {
+        TopAppBar(
+            title = {
+                Text(text = uiState.milestoneTitle)
+            },
+            navigationIcon = {
+                IconButton(onClick = {
+                    navigateBack()
+                }) {
+                    Icon(Icons.Filled.ArrowBack, "Back")
+                }
+            },
+            modifier = Modifier.windowInsetsPadding(
+                WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+            )
+        )
+    }
 }
 
 @Composable
@@ -179,11 +191,9 @@ private fun IssueList(
     onOpenLink: (String) -> Unit,
     onClickFavorite: (Issue, Boolean) -> Unit,
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(320.dp),
+    LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(uiState.issues, key = { it.issue.url }) { issueItem ->
             IssueCard(

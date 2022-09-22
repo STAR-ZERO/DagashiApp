@@ -1,13 +1,12 @@
 package com.star_zero.dagashi.ui.navigation
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.star_zero.dagashi.features.favorite.FavoriteNavDestination
 import com.star_zero.dagashi.features.favorite.FavoriteRoute
 import com.star_zero.dagashi.features.issue.IssueNavDestination
@@ -16,6 +15,7 @@ import com.star_zero.dagashi.features.milestone.MilestoneNavDestination
 import com.star_zero.dagashi.features.milestone.MilestoneRoute
 import com.star_zero.dagashi.features.setting.SettingNavDestination
 import com.star_zero.dagashi.features.setting.SettingRoute
+import com.star_zero.dagashi.ui.milestoneIssue.MilestoneIssueRoute
 
 @Composable
 fun DagashiNavHost(
@@ -29,19 +29,21 @@ fun DagashiNavHost(
         modifier = modifier
     ) {
         composable(MilestoneNavDestination.route) {
-            MilestoneRoute(
-                navigateIssue = { milestone ->
-                    IssueNavDestination.navigate(navController, milestone)
-                }
-            )
+            if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
+                // 2 Pane
+                MilestoneIssueRoute()
+            } else {
+                MilestoneRoute(
+                    navigateIssue = { milestone ->
+                        IssueNavDestination.navigate(navController, milestone)
+                    }
+                )
+            }
         }
 
         composable(
             IssueNavDestination.route,
-            arguments = listOf(
-                navArgument(IssueNavDestination.ARG_MILESTONE_ID) { type = NavType.StringType },
-                navArgument(IssueNavDestination.ARG_MILESTONE_TITLE) { type = NavType.StringType }
-            )
+            arguments = IssueNavDestination.arguments
         ) {
             IssueRoute(navigateBack = navController::popBackStack)
         }
