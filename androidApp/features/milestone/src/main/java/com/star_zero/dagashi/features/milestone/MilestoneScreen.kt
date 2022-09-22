@@ -75,6 +75,7 @@ private fun MilestoneScreen(
             topBar = {
                 AppBar()
             },
+            contentWindowInsets = WindowInsets(0)
         ) { innerPadding ->
             MilestoneContent(
                 uiState = uiState,

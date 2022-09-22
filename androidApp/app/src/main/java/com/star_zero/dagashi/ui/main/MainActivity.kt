@@ -7,15 +7,9 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumedWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
@@ -90,27 +84,20 @@ class MainActivity : ComponentActivity() {
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
-                            .windowInsetsPadding(
-                                WindowInsets.safeDrawing.only(
-                                    WindowInsetsSides.Horizontal
-                                )
-                            )
+                            .padding(padding)
+                            .consumedWindowInsets(padding)
                     ) {
                         if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
                             AppNavRail(
                                 topLevelNavigation = topLevelNavigation,
                                 selectedIndex = selectedIndex,
                                 onSelectedItem = { selectedIndex = it },
-                                modifier = Modifier.safeDrawingPadding()
                             )
                         }
 
                         DagashiNavHost(
                             navController = navController,
                             windowSizeClass = windowSizeClass,
-                            modifier = Modifier
-                                .padding(padding)
-                                .consumedWindowInsets(padding)
                         )
                     }
                 }

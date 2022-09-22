@@ -1,10 +1,5 @@
 package com.star_zero.dagashi.ui.navigation
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -41,11 +36,6 @@ fun AppBottomBar(
     ) {
         NavigationBar(
             tonalElevation = 0.dp,
-            modifier = Modifier.windowInsetsPadding(
-                WindowInsets.safeDrawing.only(
-                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
-                )
-            ),
         ) {
             TOP_LEVEL_DESTINATIONS.forEachIndexed { index, destination ->
                 val label = stringResource(id = destination.label)

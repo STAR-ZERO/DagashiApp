@@ -89,7 +89,8 @@ private fun FavoriteScreen(
                 AppBar(
                     onDeleteAll = onDeleteAll,
                 )
-            }
+            },
+            contentWindowInsets = WindowInsets(0)
         ) { innerPadding ->
             FavoriteContent(
                 uiState = uiState,
