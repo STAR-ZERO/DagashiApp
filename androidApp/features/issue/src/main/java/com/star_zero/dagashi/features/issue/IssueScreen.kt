@@ -94,7 +94,8 @@ private fun IssueScreen(
                         navigateBack()
                     }
                 )
-            }
+            },
+            contentWindowInsets = WindowInsets(0)
         ) { innerPadding ->
             IssueContent(
                 uiState = uiState,

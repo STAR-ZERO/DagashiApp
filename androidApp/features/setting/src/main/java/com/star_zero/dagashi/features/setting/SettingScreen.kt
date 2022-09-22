@@ -73,7 +73,8 @@ private fun SettingScreen(
         Scaffold(
             topBar = {
                 AppBar()
-            }
+            },
+            contentWindowInsets = WindowInsets(0)
         ) { innerPadding ->
             SettingContent(
                 uiState = uiState,
