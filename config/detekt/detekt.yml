@@ -1,0 +1,25 @@
+output-reports:
+  exclude:
+    - 'TxtOutputReport'
+    - 'XmlOutputReport'
+    - 'HtmlOutputReport'
+    - 'MdOutputReport'
+complexity:
+  LongParameterList:
+    functionThreshold: 100
+    ignoreDefaultParameters: true
+naming:
+  PackageNaming:
+    active: false
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']
+  TopLevelPropertyNaming:
+    constantPattern: '[A-Z][A-Za-z0-9]*'
+style:
+  MagicNumber:
+    ignorePropertyDeclaration: true
+  UnusedPrivateMember:
+    ignoreAnnotated: ['Preview', 'DagashiPreview']
+formatting:
+  PackageName:
+    active: false

@@ -1,3 +1,6 @@
+plugins {
+    alias(libs.plugins.detekt)
+}
 buildscript {
     repositories {
         gradlePluginPortal()
@@ -18,22 +21,42 @@ buildscript {
 
 val isCI = System.getenv("CI") != null
 
-subprojects {
-    // ./gradlew ktlintCheck
-    // ./gradlew ktlintFormat
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+val reportMerge by tasks.registering(io.gitlab.arturbosch.detekt.report.ReportMergeTask::class) {
+    output.set(rootProject.buildDir.resolve("reports/detekt/merge.sarif"))
+}
 
-    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-        version.set("0.45.2")
-        android.set(true)
-        verbose.set(true)
-        ignoreFailures.set(isCI)
-        reporters {
-            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+val detektPluginId = libs.plugins.detekt.get().pluginId
+val detektPluginVersion = libs.versions.detekt.get()
+val detektFormatting = libs.detekt.formatting
+
+subprojects {
+    apply(plugin = detektPluginId)
+
+    detekt {
+        toolVersion = detektPluginVersion
+        config = files("$rootDir/config/detekt/detekt.yml")
+        buildUponDefaultConfig = true
+        parallel = true
+        ignoreFailures = true
+    }
+
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        exclude {
+            it.file.absolutePath.contains("build/generated")
         }
-        filter {
-            exclude("**/build/generated/**")
+        reports {
+            sarif.required.set(true)
         }
+
+        // Merge sarif report file
+        finalizedBy(reportMerge)
+        reportMerge.configure {
+            input.from(sarifReportFile)
+        }
+    }
+
+    dependencies {
+        detektPlugins(detektFormatting)
     }
 
     // test task for CI
