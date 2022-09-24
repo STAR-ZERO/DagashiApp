@@ -23,6 +23,11 @@ class ApplicationPlugin : Plugin<Project> {
             configureAndroid(project, libs)
             configureCompose(libs)
 
+            lint {
+                @Suppress("UnstableApiUsage")
+                checkDependencies = true
+            }
+
             defaultConfig {
                 targetSdk = SdkVersions.TARGET
             }
