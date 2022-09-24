@@ -13,7 +13,6 @@ import com.star_zero.dagashi.shared.model.Setting
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.internal.NopCollector.emit
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 

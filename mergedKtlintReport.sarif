@@ -1,0 +1,55 @@
+{
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "ktlint",
+          "organization": "pinterest",
+          "fullName": "ktlint",
+          "version": "0.45.2",
+          "semanticVersion": "0.45.2",
+          "downloadUri": "https://github.com/pinterest/ktlint/releases/tag/0.45.2",
+          "informationUri": "https://github.com/pinterest/ktlint/",
+          "rules": [
+            {
+              "id": "no-consecutive-blank-lines"
+            }
+          ],
+          "language": "en"
+        }
+      },
+      "originalUriBaseIds": {
+        "%SRCROOT%": {
+          "uri": "file:///Users/kenji/"
+        }
+      },
+      "results": [
+        {
+          "ruleId": "no-consecutive-blank-lines",
+          "ruleIndex": 0,
+          "level": "warning",
+          "message": {
+            "text": "Needless blank line(s)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Documents/dev/DagashiApp/androidApp/core/src/main/java/com/star_zero/dagashi/core/AppConfig.kt",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 7,
+                  "startColumn": 1
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "columnKind": "utf16CodeUnits"
+    }
+  ]
+}
