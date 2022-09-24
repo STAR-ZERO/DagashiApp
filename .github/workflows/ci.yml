@@ -111,9 +111,9 @@ jobs:
         with:
           node-version: '14'
           cache: 'npm'
-      - name: Install @microsoft/sarif-multitool
-        run: npm i -g @microsoft/sarif-multitool
-      - name: Run ktlint
+      - name: npm install
+        run: npm ci
+      - name: Run ktlint and merge report files
         uses: gradle/gradle-build-action@v2
         with:
           arguments: ktlintCheck mergeKtlint
