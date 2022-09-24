@@ -104,14 +104,21 @@ jobs:
 #          ruby-version: '3.1'
 #      - name: Install danger
 #        run: bundle install
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+          cache: 'npm'
+      - name: Install @microsoft/sarif-multitool
+        run: npm i -g @microsoft/sarif-multitool
       - name: Run ktlint
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ktlintCheck
+          arguments: ktlintCheck mergeKtlint
       - name: Upload sarif
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: '**/build/reports/ktlint/**/*.sarif'
+          sarif_file: build/mergedKtlintReport.sarif
 #      - name: Run Dnager
 #        run: bundle exec danger
 #        env:

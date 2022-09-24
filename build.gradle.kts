@@ -32,7 +32,7 @@ subprojects {
             reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.SARIF)
         }
         filter {
-            exclude("**/build/generated/**")
+            exclude { element -> element.file.path.contains("generated/") }
         }
     }
 
@@ -52,4 +52,33 @@ subprojects {
 
 tasks.register<Delete>("clean") {
     delete(rootProject.buildDir)
+}
+
+tasks.register<Exec>("mergeKtlint") {
+    doFirst {
+        mkdir("./build")
+    }
+
+    val inputFiles = project.subprojects.map { subproject ->
+        File(subproject.buildDir, "reports/ktlint")
+            .walk()
+            .filter {
+                it.isFile && it.extension == "sarif"
+            }
+            .map { file ->
+                file.absolutePath
+            }.toList()
+    }.flatten()
+
+    executable("npx")
+
+    args(
+        listOf(
+            "@microsoft/sarif-multitool",
+            "merge",
+            "--recurse",
+            "--force",
+            "--output-file=build/mergedKtlintReport.sarif"
+        ) + inputFiles
+    )
 }
