@@ -29,7 +29,7 @@
         {
           "ruleId": "no-consecutive-blank-lines",
           "ruleIndex": 0,
-          "level": "warning",
+          "level": "error",
           "message": {
             "text": "Needless blank line(s)"
           },
@@ -37,7 +37,7 @@
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "Documents/dev/DagashiApp/androidApp/core/src/main/java/com/star_zero/dagashi/core/AppConfig.kt",
+                  "uri": "androidApp/core/src/main/java/com/star_zero/dagashi/core/AppConfig.kt",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {

@@ -124,6 +124,7 @@ jobs:
       - name: Upload sarif
         uses: github/codeql-action/upload-sarif@v2
         with:
+#          sarif_file: build/mergedKtlintReport.sarif
           sarif_file: mergedKtlintReport.sarif
 #      - name: Run Dnager
 #        run: bundle exec danger
