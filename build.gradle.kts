@@ -29,7 +29,7 @@ subprojects {
         verbose.set(true)
         ignoreFailures.set(isCI)
         reporters {
-            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.SARIF)
         }
         filter {
             exclude("**/build/generated/**")
