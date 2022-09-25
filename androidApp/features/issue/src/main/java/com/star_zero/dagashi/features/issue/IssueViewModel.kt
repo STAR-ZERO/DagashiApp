@@ -26,10 +26,18 @@ class IssueViewModel @Inject constructor(
 ) : ViewModel() {
 
     // from screen args
-    private val milestoneId: String = savedStateHandle[IssueNavDestination.ARG_MILESTONE_ID]!!
-    private val milestonePath: String = savedStateHandle[IssueNavDestination.ARG_MILESTONE_PATH]!!
-    private val milestoneTitle: String = savedStateHandle[IssueNavDestination.ARG_MILESTONE_TITLE]!!
-    private val isTwoPane: Boolean = savedStateHandle[IssueNavDestination.ARG_MILESTONE_TWO_PANE]!!
+    private val milestoneId: String = requireNotNull(
+        savedStateHandle[IssueNavDestination.ARG_MILESTONE_ID]
+    )
+    private val milestonePath: String = requireNotNull(
+        savedStateHandle[IssueNavDestination.ARG_MILESTONE_PATH]
+    )
+    private val milestoneTitle: String = requireNotNull(
+        savedStateHandle[IssueNavDestination.ARG_MILESTONE_TITLE]
+    )
+    private val isTwoPane: Boolean = requireNotNull(
+        savedStateHandle[IssueNavDestination.ARG_MILESTONE_TWO_PANE]
+    )
 
     private val getIssueWithFavoriteUseCase = GetIssueWithFavoriteUseCase(
         issueRepository,

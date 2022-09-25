@@ -15,6 +15,8 @@ desugar-jdk = "1.2.2"
 
 andoix-test-core = "1.4.0"
 
+detekt = "1.22.0-RC1"
+
 [libraries]
 # Gradle plugin classpath
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-build" }
@@ -24,6 +26,7 @@ hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version
 ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version = "11.0.0" }
 protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version = "0.8.19" }
 sqldelight-gradle = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqldelight" }
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 
 androidx-core = "androidx.core:core-ktx:1.9.0"
 androidx-compat = "androidx.appcompat:appcompat:1.5.1"
@@ -100,6 +103,8 @@ kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version
 profileinstaller = "androidx.profileinstaller:profileinstaller:1.2.0"
 benchmark-macro-junit4 = "androidx.benchmark:benchmark-macro-junit4:1.1.0"
 
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
 [bundles]
 androidx-compose = [
     "androidx-compose-runtime",
@@ -114,3 +119,6 @@ androidx-compose = [
     "accompanist-adaptive",
     "coil-compose",
 ]
+
+[plugins]
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
