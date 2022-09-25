@@ -33,11 +33,12 @@ subprojects {
     apply(plugin = detektPluginId)
 
     detekt {
+        basePath = rootDir.absolutePath
         toolVersion = detektPluginVersion
-        config = files("$rootDir/config/detekt/detekt.yml")
+        config = files("${rootDir.absolutePath}/config/detekt/detekt.yml")
         buildUponDefaultConfig = true
         parallel = true
-        ignoreFailures = true
+        ignoreFailures = isCI
     }
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
