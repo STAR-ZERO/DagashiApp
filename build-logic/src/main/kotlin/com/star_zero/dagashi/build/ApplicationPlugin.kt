@@ -26,6 +26,11 @@ class ApplicationPlugin : Plugin<Project> {
             defaultConfig {
                 targetSdk = SdkVersions.TARGET
             }
+
+            lint {
+                @Suppress("UnstableApiUsage")
+                checkDependencies = true
+            }
         }
     }
 }

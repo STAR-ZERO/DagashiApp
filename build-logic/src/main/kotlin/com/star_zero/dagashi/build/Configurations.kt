@@ -44,7 +44,7 @@ fun CommonExtension<*, *, *, *>.configureAndroid(project: Project, libs: Version
     }
 
     lint {
-        checkDependencies = true
+        sarifReport = true
     }
 }
 
