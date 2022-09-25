@@ -9,12 +9,13 @@ class OpenLinkUseCase(
     private val context: Context,
     private val uriHandler: UriHandler
 ) {
+
     operator fun invoke(url: String, isOpenLinkInApp: Boolean) {
         if (isOpenLinkInApp) {
             val customTabsIntent = CustomTabsIntent.Builder().build()
             customTabsIntent.launchUrl(context, Uri.parse(url))
         } else {
-            uriHandler.openUri(url)
+                uriHandler.openUri(url)
         }
     }
 }

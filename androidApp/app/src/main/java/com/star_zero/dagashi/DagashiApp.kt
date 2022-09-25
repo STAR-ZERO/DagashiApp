@@ -11,7 +11,8 @@ class DagashiApp : Application() {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
-            Napier.base(DebugAntilog())
+                Napier.base(DebugAntilog())
         }
     }
 }
+
