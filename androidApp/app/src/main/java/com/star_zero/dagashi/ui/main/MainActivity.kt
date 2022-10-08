@@ -47,7 +47,6 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-
             val windowSizeClass = calculateWindowSizeClass(activity = this)
 
             val darkTheme by viewModel.darkThemeFlow.collectAsState(initial = DarkThemeType.DEVICE)

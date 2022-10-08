@@ -15,8 +15,10 @@ object IssueNavDestination : DagashiNavDestination {
     private const val ROUTE_PATH = "issue"
 
     // "issue/{milestoneId}/{milestonePath}/{milestoneTitle}?milestoneTwoPane={milestoneTwoPane}
-    override val route: String =
-        "$ROUTE_PATH/{$ARG_MILESTONE_ID}/{$ARG_MILESTONE_PATH}/{$ARG_MILESTONE_TITLE}?$ARG_MILESTONE_TWO_PANE={$ARG_MILESTONE_TWO_PANE}"
+    override val route: String = buildString {
+        append("$ROUTE_PATH/{$ARG_MILESTONE_ID}/{$ARG_MILESTONE_PATH}/{$ARG_MILESTONE_TITLE}")
+        append("?$ARG_MILESTONE_TWO_PANE={$ARG_MILESTONE_TWO_PANE}")
+    }
 
     val arguments = listOf(
         navArgument(ARG_MILESTONE_ID) { type = NavType.StringType },

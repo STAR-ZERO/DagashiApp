@@ -115,7 +115,6 @@ private fun MilestoneContent(
     modifier: Modifier = Modifier,
     selectedMilestone: Milestone?,
 ) {
-
     uiState.events.firstOrNull()?.let { event ->
         when (event) {
             is MilestoneEvent.ErrorGetMilestone -> {
