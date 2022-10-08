@@ -126,7 +126,6 @@ private fun AppBar(
 private fun DeleteAllButton(
     onDeleteAll: () -> Unit,
 ) {
-
     var isShowConfirmation by remember { mutableStateOf(false) }
     if (isShowConfirmation) {
         AlertDialog(
@@ -205,7 +204,6 @@ private fun FavoriteContent(
 @DagashiPreview
 @Composable
 private fun PreviewFavoriteScreen() {
-
     val favorites = (1..5).map {
         FavoriteItemUiState(
             issue = Issue(

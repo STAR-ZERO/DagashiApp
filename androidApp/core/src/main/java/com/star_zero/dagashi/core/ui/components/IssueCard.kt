@@ -49,7 +49,6 @@ fun IssueCard(
     onOpenLink: (String) -> Unit,
     onClickFavorite: (Issue, Boolean) -> Unit
 ) {
-
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth(),
@@ -57,7 +56,6 @@ fun IssueCard(
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = issue.title,
@@ -177,7 +175,6 @@ private fun IssueLabels(labels: List<Label>) {
 private fun Comment(comment: Comment, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row(modifier = Modifier.padding(vertical = 8.dp)) {
-
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(comment.author.avatarUrl)

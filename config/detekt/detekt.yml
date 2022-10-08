@@ -8,6 +8,8 @@ complexity:
   LongParameterList:
     functionThreshold: 100
     ignoreDefaultParameters: true
+  LongMethod:
+    threshold: 120
 naming:
   PackageNaming:
     active: false
@@ -17,9 +19,19 @@ naming:
     constantPattern: '[A-Z][A-Za-z0-9]*'
 style:
   MagicNumber:
+    ignoreAnnotated: ['Preview', 'DagashiPreview']
     ignorePropertyDeclaration: true
   UnusedPrivateMember:
     ignoreAnnotated: ['Preview', 'DagashiPreview']
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
+  TooGenericExceptionThrown:
+    active: false
 formatting:
   PackageName:
     active: false
+  Filename:
+    active: false
+  MaximumLineLength:
+    maxLineLength: 256

@@ -2,7 +2,6 @@ package com.star_zero.dagashi.features.setting
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,7 +17,7 @@ class SettingViewModel @Inject constructor(
     private val settingRepository: SettingRepository
 ) : ViewModel() {
 
-    private var _uiState by mutableStateOf(SettingUiState())
+    private val _uiState by mutableStateOf(SettingUiState())
 
     val uiState = combine(
         snapshotFlow { _uiState },

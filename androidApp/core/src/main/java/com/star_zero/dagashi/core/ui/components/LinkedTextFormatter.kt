@@ -14,7 +14,6 @@ fun formatLinkedText(text: String, linkColor: Color): AnnotatedString {
     val tokens = symbolPattern.findAll(text)
 
     return buildAnnotatedString {
-
         var cursorPosition = 0
 
         for (token in tokens) {
