@@ -1,8 +1,8 @@
 plugins {
     id("com.star_zero.dagashi.build.shared")
-    id("org.jetbrains.kotlin.plugin.parcelize")
-    id("org.jetbrains.kotlin.plugin.serialization")
-    id("com.squareup.sqldelight")
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {

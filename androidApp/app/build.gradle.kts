@@ -1,7 +1,7 @@
 plugins {
     id("com.star_zero.dagashi.build.application")
-    id("org.jetbrains.kotlin.kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt)
 }
 
 android {

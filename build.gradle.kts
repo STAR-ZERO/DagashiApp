@@ -1,22 +1,15 @@
 plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.kotlin.parcelize) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.protobuf) apply false
+    alias(libs.plugins.sqldelight) apply false
     alias(libs.plugins.detekt)
-}
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath(libs.android.gradle)
-        classpath(libs.kotlin.gradle)
-        classpath(libs.kotlinx.serialization.gradle)
-        classpath(libs.hilt.gradle)
-        classpath(libs.ktlint.gradle)
-        classpath(libs.protobuf.gradle)
-        classpath(libs.sqldelight.gradle)
-    }
 }
 
 val isCI = System.getenv("CI") != null
