@@ -26,8 +26,8 @@ kotlin {
                 implementation(libs.ktor.serialization)
                 implementation(libs.ktor.logging)
                 implementation(libs.kotlinx.serialization)
-                implementation(libs.sqldelight.runtime)
                 implementation(libs.sqldelight.coroutines)
+                implementation(libs.sqldelight.primitive.adapters)
                 implementation(libs.napier)
             }
         }
@@ -44,7 +44,7 @@ kotlin {
                 implementation(libs.androidx.compose.runtime)
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependsOn(commonMain)
             dependencies {
                 implementation(libs.kotlin.test.junit)
@@ -96,7 +96,9 @@ android {
 }
 
 sqldelight {
-    database("DagashiDatabase") {
-        packageName = "com.star_zero.dagashi.shared.db"
+    databases {
+        create("DagashiDatabase") {
+            packageName.set("com.star_zero.dagashi.shared.db")
+        }
     }
 }

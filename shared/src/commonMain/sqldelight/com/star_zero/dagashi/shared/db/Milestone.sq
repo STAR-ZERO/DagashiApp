@@ -1,3 +1,5 @@
+import kotlin.Int;
+
 CREATE TABLE IF NOT EXISTS Milestones (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,

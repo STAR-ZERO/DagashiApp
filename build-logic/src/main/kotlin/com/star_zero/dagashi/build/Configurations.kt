@@ -6,7 +6,9 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
  * Configure SDK android versions
@@ -30,13 +32,15 @@ fun CommonExtension<*, *, *, *, *>.configureAndroid(project: Project, libs: Vers
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
         isCoreLibraryDesugaringEnabled = true
     }
 
-    (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    project.tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_17.toString()
+        }
     }
 
     project.dependencies {

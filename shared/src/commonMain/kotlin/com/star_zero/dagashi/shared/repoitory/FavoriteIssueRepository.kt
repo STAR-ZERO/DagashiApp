@@ -1,7 +1,7 @@
 package com.star_zero.dagashi.shared.repoitory
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import com.star_zero.dagashi.shared.db.DagashiDatabase
 import com.star_zero.dagashi.shared.model.Author
 import com.star_zero.dagashi.shared.model.Comment
@@ -11,6 +11,8 @@ import com.star_zero.dagashi.shared.model.Label
 import com.star_zero.dagashi.shared.platform.CoroutineDispatchers
 import io.ktor.util.date.getTimeMillis
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -65,7 +67,7 @@ class FavoriteIssueRepository(
     fun flowFavoriteUrlsByMilestone(milestoneId: String): Flow<List<String>> {
         return dagashiDb.favoriteIssueQueries.selectByMilestone(milestoneId)
             .asFlow()
-            .mapToList()
+            .mapToList(Dispatchers.IO)
             .map { favoriteIssues ->
                 favoriteIssues.map { it.url }
             }
