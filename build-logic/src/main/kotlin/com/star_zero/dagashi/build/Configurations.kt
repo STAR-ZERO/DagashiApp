@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 /**
  * Configure SDK android versions
  */
-fun CommonExtension<*, *, *, *>.configureSdkAndroidVersions() {
+fun CommonExtension<*, *, *, *, *>.configureSdkAndroidVersions() {
     compileSdk = SdkVersions.COMPILE
     defaultConfig {
         minSdk = SdkVersions.MIN
@@ -22,7 +22,7 @@ fun CommonExtension<*, *, *, *>.configureSdkAndroidVersions() {
  * Configure common android settings
  */
 @Suppress("UnstableApiUsage")
-fun CommonExtension<*, *, *, *>.configureAndroid(project: Project, libs: VersionCatalog) {
+fun CommonExtension<*, *, *, *, *>.configureAndroid(project: Project, libs: VersionCatalog) {
     configureSdkAndroidVersions()
 
     defaultConfig {
@@ -52,7 +52,7 @@ fun CommonExtension<*, *, *, *>.configureAndroid(project: Project, libs: Version
  * Configure for Jetpack Compose
  */
 @Suppress("UnstableApiUsage")
-fun CommonExtension<*, *, *, *>.configureCompose(libs: VersionCatalog) {
+fun CommonExtension<*, *, *, *, *>.configureCompose(libs: VersionCatalog) {
     buildFeatures {
         compose = true
     }
@@ -66,7 +66,7 @@ fun CommonExtension<*, *, *, *>.configureCompose(libs: VersionCatalog) {
 /**
  * Apply [Explicit API mode](https://github.com/Kotlin/KEEP/blob/master/proposals/explicit-api-mode.md)
  */
-fun CommonExtension<*, *, *, *>.configureKotlinExplicitApi() {
+fun CommonExtension<*, *, *, *, *>.configureKotlinExplicitApi() {
     (this as ExtensionAware).extensions.configure<KotlinJvmOptions>("kotlinOptions") {
         freeCompilerArgs = freeCompilerArgs + "-Xexplicit-api=strict"
     }

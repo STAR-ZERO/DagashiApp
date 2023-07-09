@@ -1,5 +1,5 @@
 [versions]
-android-build = "7.4.0-beta02"
+android-build = "8.2.0-alpha11"
 kotlin = "1.7.10"
 hilt = "2.42"
 sqldelight = "1.5.3"
@@ -24,7 +24,7 @@ kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 kotlinx-serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version = "11.0.0" }
-protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version = "0.8.19" }
+protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version = "0.9.3" }
 sqldelight-gradle = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqldelight" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 
