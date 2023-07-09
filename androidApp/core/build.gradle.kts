@@ -1,8 +1,8 @@
 plugins {
     id("com.star_zero.dagashi.build.library.compose")
-    id("org.jetbrains.kotlin.kapt")
-    id("com.google.dagger.hilt.android")
-    id("com.google.protobuf")
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.protobuf)
 }
 
 android {

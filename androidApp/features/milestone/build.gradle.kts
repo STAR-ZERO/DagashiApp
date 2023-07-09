@@ -1,6 +1,6 @@
 plugins {
     id("com.star_zero.dagashi.build.library.compose")
-    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
