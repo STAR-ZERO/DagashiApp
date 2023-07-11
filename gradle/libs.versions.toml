@@ -12,7 +12,7 @@ accompnist = "0.26.3-beta"
 ktor = "2.1.1"
 coroutines = "1.6.3-native-mt"
 material3 = "1.0.0-beta02"
-desugar-jdk = "1.2.2"
+desugar-jdk = "2.0.2"
 
 andoix-test-core = "1.4.0"
 
