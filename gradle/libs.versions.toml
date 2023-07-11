@@ -43,7 +43,7 @@ accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiper
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompnist" }
 accompanist-adaptive = { module = "com.google.accompanist:accompanist-adaptive", version.ref = "accompnist" }
 
-coil-compose = "io.coil-kt:coil-compose:2.2.1"
+coil-compose = "io.coil-kt:coil-compose:2.2.2"
 
 material = "com.google.android.material:material:1.6.1"
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
