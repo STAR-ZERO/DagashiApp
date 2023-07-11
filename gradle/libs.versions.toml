@@ -11,7 +11,7 @@ androidx-lifecycle = "2.5.1"
 accompnist = "0.26.3-beta"
 ktor = "2.1.1"
 coroutines = "1.6.3-native-mt"
-material3 = "1.0.0-beta02"
+material3 = "1.0.1"
 desugar-jdk = "1.2.2"
 
 andoix-test-core = "1.4.0"
